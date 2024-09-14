@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sizer/sizer.dart';
 
 import '../Constants/app_colors.dart';
 
@@ -132,11 +134,11 @@ class SubmitButton2 extends StatelessWidget {
           children: [
             if (icon != null)
               Padding(
-                padding: EdgeInsets.only(right: title != null ? 8.0 : 0.0),
-                child: Image.asset(
+                padding: EdgeInsets.only(right: title != null ? 12.0.sp : 0.0),
+                child: SvgPicture.asset(
                   icon!,
                   height: iconSize ?? 20,
-                  color: iconColor ?? Colors.white,
+                  colorFilter: ColorFilter.mode(iconColor ?? Colors.white, BlendMode.srcIn),
                 ),
               ),
             if (title != null)

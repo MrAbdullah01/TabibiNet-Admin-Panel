@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
-import 'package:tabibinet_admin_panel/Screens/StartScreens/LogInScreen/login_screen.dart';
 
 import '../../../Model/Res/Constants/app_assets.dart';
 import '../../../Model/Res/Constants/app_colors.dart';
+import '../LogInScreen/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

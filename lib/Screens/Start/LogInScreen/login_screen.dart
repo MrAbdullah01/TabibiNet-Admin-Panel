@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tabibinet_admin_panel/Model/Res/Constants/app_assets.dart';
 import 'package:tabibinet_admin_panel/Model/Res/Constants/app_colors.dart';
@@ -9,6 +13,8 @@ import 'package:tabibinet_admin_panel/Model/Res/Widgets/AppTextField.dart';
 import 'package:tabibinet_admin_panel/Model/Res/Widgets/app_text_widget.dart';
 import 'package:tabibinet_admin_panel/Model/Res/Widgets/submit_button.dart';
 import 'package:tabibinet_admin_panel/Model/Res/Widgets/toast_msg.dart';
+import 'package:tabibinet_admin_panel/Provider/Login/login_provider.dart';
+import 'package:tabibinet_admin_panel/Screens/DashBoard/DashBoardScreen/dash_board_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -64,17 +70,28 @@ class LoginScreen extends StatelessWidget {
                   text: "Password", fontSize: 14.sp,
                   fontWeight: FontWeight.w600, isTextCenter: false,
                   textColor: textColor, fontFamily: AppFonts.medium,),
-                AppTextField(
-                  inputController: passwordC,
-                  hintText: "Enter Password",
-                  obscureText: true,
-                  suffixIcon: Icon(Icons.visibility,color: Colors.grey,),
-                ),
+                Consumer<LogInProvider>(
+                  builder: (context, value, child) {
+                    return AppTextField(
+                      inputController: passwordC,
+                      hintText: "Enter Password",
+                      obscureText: value.isVisible,
+                      suffixIcon: IconButton(
+                          onPressed: () {
+                            value.setPasswordVisibility();
+                            log("message:${value.isVisible}");
+                          },
+                          icon: Icon(
+                            value.isVisible ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: Colors.grey,)),
+                    );
+                },),
                 SizedBox(height: 5.h,),
                 SubmitButton(
                   title: "Log In",
                   press: () async {
-                    await logIn();
+                    logIn();
                 },)
 
               ],
@@ -85,14 +102,17 @@ class LoginScreen extends StatelessWidget {
       ),
     );
   }
+
   Future<void> logIn() async {
     await auth.signInWithEmailAndPassword(
         email: emailC.text.toString(),
         password: passwordC.text.toString()
     ).then((value) {
+      Get.to(()=> DashBoardScreen());
       ToastMsg().toastMsg("Log In Successfully!");
     },).onError((error, stackTrace) {
       ToastMsg().toastMsg(error.toString());
     },);
   }
+
 }

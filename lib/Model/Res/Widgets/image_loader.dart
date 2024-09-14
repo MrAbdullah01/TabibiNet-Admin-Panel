@@ -12,8 +12,8 @@ class ImageLoaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return CachedNetworkImage(
       imageUrl: imageUrl,
-      placeholder: (context, url) => SvgPicture.asset(AppIcons.flag_1), // Path to your placeholder image
-      errorWidget: (context, url, error) => SvgPicture.asset(AppIcons.flag_1), // Display an error icon if the image fails to load
+      placeholder: (context, url) => SvgPicture.asset(AppIcons.dashboardIcon), // Path to your placeholder image
+      errorWidget: (context, url, error) => SvgPicture.asset(AppIcons.dashboardIcon), // Display an error icon if the image fails to load
       fit: BoxFit.cover,
     );
   }
