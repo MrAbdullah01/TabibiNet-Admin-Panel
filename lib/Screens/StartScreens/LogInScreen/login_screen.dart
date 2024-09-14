@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
@@ -57,13 +55,21 @@ class LoginScreen extends StatelessWidget {
                   text: "Email", fontSize: 14.sp,
                   fontWeight: FontWeight.w600, isTextCenter: false,
                   textColor: textColor, fontFamily: AppFonts.medium,),
-                AppTextField(inputController: emailC),
+                AppTextField(
+                  inputController: emailC,
+                  hintText: "Enter Email",
+                ),
                 SizedBox(height: 3.h,),
                 AppTextWidget(
                   text: "Password", fontSize: 14.sp,
                   fontWeight: FontWeight.w600, isTextCenter: false,
                   textColor: textColor, fontFamily: AppFonts.medium,),
-                AppTextField(inputController: passwordC),
+                AppTextField(
+                  inputController: passwordC,
+                  hintText: "Enter Password",
+                  obscureText: true,
+                  suffixIcon: Icon(Icons.visibility,color: Colors.grey,),
+                ),
                 SizedBox(height: 5.h,),
                 SubmitButton(
                   title: "Log In",
