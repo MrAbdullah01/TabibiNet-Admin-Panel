@@ -57,7 +57,7 @@ class LoginScreen extends StatelessWidget {
                       height: 30.h,
                       child: SvgPicture.asset(AppAssets.logoImage)),
                 ),
-                AppTextWidget(
+                AppText(
                   text: "Email", fontSize: 14.sp,
                   fontWeight: FontWeight.w600, isTextCenter: false,
                   textColor: textColor, fontFamily: AppFonts.medium,),
@@ -66,7 +66,7 @@ class LoginScreen extends StatelessWidget {
                   hintText: "Enter Email",
                 ),
                 SizedBox(height: 3.h,),
-                AppTextWidget(
+                AppText(
                   text: "Password", fontSize: 14.sp,
                   fontWeight: FontWeight.w600, isTextCenter: false,
                   textColor: textColor, fontFamily: AppFonts.medium,),

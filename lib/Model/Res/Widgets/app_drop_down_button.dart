@@ -57,7 +57,7 @@ class ReusableDropdown<T> extends StatelessWidget {
             fontWeight: FontWeight.w600,
             color: textColor
         ),
-        hint: AppTextWidget(
+        hint: AppText(
           text: hintText, fontSize: fontSize ?? 12,
           fontWeight: FontWeight.w600, isTextCenter: false,
           textColor: greyColor,fontFamily: fontFamily ?? AppFonts.medium,),

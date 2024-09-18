@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-import 'package:tabibinet_admin_panel/Model/Res/Constants/app_colors.dart';
-import 'package:tabibinet_admin_panel/Model/Res/Constants/app_fonts.dart';
-import 'package:tabibinet_admin_panel/Model/Res/Constants/app_icons.dart';
-import 'package:tabibinet_admin_panel/Model/Res/Widgets/app_text_widget.dart';
-import 'package:tabibinet_admin_panel/Model/Res/Widgets/header.dart';
-import 'package:tabibinet_admin_panel/Model/Res/Widgets/submit_button.dart';
-import 'package:tabibinet_admin_panel/Provider/DashBoard/Components/side_menu_bar_section.dart';
-import 'package:tabibinet_admin_panel/Provider/DashBoard/dash_board_provider.dart';
-import 'package:tabibinet_admin_panel/Screens/DashBoard/DashBoardScreen/Components/dashboard_section.dart';
-import 'package:tabibinet_admin_panel/Screens/DashBoard/HealthCareScren/health_care_screen.dart';
+import 'package:tabibinet_admin_panel/Screens/DashBoard/DoctorPaymentScreen/doctor_payment_screen.dart';
 
 import '../../../Model/Res/Constants/app_assets.dart';
+import '../../../Model/Res/Constants/app_colors.dart';
+import '../../../Model/Res/Constants/app_fonts.dart';
+import '../../../Model/Res/Constants/app_icons.dart';
+import '../../../Model/Res/Widgets/app_text_widget.dart';
+import '../../../Model/Res/Widgets/header.dart';
+import '../../../Model/Res/Widgets/submit_button.dart';
+import '../../../Provider/DashBoard/Components/side_menu_bar_section.dart';
+import '../../../Provider/DashBoard/dash_board_provider.dart';
+import '../AppointmentFeeScreen/appointment_fee_screen.dart';
+import '../AppointmentScreen/appointment_screen.dart';
+import '../HealthCareScren/health_care_screen.dart';
+import '../PatientScreen/patient_screen.dart';
+import '../RequestScreen/request_screen.dart';
+import 'Components/dashboard_section.dart';
 
 class DashBoardScreen extends StatelessWidget {
   const DashBoardScreen({super.key});
@@ -42,7 +46,7 @@ class DashBoardScreen extends StatelessWidget {
                     const CircleAvatar(
                       backgroundImage: AssetImage(AppAssets.profileImage),
                     ),
-                    AppTextWidget(
+                    AppText(
                         text: "Mian Uzair",
                         fontSize: 14.sp, fontWeight: FontWeight.w600,
                         isTextCenter: false, textColor: themeColor,
@@ -72,6 +76,11 @@ class DashBoardScreen extends StatelessWidget {
                       width: 75.w,
                       child: value.selectIndex == 0 ? DashboardSection()
                           :value.selectIndex == 1 ? HealthCareScreen()
+                          :value.selectIndex == 2 ? PatientScreen()
+                          :value.selectIndex == 3 ? RequestScreen()
+                          :value.selectIndex == 4 ? AppointmentScreen()
+                          :value.selectIndex == 5 ? AppointmentFeeScreen()
+                          :value.selectIndex == 6 ? DoctorPaymentScreen()
                           : const SizedBox()
                   );
                 },),

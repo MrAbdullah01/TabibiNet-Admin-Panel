@@ -87,12 +87,12 @@ class DashboardSection extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          AppTextWidget(
+                          AppText(
                             text: items[index]["title"]!,
                             fontSize: 16.sp, fontWeight: FontWeight.w500,
                             isTextCenter: false, textColor: textColor,
                             fontFamily: AppFonts.semiBold,),
-                          AppTextWidget(
+                          AppText(
                             text: items[index]["subTitle"]!,
                             fontSize: 12.sp, fontWeight: FontWeight.w400,
                             isTextCenter: false, textColor: textColor,

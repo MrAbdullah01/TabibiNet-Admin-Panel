@@ -113,12 +113,12 @@ class Header extends StatelessWidget {
               radius: 20,
               backgroundImage: AssetImage(AppAssets.profileImage),
             ),
-            AppTextWidget(
+            AppText(
                 text: "Mian Uzair",
                 fontSize: 10.sp, fontWeight: FontWeight.w600,
                 isTextCenter: false, textColor: themeColor,
                 fontFamily:  AppFonts.regular),
-            AppTextWidget(
+            AppText(
                 text: "info@gmail.com",
                 fontSize: 10.sp, fontWeight: FontWeight.w600,
                 isTextCenter: false, textColor: Colors.grey,
@@ -133,7 +133,7 @@ class Header extends StatelessWidget {
                     height: 15,
                     colorFilter: const ColorFilter.mode(textColor, BlendMode.srcIn),),
                   SizedBox(width: 1.h,),
-                  AppTextWidget(
+                  AppText(
                       text: "View Profile",
                       fontSize: 10.sp, fontWeight: FontWeight.w600,
                       isTextCenter: false, textColor: textColor, fontFamily: AppFonts.medium,)
@@ -150,7 +150,7 @@ class Header extends StatelessWidget {
                     height: 15,
                     colorFilter: const ColorFilter.mode(textColor, BlendMode.srcIn),),
                   SizedBox(width: 1.h,),
-                  AppTextWidget(
+                  AppText(
                       text: "Edit Profile",
                       fontSize: 10.sp, fontWeight: FontWeight.w600,
                       isTextCenter: false, textColor: textColor, fontFamily: AppFonts.medium,)
@@ -167,7 +167,7 @@ class Header extends StatelessWidget {
                     height: 15,
                     colorFilter: const ColorFilter.mode(textColor, BlendMode.srcIn),),
                   SizedBox(width: 1.h,),
-                  AppTextWidget(
+                  AppText(
                       text: "Log Out",
                       fontSize: 10.sp, fontWeight: FontWeight.w600,
                       isTextCenter: false, textColor: textColor, fontFamily: AppFonts.medium,)
@@ -191,7 +191,7 @@ class Header extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                AppTextWidget(
+                AppText(
                     text: "Notifications",
                     fontSize: 12.sp, fontWeight: FontWeight.w500,
                     isTextCenter: false, textColor: textColor,
@@ -201,7 +201,7 @@ class Header extends StatelessWidget {
                   onPressed: () {
                     // Clear all functionality
                   },
-                  child: AppTextWidget(
+                  child: AppText(
                     text: "Clear All",
                     fontSize: 10.sp, fontWeight: FontWeight.w500,
                     isTextCenter: false, textColor: Colors.grey,
@@ -216,13 +216,13 @@ class Header extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              AppTextWidget(
+              AppText(
                   text: "New Payment",
                   fontSize: 10.sp, fontWeight: FontWeight.w500,
                   isTextCenter: false, textColor: themeColor,
                   fontFamily: AppFonts.medium
               ),
-              AppTextWidget(
+              AppText(
                   text: "New Register",
                   fontSize: 10.sp, fontWeight: FontWeight.w500,
                   isTextCenter: false, textColor: textColor,
@@ -250,7 +250,7 @@ class Header extends StatelessWidget {
         backgroundImage: AssetImage(AppAssets.profileImage), // Replace with user image
         radius: 24,
       ),
-      title: AppTextWidget(
+      title: AppText(
           text: "Tarvis Tramble",
           fontSize: 10.sp, fontWeight: FontWeight.w500,
           isTextCenter: false, textColor: textColor
@@ -258,20 +258,20 @@ class Header extends StatelessWidget {
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AppTextWidget(
+          AppText(
               text: "Sent a amount of \$210 of his apointment",
               fontSize: 10.sp, fontWeight: FontWeight.w500,
               isTextCenter: false, textColor: Colors.grey
           ),
           const SizedBox(height: 4),
-          AppTextWidget(
+          AppText(
               text: "Dr.John",
               fontSize: 10.sp, fontWeight: FontWeight.w500,
               isTextCenter: false, textColor: themeColor
           ),
         ],
       ),
-      trailing: AppTextWidget(
+      trailing: AppText(
           text: "8:30pm",
           fontSize: 6.sp, fontWeight: FontWeight.w500,
           isTextCenter: false, textColor: textColor

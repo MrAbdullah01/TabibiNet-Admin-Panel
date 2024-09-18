@@ -1,8 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
-class AppTextWidget extends StatelessWidget {
-  const AppTextWidget(
+class AppText extends StatelessWidget {
+  const AppText(
       {super.key,
         required this.text,
         required this.fontSize,

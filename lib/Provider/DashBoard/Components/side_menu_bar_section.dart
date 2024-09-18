@@ -7,6 +7,7 @@ import '../../../Model/Res/Constants/app_colors.dart';
 import '../../../Model/Res/Constants/app_fonts.dart';
 import '../../../Model/Res/Constants/app_icons.dart';
 import '../../../Model/Res/Widgets/app_text_widget.dart';
+import '../../Patient/patient_provider.dart';
 import '../dash_board_provider.dart';
 
 class SideMenuBarSection extends StatelessWidget {
@@ -70,6 +71,7 @@ class SideMenuBarSection extends StatelessWidget {
               final isSelected = value.selectIndex == index;
               return InkWell(
                 onTap: () {
+                  Provider.of<PatientProvider>(context,listen: false).setAddPatient(false);
                   value.setSelectedIndex(index);
                 },
                 child: Container(
@@ -88,7 +90,7 @@ class SideMenuBarSection extends StatelessWidget {
                             : textColor, BlendMode.srcIn),
                       ),
                       SizedBox(width: 10.sp,),
-                      AppTextWidget(
+                      AppText(
                           text: dashBoard[index]["title"]!,
                           fontSize: 12.sp, fontWeight: FontWeight.w600,
                           isTextCenter: false, textColor: isSelected ? bgColor : textColor,

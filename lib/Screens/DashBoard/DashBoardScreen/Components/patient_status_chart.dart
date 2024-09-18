@@ -21,7 +21,7 @@ class PatientStatusChart extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AppTextWidget(
+          AppText(
             text: "Patients",
             fontSize: 16.sp, fontWeight: FontWeight.w600,
             isTextCenter: false, textColor: textColor,

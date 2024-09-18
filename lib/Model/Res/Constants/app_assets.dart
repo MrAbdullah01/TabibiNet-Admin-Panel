@@ -5,5 +5,6 @@ class AppAssets{
   static const String logoImage = "assets/images/logo.svg";
   static const String profileImage = "assets/images/profile_image.png";
   static const String bgImage = "assets/images/bg_image.png";
+  static const String doctorImage = "assets/images/doctor_image.png";
 
 }
