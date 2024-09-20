@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tabibinet_admin_panel/Screens/DashBoard/DoctorPaymentScreen/doctor_payment_screen.dart';
+import 'package:tabibinet_admin_panel/Screens/DashBoard/FaqScreen/faq_screen.dart';
+import 'package:tabibinet_admin_panel/Screens/DashBoard/HelpCenterScreen/help_center_screen.dart';
+import 'package:tabibinet_admin_panel/Screens/DashBoard/PatientPaymentScreen/patient_payment_screen.dart';
+import 'package:tabibinet_admin_panel/Screens/DashBoard/ProfileScreen/profile_screen.dart';
+import 'package:tabibinet_admin_panel/Screens/DashBoard/SettingScreen/setting_screen.dart';
+import 'package:tabibinet_admin_panel/Screens/DashBoard/SubscriptionScreen/subscription_screen.dart';
 
 import '../../../Model/Res/Constants/app_assets.dart';
 import '../../../Model/Res/Constants/app_colors.dart';
@@ -14,6 +20,7 @@ import '../../../Provider/DashBoard/Components/side_menu_bar_section.dart';
 import '../../../Provider/DashBoard/dash_board_provider.dart';
 import '../AppointmentFeeScreen/appointment_fee_screen.dart';
 import '../AppointmentScreen/appointment_screen.dart';
+import '../EditProfileScreen/edit_profile_screen.dart';
 import '../HealthCareScren/health_care_screen.dart';
 import '../PatientScreen/patient_screen.dart';
 import '../RequestScreen/request_screen.dart';
@@ -81,6 +88,10 @@ class DashBoardScreen extends StatelessWidget {
                           :value.selectIndex == 4 ? AppointmentScreen()
                           :value.selectIndex == 5 ? AppointmentFeeScreen()
                           :value.selectIndex == 6 ? DoctorPaymentScreen()
+                          :value.selectIndex == 7 ? PatientPaymentScreen()
+                          :value.selectIndex == 8 ? SubscriptionScreen()
+                          :value.selectIndex == 9 ? HelpCenterScreen()
+                          :value.selectIndex == 10 ? FaqScreen()
                           : const SizedBox()
                   );
                 },),

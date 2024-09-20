@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tabibinet_admin_panel/Model/Res/Constants/app_fonts.dart';
 import 'package:tabibinet_admin_panel/Model/Res/Constants/app_icons.dart';
 import 'package:tabibinet_admin_panel/Model/Res/Widgets/app_text_widget.dart';
+import 'package:tabibinet_admin_panel/Provider/DashBoard/dash_board_provider.dart';
 import '../Constants/app_assets.dart';
 import '../Constants/app_colors.dart';
 
@@ -13,6 +15,7 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dashP = Provider.of<DashBoardProvider>(context,listen: false);
     return Column(
       children: [
         Container(
@@ -33,7 +36,7 @@ class Header extends StatelessWidget {
             children: [
               InkWell(
                 onTap: () {
-                  _showCustomPopupMenu(context, _buildProfilePopUp());
+                  _showCustomPopupMenu(context, _buildProfilePopUp(context));
                 },
                 child: const CircleAvatar(
                   backgroundImage: AssetImage(AppAssets.profileImage),
@@ -48,7 +51,7 @@ class Header extends StatelessWidget {
               const SizedBox(width: 10,),
               InkWell(
                 onTap: () {
-
+                  dashP.setSetting();
                 },
                 child: SvgPicture.asset(AppIcons.settingIcon,height: 20,)),
             ],
@@ -98,7 +101,8 @@ class Header extends StatelessWidget {
     );
   }
 
-  Widget _buildProfilePopUp(){
+  Widget _buildProfilePopUp(context){
+    final dashP = Provider.of<DashBoardProvider>(context,listen: false);
     return Center(
       child: Container(
         decoration: BoxDecoration(
@@ -123,38 +127,50 @@ class Header extends StatelessWidget {
                 fontSize: 10.sp, fontWeight: FontWeight.w600,
                 isTextCenter: false, textColor: Colors.grey,
                 fontFamily:  AppFonts.regular,maxLines: 2,),
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SvgPicture.asset(
-                    AppIcons.visible2Icon,
-                    height: 15,
-                    colorFilter: const ColorFilter.mode(textColor, BlendMode.srcIn),),
-                  SizedBox(width: 1.h,),
-                  AppText(
-                      text: "View Profile",
-                      fontSize: 10.sp, fontWeight: FontWeight.w600,
-                      isTextCenter: false, textColor: textColor, fontFamily: AppFonts.medium,)
-                ],
+            InkWell(
+              onTap: () {
+                dashP.setProfile();
+                Navigator.pop(context);
+                },
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SvgPicture.asset(
+                      AppIcons.visible2Icon,
+                      height: 15,
+                      colorFilter: const ColorFilter.mode(textColor, BlendMode.srcIn),),
+                    SizedBox(width: 1.h,),
+                    AppText(
+                        text: "View Profile",
+                        fontSize: 10.sp, fontWeight: FontWeight.w600,
+                        isTextCenter: false, textColor: textColor, fontFamily: AppFonts.medium,)
+                  ],
+                ),
               ),
             ),
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SvgPicture.asset(
-                    AppIcons.personIcon,
-                    height: 15,
-                    colorFilter: const ColorFilter.mode(textColor, BlendMode.srcIn),),
-                  SizedBox(width: 1.h,),
-                  AppText(
-                      text: "Edit Profile",
-                      fontSize: 10.sp, fontWeight: FontWeight.w600,
-                      isTextCenter: false, textColor: textColor, fontFamily: AppFonts.medium,)
-                ],
+            InkWell(
+              onTap: () {
+                dashP.setEditProfile();
+                Navigator.pop(context);
+                },
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SvgPicture.asset(
+                      AppIcons.personIcon,
+                      height: 15,
+                      colorFilter: const ColorFilter.mode(textColor, BlendMode.srcIn),),
+                    SizedBox(width: 1.h,),
+                    AppText(
+                        text: "Edit Profile",
+                        fontSize: 10.sp, fontWeight: FontWeight.w600,
+                        isTextCenter: false, textColor: textColor, fontFamily: AppFonts.medium,)
+                  ],
+                ),
               ),
             ),
             Container(
@@ -282,6 +298,5 @@ class Header extends StatelessWidget {
       },
     );
   }
-
 
 }

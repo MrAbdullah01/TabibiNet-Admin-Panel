@@ -40,46 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: themeColor,
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SvgPicture.asset(AppAssets.splashImage,height: 30.h,),
-            const SizedBox(height: 50,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 3),
-                  height: 7,
-                  width: 14,
-                  decoration: BoxDecoration(
-                      color: bgColor,
-                      borderRadius: BorderRadius.circular(10)
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 3),
-                  height: 7,
-                  width: 7,
-                  decoration: BoxDecoration(
-                      color: bgColor,
-                      borderRadius: BorderRadius.circular(10)
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 3),
-                  height: 7,
-                  width: 7,
-                  decoration: BoxDecoration(
-                      color: bgColor,
-                      borderRadius: BorderRadius.circular(10)
-                  ),
-                ),
-              ],
-            )
-          ],
-        ),
+        body: Center(child: SvgPicture.asset(AppAssets.splashImage,height: 40.h,)),
       ),
     );
   }

@@ -7,8 +7,11 @@ import 'package:sizer/sizer.dart';
 import 'Model/Res/Constants/app_colors.dart';
 import 'Provider/Appointment/appointment_provider.dart';
 import 'Provider/DashBoard/dash_board_provider.dart';
+import 'Provider/DoctorPayment/doctor_payment_provider.dart';
+import 'Provider/Faq/faq_provider.dart';
 import 'Provider/Login/login_provider.dart';
 import 'Provider/Patient/patient_provider.dart';
+import 'Provider/Subscription/subscription_provider.dart';
 import 'Screens/DashBoard/DashBoardScreen/dash_board_screen.dart';
 import 'firebase_options.dart';
 
@@ -37,6 +40,9 @@ class MyApp extends StatelessWidget {
               ChangeNotifierProvider(create: (context) => DashBoardProvider(),),
               ChangeNotifierProvider(create: (context) => PatientProvider(),),
               ChangeNotifierProvider(create: (context) => AppointmentProvider(),),
+              ChangeNotifierProvider(create: (context) => DoctorPaymentProvider(),),
+              ChangeNotifierProvider(create: (context) => SubscriptionProvider(),),
+              ChangeNotifierProvider(create: (context) => FaqProvider(),),
             ],
           child: GetMaterialApp(
             debugShowCheckedModeBanner: false,

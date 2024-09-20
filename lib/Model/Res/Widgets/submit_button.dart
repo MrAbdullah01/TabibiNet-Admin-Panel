@@ -61,7 +61,7 @@ class SubmitButton extends StatelessWidget {
               Text(
                 title!,
                 style: TextStyle(
-                    color: textColor ?? Colors.white, fontWeight: FontWeight.w500,fontFamily: "Medium"),
+                    color: textColor ?? Colors.white, fontSize: textSize, fontWeight: FontWeight.w500,fontFamily: "Medium"),
               ),
             if (icon != null)
               Padding(

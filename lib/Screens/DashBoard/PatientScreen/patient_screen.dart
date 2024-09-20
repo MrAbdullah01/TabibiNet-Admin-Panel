@@ -84,6 +84,8 @@ class PatientScreen extends StatelessWidget {
                   nameText: "ALexon",
                   emailText: "info@gmail.com",
                   phoneText: "+92 356 678 90",
+                  isAddIcon: true,
+                  isStatusText: false,
                   image: AppAssets.profileImage,
                 );
               },

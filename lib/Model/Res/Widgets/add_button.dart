@@ -10,11 +10,15 @@ class AddButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton(
-      backgroundColor: themeColor,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
-      onPressed: onTap,
-      child: const Icon(CupertinoIcons. add,color: bgColor,),
+    return SizedBox(
+      height: 40,
+      width: 40,
+      child: FloatingActionButton(
+        backgroundColor: themeColor,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+        onPressed: onTap,
+        child: const Icon(CupertinoIcons. add,color: bgColor,),
+      ),
     );
   }
 }

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:tabibinet_admin_panel/Provider/Faq/faq_provider.dart';
+import 'package:tabibinet_admin_panel/Provider/Subscription/subscription_provider.dart';
+import 'package:tabibinet_admin_panel/Screens/DashBoard/AddFaqScreen/add_faq_screen.dart';
 
 import '../../../Model/Res/Constants/app_colors.dart';
 import '../../../Model/Res/Constants/app_fonts.dart';
@@ -72,6 +75,9 @@ class SideMenuBarSection extends StatelessWidget {
               return InkWell(
                 onTap: () {
                   Provider.of<PatientProvider>(context,listen: false).setAddPatient(false);
+                  Provider.of<SubscriptionProvider>(context,listen: false).setSub(false);
+                  Provider.of<FaqProvider>(context,listen: false).setAddFaq(false);
+                  value.setDashBoard();
                   value.setSelectedIndex(index);
                 },
                 child: Container(

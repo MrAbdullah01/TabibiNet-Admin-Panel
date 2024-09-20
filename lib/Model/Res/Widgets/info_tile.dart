@@ -14,6 +14,9 @@ class InfoTile extends StatelessWidget {
     required this.emailText,
     required this.phoneText,
     required this.image,
+    required this.isAddIcon,
+    required this.isStatusText,
+    this.statusText,
     this.addTap,
     this.editTap,
     this.delTap,
@@ -22,7 +25,10 @@ class InfoTile extends StatelessWidget {
   final String nameText;
   final String emailText;
   final String phoneText;
+  final String? statusText;
   final String image;
+  final bool isAddIcon;
+  final bool isStatusText;
   final VoidCallback? addTap;
   final VoidCallback? editTap;
   final VoidCallback? delTap;
@@ -64,10 +70,23 @@ class InfoTile extends StatelessWidget {
             fontFamily: AppFonts.medium,
           ),
           const Spacer(),
+          Visibility(
+            visible: isStatusText,
+            child: AppText(
+              text: statusText ?? "",
+              fontSize: 14.sp, fontWeight: FontWeight.w500,
+              isTextCenter: false, textColor: Colors.grey,
+              fontFamily: AppFonts.medium,
+            ),
+          ),
+          const Spacer(),
           Row(children: [
-            InkWell(
-                onTap: addTap ?? (){},
-                child: SvgPicture.asset(AppIcons.addIcon,height: 4.h,)),
+            Visibility(
+              visible: isAddIcon,
+              child: InkWell(
+                  onTap: addTap ?? (){},
+                  child: SvgPicture.asset(AppIcons.addIcon,height: 4.h,)),
+            ),
             SizedBox(width: 10.sp,),
             InkWell(
                 onTap: editTap ?? (){},
