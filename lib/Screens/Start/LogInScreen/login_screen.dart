@@ -39,7 +39,7 @@ class LoginScreen extends StatelessWidget {
                 height: 100.h,
                 width: 25.w,
                 decoration: BoxDecoration(
-                  color: themeColor.withOpacity(0.3),
+                  color: themeColor.withOpacity(0.45),
                 ),
               ),
             ],
@@ -61,6 +61,7 @@ class LoginScreen extends StatelessWidget {
                   text: "Email", fontSize: 14.sp,
                   fontWeight: FontWeight.w600, isTextCenter: false,
                   textColor: textColor, fontFamily: AppFonts.medium,),
+                SizedBox(height: 1.h,),
                 AppTextField(
                   inputController: emailC,
                   hintText: "Enter Email",
@@ -70,6 +71,7 @@ class LoginScreen extends StatelessWidget {
                   text: "Password", fontSize: 14.sp,
                   fontWeight: FontWeight.w600, isTextCenter: false,
                   textColor: textColor, fontFamily: AppFonts.medium,),
+                SizedBox(height: 1.h,),
                 Consumer<LogInProvider>(
                   builder: (context, value, child) {
                     return AppTextField(
@@ -87,7 +89,7 @@ class LoginScreen extends StatelessWidget {
                             color: Colors.grey,)),
                     );
                 },),
-                SizedBox(height: 5.h,),
+                SizedBox(height: 8.h,),
                 SubmitButton(
                   title: "Log In",
                   press: () async {

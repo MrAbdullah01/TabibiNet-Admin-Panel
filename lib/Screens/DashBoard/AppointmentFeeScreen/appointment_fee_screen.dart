@@ -28,7 +28,7 @@ class AppointmentFeeScreen extends StatelessWidget {
                 fontSize: 14.sp, fontWeight: FontWeight.w500,
                 isTextCenter: false, textColor: textColor,
                 fontFamily: AppFonts.semiBold,),
-              SizedBox(width: 1.w,),
+              SizedBox(width: 3.w,),
               AddButton(
                 onTap: () {
 
@@ -51,7 +51,8 @@ class AppointmentFeeScreen extends StatelessWidget {
               SizedBox(width: 8.w,),
               SubmitButton(
                 width: 10.w,
-                title: "Add Now",
+                radius: 8,
+                title: "Submit Now",
                 press: () {
 
                 },),
@@ -63,7 +64,7 @@ class AppointmentFeeScreen extends StatelessWidget {
             fontSize: 14.sp, fontWeight: FontWeight.w500,
             isTextCenter: false, textColor: textColor,
             fontFamily: AppFonts.semiBold,),
-          SizedBox(height: 20.sp,),
+          SizedBox(height: 10.sp,),
           SizedBox(
             width: 30.w,
             child: ListView.separated(
@@ -75,9 +76,9 @@ class AppointmentFeeScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: Colors.transparent,
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(8),
                     border: Border.all(
-                      color: greenColor
+                      color: themeColor
                     )
                   ),
                   child: Row(
@@ -102,9 +103,10 @@ class AppointmentFeeScreen extends StatelessWidget {
                         title: "120 MAD",
                         height: 35,
                         width: 8.w,
+                        radius: 6,
                         textColor: themeColor,
-                        bdColor: greenColor.withOpacity(0.5),
-                        bgColor: greenColor.withOpacity(0.5),
+                        bdColor: const Color(0xffE6F4F2),
+                        bgColor: const Color(0xffE6F4F2),
                         press: () {
 
                         },)

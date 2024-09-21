@@ -22,88 +22,133 @@ class PatientStatusChart extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AppText(
-            text: "Patients",
+            text: "Patient Status",
             fontSize: 16.sp, fontWeight: FontWeight.w600,
             isTextCenter: false, textColor: textColor,
             fontFamily: AppFonts.semiBold,),
           const SizedBox(height: 20),
-          SizedBox(
-            height: 250,
-            child: LineChart(
-              LineChartData(
-                minX: 0,
-                maxX: 11,
-                minY: 0,
-                maxY: 200,
-                titlesData: FlTitlesData(
-                  bottomTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      reservedSize: 30,
-                      getTitlesWidget: (value, meta) {
-                        const months = [
-                          'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-                        ];
-                        return Text(
-                          months[value.toInt()],
-                          style: const TextStyle(fontFamily: AppFonts.regular),
-                        );
-                      },
-                    ),
-                  ),
-                  leftTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      reservedSize: 40,
-                      getTitlesWidget: (value, meta) {
-                        return Text(
-                          value.toInt().toString(),
-                          style: const TextStyle(fontFamily: AppFonts.regular),
-                        );
-                      },
+          Container(
+            decoration: BoxDecoration(
+              color: bgColor,
+            ),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 250,
+                  child: LineChart(
+                    LineChartData(
+                      minX: 0,
+                      maxX: 11,
+                      minY: 0,
+                      maxY: 200,
+                      titlesData: FlTitlesData(
+                        bottomTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            reservedSize: 30,
+                            getTitlesWidget: (value, meta) {
+                              const months = [
+                                'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+                              ];
+                              return Text(
+                                months[value.toInt()],
+                                style: const TextStyle(fontFamily: AppFonts.regular),
+                              );
+                            },
+                          ),
+                        ),
+                        leftTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            reservedSize: 40,
+                            getTitlesWidget: (value, meta) {
+                              return Text(
+                                value.toInt().toString(),
+                                style: const TextStyle(fontFamily: AppFonts.regular),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                      gridData: const FlGridData(show: true),
+                      borderData: FlBorderData(show: true),
+                      lineBarsData: [
+                        LineChartBarData(
+                          spots: getRecoveredData(),
+                          isCurved: true,
+                          color: themeColor,
+                          barWidth: 4,
+                          belowBarData: BarAreaData(
+                            show: true,
+                            color: Colors.blue.withOpacity(0.3),
+                          ),
+                        ),
+                        LineChartBarData(
+                          spots: getDeathData(),
+                          isCurved: true,
+                          color: Colors.lightBlueAccent,
+                          barWidth: 4,
+                          belowBarData: BarAreaData(
+                            show: true,
+                            color: Colors.lightBlueAccent.withOpacity(0.3),
+                          ),
+                        ),
+                      ],
+                      lineTouchData: LineTouchData(
+                        touchTooltipData: LineTouchTooltipData(
+                          getTooltipItems: (touchedSpots) {
+                            return touchedSpots.map((LineBarSpot touchedSpot) {
+                              return LineTooltipItem(
+                                '${touchedSpot.y.toInt()} \nSep 2024',
+                                const TextStyle(color: Colors.white),
+                              );
+                            }).toList();
+                          },
+                        ),
+                        touchCallback: (FlTouchEvent event, LineTouchResponse? response) {},
+                        handleBuiltInTouches: true,
+                      ),
                     ),
                   ),
                 ),
-                gridData: const FlGridData(show: true),
-                borderData: FlBorderData(show: true),
-                lineBarsData: [
-                  LineChartBarData(
-                    spots: getRecoveredData(),
-                    isCurved: true,
-                    color: themeColor,
-                    barWidth: 4,
-                    belowBarData: BarAreaData(
-                      show: true,
-                      color: Colors.blue.withOpacity(0.3),
+                SizedBox(height: 1.h,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 15,
+                      width: 15,
+                      decoration: BoxDecoration(
+                          color: themeColor,
+                          borderRadius: BorderRadius.circular(2)
+                      ),                    ),
+                    SizedBox(width: .5.w,),
+                    AppText(
+                      text: "Recovered",
+                      fontSize: 10.sp, fontWeight: FontWeight.w500,
+                      isTextCenter: false, textColor: textColor,
+                      fontFamily: AppFonts.medium,
                     ),
-                  ),
-                  LineChartBarData(
-                    spots: getDeathData(),
-                    isCurved: true,
-                    color: Colors.lightBlueAccent,
-                    barWidth: 4,
-                    belowBarData: BarAreaData(
-                      show: true,
-                      color: Colors.lightBlueAccent.withOpacity(0.3),
+                    SizedBox(width: 3.w,),
+                    Container(
+                      height: 15,
+                      width: 15,
+                      decoration: BoxDecoration(
+                        color: Colors.lightBlueAccent,
+                        borderRadius: BorderRadius.circular(2)
+                      ),
                     ),
-                  ),
-                ],
-                lineTouchData: LineTouchData(
-                  touchTooltipData: LineTouchTooltipData(
-                    getTooltipItems: (touchedSpots) {
-                      return touchedSpots.map((LineBarSpot touchedSpot) {
-                        return LineTooltipItem(
-                          '${touchedSpot.y.toInt()} \nSep 2024',
-                          const TextStyle(color: Colors.white),
-                        );
-                      }).toList();
-                    },
-                  ),
-                  touchCallback: (FlTouchEvent event, LineTouchResponse? response) {},
-                  handleBuiltInTouches: true,
-                ),
-              ),
+                    SizedBox(width: .5.w,),
+                    AppText(
+                      text: "Death",
+                      fontSize: 10.sp, fontWeight: FontWeight.w500,
+                      isTextCenter: false, textColor: textColor,
+                      fontFamily: AppFonts.medium,
+                    ),
+                  ],
+                )
+              ],
             ),
           ),
         ],

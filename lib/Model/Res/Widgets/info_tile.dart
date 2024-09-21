@@ -87,11 +87,11 @@ class InfoTile extends StatelessWidget {
                   onTap: addTap ?? (){},
                   child: SvgPicture.asset(AppIcons.addIcon,height: 4.h,)),
             ),
-            SizedBox(width: 10.sp,),
+            SizedBox(width: 15.sp,),
             InkWell(
                 onTap: editTap ?? (){},
                 child: SvgPicture.asset(AppIcons.pencilIcon,height: 4.h,)),
-            SizedBox(width: 10.sp,),
+            SizedBox(width: 15.sp,),
             InkWell(
                 onTap: delTap ?? (){},
                 child: SvgPicture.asset(AppIcons.deleteIcon,height: 4.h,)),

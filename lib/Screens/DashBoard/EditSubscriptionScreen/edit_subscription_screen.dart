@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:tabibinet_admin_panel/Model/Res/Widgets/app_drop_down_button.dart';
+import 'package:tabibinet_admin_panel/Provider/Subscription/subscription_provider.dart';
 
 import '../../../Model/Res/Constants/app_assets.dart';
 import '../../../Model/Res/Constants/app_colors.dart';
@@ -8,7 +11,13 @@ import '../../../Model/Res/Widgets/app_text_widget.dart';
 import '../../../Model/Res/Widgets/submit_button.dart';
 
 class EditSubscriptionScreen extends StatelessWidget {
-  const EditSubscriptionScreen({super.key});
+  EditSubscriptionScreen({super.key});
+
+  final List<String> sub = [
+    "Basic",
+    "Premium",
+    "Advanced",
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -64,44 +73,36 @@ class EditSubscriptionScreen extends StatelessWidget {
         ),
         SizedBox(height: 5.h,),
         AppText(
-          text: "Choose Subscription",
+          text: "Change Subscription",
           fontSize: 14.sp, fontWeight: FontWeight.w500,
           isTextCenter: false, textColor: themeColor,
           fontFamily: AppFonts.medium,),
-        SizedBox(height: 1.h,),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SubmitButton(
-              width: 10.w,
-              title: "Basic",
-              press: () => null,),
-            SubmitButton(
-              width: 10.w,
-              title: "Premium",
-              press: () => null,),
-            SubmitButton(
-              width: 10.w,
-              title: "Advanced",
-              press: () => null,),
-            const SizedBox(),
-            const SizedBox()
-          ],
-        ),
+        SizedBox(height: 2.h,),
+        Consumer<SubscriptionProvider>(
+          builder: (context, provider, child) {
+            return Row(
+              children: [
+                AppDropdown(
+                  width: 25.w,
+                  selectedValue: provider.selectSub,
+                  items: sub,
+                  hintText: "Select Subscription",
+                  onChanged: (value) {
+                    provider.setSubscription(value);
+                  },),
+              ],
+            );
+          },),
         SizedBox(height: 3.h,),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const SizedBox(),
-            const SizedBox(),
             SubmitButton(
               width: 15.w,
               title: "Change Subscription",
               press: () => null,
             ),
-            const SizedBox(),
           ],
-        )
+        ),
 
 
       ],

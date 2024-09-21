@@ -77,7 +77,6 @@ class SideMenuBarSection extends StatelessWidget {
                   Provider.of<PatientProvider>(context,listen: false).setAddPatient(false);
                   Provider.of<SubscriptionProvider>(context,listen: false).setSub(false);
                   Provider.of<FaqProvider>(context,listen: false).setAddFaq(false);
-                  value.setDashBoard();
                   value.setSelectedIndex(index);
                 },
                 child: Container(

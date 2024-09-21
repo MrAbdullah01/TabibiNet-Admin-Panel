@@ -10,34 +10,39 @@ class AppointmentStatusBar extends StatelessWidget {
   AppointmentStatusBar({super.key});
 
   final List<String> status = [
-    "Requesting",
-    "Cancel",
+    "Approval",
+    "Upcoming",
     "Completed",
+    "Cancel",
   ];
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 40,
+      height: 60,
       width: 100.w,
       child: Consumer<AppointmentProvider>(
         builder: (context, value, child) {
-          return ListView.separated(
+          return GridView.builder(
             shrinkWrap: true,
-            scrollDirection: Axis.horizontal,
             itemCount: status.length,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4,
+                mainAxisExtent: 50,
+                crossAxisSpacing: 100
+            ),
             itemBuilder: (context, index) {
               final isSelected = value.selectStatus == index;
               return SubmitButton(
                 title: status[index],
                 bgColor: isSelected ? themeColor : bgColor,
                 textColor: isSelected ? bgColor : themeColor,
-                width: 10.w,
+                radius: 6,
                 press: () {
                   value.setStatus(index);
                 },);
             },
-            separatorBuilder: (context, index) => const SizedBox(width: 20,),
           );
         },),
     );

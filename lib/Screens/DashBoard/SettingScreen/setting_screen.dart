@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tabibinet_admin_panel/Model/Res/Constants/app_icons.dart';
@@ -8,7 +9,9 @@ import 'package:tabibinet_admin_panel/Provider/DashBoard/dash_board_provider.dar
 
 import '../../../Model/Res/Constants/app_colors.dart';
 import '../../../Model/Res/Constants/app_fonts.dart';
+import '../../../Model/Res/Constants/firebase.dart';
 import '../../../Model/Res/Widgets/app_text_widget.dart';
+import '../../Start/LogInScreen/login_screen.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({super.key});
@@ -69,11 +72,13 @@ class SettingScreen extends StatelessWidget {
         ),
         SizedBox(height: 2.h,),
         SubmitButton2(
-          width: 15.w,
+          width: 12.w,
           title: "Log Out",
           icon: AppIcons.logOutIcon,
           press: () {
-
+            auth.signOut().whenComplete(() {
+              Get.offAll(()=>LoginScreen());
+            },);
           },)
 
       ],

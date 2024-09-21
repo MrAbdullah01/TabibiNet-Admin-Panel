@@ -62,8 +62,7 @@ class DashboardSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<DashBoardProvider>(
       builder: (context, value, child) {
-        return value.isDashBoard ?
-        ListView(
+        return ListView(
           shrinkWrap: true,
           scrollDirection: Axis.vertical,
           padding: EdgeInsets.symmetric(horizontal: 15.sp),
@@ -75,7 +74,7 @@ class DashboardSection extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 4,
-                    mainAxisSpacing: 20,
+                    mainAxisSpacing: 10,
                     mainAxisExtent: 19.h,
                     crossAxisSpacing: 20
                 ),
@@ -129,12 +128,7 @@ class DashboardSection extends StatelessWidget {
             SizedBox(height: 15.sp,),
             const PatientStatusChart()
           ],
-        ) :
-        value.isProfile ?
-        ProfileScreen() :
-        value.isEditProfile ?
-        EditProfileScreen() :
-        SettingScreen();
+        );
       },);
   }
 }

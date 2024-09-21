@@ -1,14 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tabibinet_admin_panel/Model/Res/Constants/app_fonts.dart';
 import 'package:tabibinet_admin_panel/Model/Res/Constants/app_icons.dart';
 import 'package:tabibinet_admin_panel/Model/Res/Widgets/app_text_widget.dart';
 import 'package:tabibinet_admin_panel/Provider/DashBoard/dash_board_provider.dart';
+import '../../../Screens/Start/LogInScreen/login_screen.dart';
 import '../Constants/app_assets.dart';
 import '../Constants/app_colors.dart';
+import '../Constants/firebase.dart';
 
 class Header extends StatelessWidget {
   const Header({super.key});
@@ -51,7 +54,7 @@ class Header extends StatelessWidget {
               const SizedBox(width: 10,),
               InkWell(
                 onTap: () {
-                  dashP.setSetting();
+                  dashP.setSelectedIndex(13);
                 },
                 child: SvgPicture.asset(AppIcons.settingIcon,height: 20,)),
             ],
@@ -129,7 +132,7 @@ class Header extends StatelessWidget {
                 fontFamily:  AppFonts.regular,maxLines: 2,),
             InkWell(
               onTap: () {
-                dashP.setProfile();
+                dashP.setSelectedIndex(11);
                 Navigator.pop(context);
                 },
               child: Container(
@@ -152,7 +155,7 @@ class Header extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                dashP.setEditProfile();
+                dashP.setSelectedIndex(12);
                 Navigator.pop(context);
                 },
               child: Container(
@@ -173,21 +176,28 @@ class Header extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SvgPicture.asset(
-                    AppIcons.logout2Icon,
-                    height: 15,
-                    colorFilter: const ColorFilter.mode(textColor, BlendMode.srcIn),),
-                  SizedBox(width: 1.h,),
-                  AppText(
-                      text: "Log Out",
-                      fontSize: 10.sp, fontWeight: FontWeight.w600,
-                      isTextCenter: false, textColor: textColor, fontFamily: AppFonts.medium,)
-                ],
+            InkWell(
+              onTap: () {
+                auth.signOut().whenComplete(() {
+                  Get.offAll(()=>LoginScreen());
+                },);
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SvgPicture.asset(
+                      AppIcons.logout2Icon,
+                      height: 15,
+                      colorFilter: const ColorFilter.mode(textColor, BlendMode.srcIn),),
+                    SizedBox(width: 1.h,),
+                    AppText(
+                        text: "Log Out",
+                        fontSize: 10.sp, fontWeight: FontWeight.w600,
+                        isTextCenter: false, textColor: textColor, fontFamily: AppFonts.medium,)
+                  ],
+                ),
               ),
             ),
           ],

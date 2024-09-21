@@ -18,7 +18,7 @@ class DoctorPaymentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: bgColor,
         borderRadius: BorderRadius.circular(15)
@@ -35,20 +35,30 @@ class DoctorPaymentScreen extends StatelessWidget {
                 isTextCenter: false, textColor: themeColor,
                 fontFamily: AppFonts.semiBold,
               ),
-              Column(
-                children: [
-                  AppText(
-                      text: "Monthly  Weekly  Today",
-                      fontSize: 12.sp, fontWeight: FontWeight.w600,
-                      isTextCenter: false, textColor: Colors.grey),
-                  SizedBox(width: 13.w,child: const Divider(color: Colors.grey,))
-                ],
-              )
+              const DefaultTabController(
+                length: 3,
+                child: SizedBox(
+                width: 280,
+                child: TabBar(
+                    labelStyle: TextStyle(fontFamily: AppFonts.medium),
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    tabs: [
+                      Tab(
+                        text: "Monthly",
+                      ),
+                      Tab(
+                        text: "Weekly",
+                      ),
+                      Tab(
+                        text: "Today",
+                      ),
+                    ]),
+              ),)
             ],
           ),
           Consumer<DoctorPaymentProvider>(
             builder: (context, value, child) {
-              return ListView.separated(
+              return ListView.builder(
                 shrinkWrap: true,
                 itemCount: 10,
                 physics: const NeverScrollableScrollPhysics(),
@@ -66,8 +76,8 @@ class DoctorPaymentScreen extends StatelessWidget {
                         Row(
                           children: [
                             Container(
-                              height: 50,
-                              width: 50,
+                              height: 80,
+                              width: 80,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   image: const DecorationImage(
@@ -146,7 +156,6 @@ class DoctorPaymentScreen extends StatelessWidget {
                     ),
                   );
                 },
-                separatorBuilder: (context, index) => const SizedBox(height: 20,),
               );
             },)
         ],
@@ -184,3 +193,12 @@ class PayText extends StatelessWidget {
   }
 }
 
+//Column(
+//                 children: [
+//                   AppText(
+//                       text: "Monthly  Weekly  Today",
+//                       fontSize: 12.sp, fontWeight: FontWeight.w600,
+//                       isTextCenter: false, textColor: Colors.grey),
+//                   SizedBox(width: 13.w,child: const Divider(color: Colors.grey,))
+//                 ],
+//               )

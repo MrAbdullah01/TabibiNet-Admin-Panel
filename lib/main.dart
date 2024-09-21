@@ -3,16 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:tabibinet_admin_panel/Screens/Start/SplashScreen/splash_screen.dart';
 
 import 'Model/Res/Constants/app_colors.dart';
 import 'Provider/Appointment/appointment_provider.dart';
 import 'Provider/DashBoard/dash_board_provider.dart';
 import 'Provider/DoctorPayment/doctor_payment_provider.dart';
 import 'Provider/Faq/faq_provider.dart';
+import 'Provider/HealthCare/health_care_provider.dart';
 import 'Provider/Login/login_provider.dart';
 import 'Provider/Patient/patient_provider.dart';
 import 'Provider/Subscription/subscription_provider.dart';
-import 'Screens/DashBoard/DashBoardScreen/dash_board_screen.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
             providers: [
               ChangeNotifierProvider(create: (context) => LogInProvider(),),
               ChangeNotifierProvider(create: (context) => DashBoardProvider(),),
+              ChangeNotifierProvider(create: (context) => HealthCareProvider(),),
               ChangeNotifierProvider(create: (context) => PatientProvider(),),
               ChangeNotifierProvider(create: (context) => AppointmentProvider(),),
               ChangeNotifierProvider(create: (context) => DoctorPaymentProvider(),),
@@ -51,7 +53,7 @@ class MyApp extends StatelessWidget {
               colorScheme: ColorScheme.fromSeed(seedColor: themeColor,primary: themeColor),
               useMaterial3: true,
             ),
-            home: DashBoardScreen(),
+            home: SplashScreen(),
           ),
         );
     },);

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:tabibinet_admin_panel/Model/Res/Constants/firebase.dart';
 import 'package:tabibinet_admin_panel/Screens/DashBoard/DoctorPaymentScreen/doctor_payment_screen.dart';
 import 'package:tabibinet_admin_panel/Screens/DashBoard/FaqScreen/faq_screen.dart';
 import 'package:tabibinet_admin_panel/Screens/DashBoard/HelpCenterScreen/help_center_screen.dart';
@@ -8,6 +10,7 @@ import 'package:tabibinet_admin_panel/Screens/DashBoard/PatientPaymentScreen/pat
 import 'package:tabibinet_admin_panel/Screens/DashBoard/ProfileScreen/profile_screen.dart';
 import 'package:tabibinet_admin_panel/Screens/DashBoard/SettingScreen/setting_screen.dart';
 import 'package:tabibinet_admin_panel/Screens/DashBoard/SubscriptionScreen/subscription_screen.dart';
+import 'package:tabibinet_admin_panel/Screens/Start/LogInScreen/login_screen.dart';
 
 import '../../../Model/Res/Constants/app_assets.dart';
 import '../../../Model/Res/Constants/app_colors.dart';
@@ -50,9 +53,11 @@ class DashBoardScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    SizedBox(height: 2.h,),
                     const CircleAvatar(
                       backgroundImage: AssetImage(AppAssets.profileImage),
                     ),
+                    SizedBox(height: 1.h,),
                     AppText(
                         text: "Mian Uzair",
                         fontSize: 14.sp, fontWeight: FontWeight.w600,
@@ -71,7 +76,9 @@ class DashBoardScreen extends StatelessWidget {
                       title: "Logout",
                       icon: AppIcons.logOutIcon,
                       press: () {
-
+                        auth.signOut().whenComplete(() {
+                          Get.offAll(()=>LoginScreen());
+                        },);
                       },)
                   ],
                 ),
@@ -92,6 +99,9 @@ class DashBoardScreen extends StatelessWidget {
                           :value.selectIndex == 8 ? SubscriptionScreen()
                           :value.selectIndex == 9 ? HelpCenterScreen()
                           :value.selectIndex == 10 ? FaqScreen()
+                          :value.selectIndex == 11 ? ProfileScreen()
+                          :value.selectIndex == 12 ? EditProfileScreen()
+                          :value.selectIndex == 13 ? SettingScreen()
                           : const SizedBox()
                   );
                 },),

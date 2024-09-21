@@ -23,7 +23,6 @@ class DoctorProfileCard extends StatelessWidget {
             Container(
               width: 200,
               height: 220,
-              padding: EdgeInsets.symmetric(horizontal:10.sp,vertical: 10.sp),
               decoration: BoxDecoration(
                 color: bgColor,
                 borderRadius: BorderRadius.circular(15),
@@ -31,48 +30,67 @@ class DoctorProfileCard extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  AppText(
-                    text: "Dr. John",
-                    fontSize: 14.sp, fontWeight: FontWeight.w600,
-                    isTextCenter: false, textColor: textColor,
-                    fontFamily: AppFonts.semiBold,),
-                  Container(
-                    padding: EdgeInsets.all(8.sp),
-                    decoration: BoxDecoration(
-                        color: themeColor,
-                        borderRadius: BorderRadius.circular(8)
+                  Padding(
+                    padding: EdgeInsets.all(10.sp),
+                    child: Column(
+                      children: [
+                        AppText(
+                          text: "Dr. John",
+                          fontSize: 14.sp, fontWeight: FontWeight.w600,
+                          isTextCenter: false, textColor: textColor,
+                          fontFamily: AppFonts.semiBold,),
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical:8.sp,horizontal: 10.sp),
+                          decoration: BoxDecoration(
+                              color: themeColor,
+                              borderRadius: BorderRadius.circular(5)
+                          ),
+                          child: AppText(
+                              text: "Cardiologist",
+                              fontSize: 10.sp, fontWeight: FontWeight.w500,
+                              isTextCenter: false, textColor: bgColor),
+                        ),
+                        SizedBox(height: 10.sp,),
+                        const SizedBox(height: 10),
+                      ],
                     ),
-                    child: AppText(
-                        text: "Cardiologist",
-                        fontSize: 10.sp, fontWeight: FontWeight.w500,
-                        isTextCenter: false, textColor: bgColor),
                   ),
-                  SizedBox(height: 10.sp,),
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Icon(Icons.location_on, color: themeColor,size: 14.sp,),
-                      const SizedBox(width: 6),
-                      Text('Location: ',style: TextStyle(fontSize: 11.sp,fontWeight: FontWeight.w500),),
-                      Text('Hong Kong, China',style: TextStyle(fontSize: 11.sp),),
-                    ],
-                  ),
-                  const SizedBox(height: 6),
-                  Row(
-                    children: [
-                      Icon(Icons.email, color: themeColor,size: 14.sp,),
-                      const SizedBox(width: 6),
-                      Text('info@gmail.com',style: TextStyle(fontSize: 11.sp),),
-                    ],
-                  ),
-                  const SizedBox(height: 6),
-                  Row(
-                    children: [
-                      Icon(Icons.phone, color: themeColor,size: 14.sp,),
-                      const SizedBox(width: 6),
-                      Text('123-456-789-0',style: TextStyle(fontSize: 11.sp),),
-                    ],
-                  ),
+                  Container(
+                    padding: EdgeInsets.all(10.sp),
+                    decoration: BoxDecoration(
+                      color: secondaryGreenColor,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            SvgPicture.asset(AppIcons.locationIcon,height: 14.sp,),
+                            const SizedBox(width: 6),
+                            Text('Location: ',style: TextStyle(fontSize: 11.sp,fontWeight: FontWeight.w500),),
+                            Text('Hong Kong, China',style: TextStyle(fontSize: 11.sp),),
+                          ],
+                        ),
+                        const SizedBox(height: 6),
+                        Row(
+                          children: [
+                            SvgPicture.asset(AppIcons.mailIcon,width: 13.sp,),
+                            const SizedBox(width: 6),
+                            Text('info@gmail.com',style: TextStyle(fontSize: 11.sp),),
+                          ],
+                        ),
+                        const SizedBox(height: 6),
+                        Row(
+                          children: [
+                            SvgPicture.asset(AppIcons.phoneIcon,width: 13.sp,),
+                            const SizedBox(width: 6),
+                            Text('123-456-789-0',style: TextStyle(fontSize: 11.sp),),
+                          ],
+                        ),
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),

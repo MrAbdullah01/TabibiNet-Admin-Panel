@@ -57,6 +57,7 @@ class SubscriptionScreen extends StatelessWidget {
             );
             },
         ),
+        SizedBox(height: 1.h,),
         Consumer<SubscriptionProvider>(
           builder: (context, value, child) {
             return value.isEditSub ?

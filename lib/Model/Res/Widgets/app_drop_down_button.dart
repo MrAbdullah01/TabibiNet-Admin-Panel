@@ -5,7 +5,7 @@ import '../Constants/app_colors.dart';
 import '../Constants/app_fonts.dart';
 import 'app_text_widget.dart';
 
-class ReusableDropdown<T> extends StatelessWidget {
+class AppDropdown<T> extends StatelessWidget {
   final double width;
   final double? borderWidth;
   final double? borderRadius;
@@ -18,7 +18,7 @@ class ReusableDropdown<T> extends StatelessWidget {
   final Color? borderColor;
   final ValueChanged<T?> onChanged;
 
-  const ReusableDropdown({
+  const AppDropdown({
     super.key,
     required this.width,
     this.borderWidth,

@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tabibinet_admin_panel/Model/Res/Widgets/submit_button.dart';
+import 'package:tabibinet_admin_panel/Provider/Appointment/appointment_provider.dart';
 
 import '../../../../Model/Res/Constants/app_assets.dart';
 import '../../../../Model/Res/Constants/app_colors.dart';
@@ -14,6 +17,7 @@ class AppointmentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appointmentP = Provider.of<AppointmentProvider>(context,listen: false);
     return Container(
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
@@ -23,8 +27,8 @@ class AppointmentCard extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            height: 50,
-            width: 50,
+            height: 80,
+            width: 80,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               image: const DecorationImage(
@@ -51,11 +55,12 @@ class AppointmentCard extends StatelessWidget {
                       isTextCenter: false, textColor: textColor)
                 ],
               ),
+              SizedBox(height: 1.h,),
               AppText(
                 text: "Dr.John",
                 fontSize: 12.sp, fontWeight: FontWeight.w500,
                 isTextCenter: false, textColor: themeColor,
-                fontFamily: AppFonts.medium,
+                fontFamily: AppFonts.semiBold,
               )
             ],
           ),
@@ -65,7 +70,7 @@ class AppointmentCard extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  SvgPicture.asset(AppIcons.mailIcon,height: 15,),
+                  SvgPicture.asset(AppIcons.smsIcon,height: 17,),
                   const SizedBox(width: 10,),
                   AppText(
                       text: "info@gmail.com",
@@ -87,27 +92,32 @@ class AppointmentCard extends StatelessWidget {
 
             ],
           ),
-          const Spacer(),
-          SubmitButton(
-            title: "Accept",
-            width: 5.w,
-            height: 40,
-            press: () {
-
-          },),
-          SizedBox(width: 1.w,),
-          SubmitButton(
-            title: "Reject",
-            width: 5.w,
-            height: 40,
-            bgColor: bgColor,
-            textColor: themeColor,
-            press: () {
-
-          },),
+          // const Spacer(),
+          SizedBox(width: 3.w,),
+          InkWell(
+              onTap: () => appointmentP.setAppointmentScreen(true),
+              child: SvgPicture.asset(AppIcons.visibleIcon,height: 30,)),
           // SvgPicture.asset(AppIcons.visibleIcon,height: 30,)
         ],
       ),
     );
   }
 }
+
+//SubmitButton(
+//             title: "Accept",
+//             width: 5.w,
+//             height: 40,
+//             press: () {
+//
+//           },),
+//           SizedBox(width: 1.w,),
+//           SubmitButton(
+//             title: "Reject",
+//             width: 5.w,
+//             height: 40,
+//             bgColor: bgColor,
+//             textColor: themeColor,
+//             press: () {
+//
+//           },),

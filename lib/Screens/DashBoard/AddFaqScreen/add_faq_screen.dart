@@ -43,19 +43,14 @@ class AddFaqScreen extends StatelessWidget {
                 inputController: ansC,
               hintText: "Using TabibiNet is simple.",
             )),
-        SizedBox(height: 2.h,),
-        Row(
-          children: [
-            SizedBox(width: 28.w,),
-            SubmitButton(
-              width: 12.w,
-              radius: 6,
-              title: "Submit",
-              press: () {
+        SizedBox(height: 3.h,),
+        SubmitButton(
+          width: 12.w,
+          radius: 6,
+          title: "Submit",
+          press: () {
 
-              },),
-          ],
-        )
+          },)
 
       ],
     );
