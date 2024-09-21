@@ -93,7 +93,8 @@ class LoginScreen extends StatelessWidget {
                 SubmitButton(
                   title: "Log In",
                   press: () async {
-                    logIn();
+                    // logIn();
+                    Get.to(()=>DashBoardScreen());
                 },)
 
               ],

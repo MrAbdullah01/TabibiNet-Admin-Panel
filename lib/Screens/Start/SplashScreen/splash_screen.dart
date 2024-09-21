@@ -25,15 +25,11 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _initialize();
-    // _initialize();
-    // FlutterLocalNotification.initialize(flutterLocalNotificationsPlugin);
+    Timer(const Duration(seconds: 3), () {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
+    },);
   }
 
-  Future<void> _initialize() async {
-    await Firebase.initializeApp();
-    splashServices.isLogin(context);
-  }
 
   @override
   Widget build(BuildContext context) {
