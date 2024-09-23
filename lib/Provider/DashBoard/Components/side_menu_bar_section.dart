@@ -60,6 +60,9 @@ class SideMenuBarSection extends StatelessWidget {
     {
       "title" : "FAQS",
       "icon" : AppIcons.faqIcon
+    },{
+      "title" : "Doctor Speciality ",
+      "icon" : AppIcons.doctorIcon
     },
   ];
 

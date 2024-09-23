@@ -69,7 +69,7 @@ class DoctorProfileCard extends StatelessWidget {
                             SvgPicture.asset(AppIcons.locationIcon,height: 14.sp,),
                             const SizedBox(width: 6),
                             Text('Location: ',style: TextStyle(fontSize: 11.sp,fontWeight: FontWeight.w500),),
-                            Text('Hong Kong, China',style: TextStyle(fontSize: 11.sp),),
+                            Expanded(child: Text('Hong Kong, China',overflow: TextOverflow.ellipsis,style: TextStyle(fontSize: 11.sp,),)),
                           ],
                         ),
                         const SizedBox(height: 6),
@@ -90,7 +90,7 @@ class DoctorProfileCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

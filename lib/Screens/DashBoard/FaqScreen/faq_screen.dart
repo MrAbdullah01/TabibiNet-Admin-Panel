@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -25,30 +28,55 @@ class FaqScreen extends StatelessWidget {
               children: [
                 AppText(
                   text: "FAQS",
-                  fontSize: 16.sp, fontWeight: FontWeight.w600,
-                  isTextCenter: false, textColor: themeColor,
-                  fontFamily: AppFonts.semiBold,),
-                SizedBox(width: 1.w,),
-                Visibility(
-                  visible: value.isAddFaq == false,
-                  child: AddButton(
-                    onTap: () {
-                      value.setAddFaq(true);
-                    },),
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600,
+                  isTextCenter: false,
+                  textColor: themeColor,
+                  fontFamily: AppFonts.semiBold,
+                ),
+                SizedBox(width: 1.w),
+                AddButton(
+                  onTap: () {
+                    Get.to(AddFaqScreen());
+                  },
                 ),
               ],
             );
-          },),
-        Consumer<FaqProvider>(
-            builder: (context, value, child) {
-              return Visibility(
-                visible: value.isAddFaq == false,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    final isSelected = value.selectFaq == index;
+          },
+        ),
+        StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection('faq')
+              .orderBy('timestamp', descending: true)
+              .snapshots(),
+          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (snapshot.hasError) {
+              return const Center(child: Text('Error fetching FAQs.'));
+            }
+
+            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+              return const Center(child: Text('No FAQs found.'));
+            }
+
+            var faqList = snapshot.data!.docs;
+
+            return ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: faqList.length,
+              itemBuilder: (context, index) {
+                var faqData = faqList[index];
+                var question = faqData['question'] ?? 'No question';
+                var answer = faqData['answer'] ?? 'No answer';
+
+                return Consumer<FaqProvider>(
+                  builder: (context, value, child) {
+                    bool isSelected = value.selectedIndex == index; // Check if this question is selected
+
                     return Padding(
                       padding: const EdgeInsets.only(right: 50.0),
                       child: Column(
@@ -57,44 +85,42 @@ class FaqScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               AppText2(
-                                text: "Q: What is TabibiNet?",
-                                fontSize: 12.sp, fontWeight: FontWeight.w500,
-                                isTextCenter: false, textColor: textColor,
-                                fontFamily: AppFonts.medium,),
+                                text: "Q: $question",
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w500,
+                                isTextCenter: false,
+                                textColor: textColor,
+                                fontFamily: AppFonts.medium,
+                              ),
                               IconButton(
-                                  onPressed: () {
-                                    if(value.selectFaq != index){
-                                      value.setFaq(index);
-                                    }else{
-                                      value.setFaq(null);
-                                    }
-                                  },
-                                  icon: Icon(
-                                    isSelected ? CupertinoIcons.chevron_down :
-                                    CupertinoIcons.chevron_up,
-                                    color: textColor,
-                                    size: 18,
-                                  )
-                              )
+                                onPressed: () {
+                                  value.toggleFaq(index); // Toggle answer visibility
+                                },
+                                icon: Icon(
+                                  isSelected
+                                      ? CupertinoIcons.chevron_up
+                                      : CupertinoIcons.chevron_down ,
+                                  color: textColor,
+                                  size: 18,
+                                ),
+                              ),
                             ],
                           ),
-                          const Divider(color: Colors.grey,thickness: 1.5,),
+                          const Divider(color: Colors.grey, thickness: 1.5),
                           Visibility(
-                            visible: isSelected,
+                            visible: isSelected, // Show the answer if this question is selected
                             child: AppText2(
-                              text: "A: Using TabibiNet is simple. "
-                                  "Download the app, create an account,"
-                                  " and you can start booking appointments,"
-                                  " consulting with doctors via video, and "
-                                  "accessing your medical records—all from "
-                                  "your smartphone or tablet.",
-                              fontSize: 12.sp, fontWeight: FontWeight.w500,
-                              isTextCenter: false, textColor: Colors.grey,
-                              fontFamily: AppFonts.medium,maxLines: 10,
+                              text: "A: $answer",
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w500,
+                              isTextCenter: false,
+                              textColor: Colors.grey,
+                              fontFamily: AppFonts.medium,
+                              maxLines: 10,
                             ),
                           ),
                           Visibility(
-                            visible: isSelected,
+                            visible: isSelected, // Show delete button only when answer is visible
                             child: Align(
                               alignment: Alignment.bottomRight,
                               child: SubmitButton(
@@ -104,26 +130,37 @@ class FaqScreen extends StatelessWidget {
                                 radius: 5,
                                 title: "Delete",
                                 press: () {
-
-                                },),
+                                  _deleteFaq(faqData.id);
+                                },
+                              ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                     );
-                  },),
-              );
-            },
-        ),
-        Consumer<FaqProvider>(
-          builder: (context, value, child) {
-            return Visibility(
-                visible: value.isAddFaq,
-                child: AddFaqScreen());
+                  },
+                );
+              },
+            );
           },
-        )
-
+        ),
+        // Consumer<FaqProvider>(
+        //   builder: (context, value, child) {
+        //     return Visibility(
+        //       visible: value.isAddFaq,
+        //       child: AddFaqScreen(),
+        //     );
+        //   },
+        // ),
       ],
     );
+  }
+
+  void _deleteFaq(String id) {
+    FirebaseFirestore.instance.collection('faq').doc(id).delete().then((value) {
+      // Success
+    }).catchError((error) {
+      // Handle error
+    });
   }
 }

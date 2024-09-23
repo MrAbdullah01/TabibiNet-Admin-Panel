@@ -1,11 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:tabibinet_admin_panel/Model/Res/components/loadingButton.dart';
 
 import '../../../Model/Res/Constants/app_colors.dart';
 import '../../../Model/Res/Constants/app_fonts.dart';
 import '../../../Model/Res/Widgets/add_button.dart';
 import '../../../Model/Res/Widgets/app_text_widget.dart';
 import '../../../Model/Res/Widgets/submit_button.dart';
+import '../../../Provider/actionProvider/actionProvider.dart';
 import '../PatientScreen/Components/patient_field.dart';
 
 class AppointmentFeeScreen extends StatelessWidget {
@@ -49,13 +52,15 @@ class AppointmentFeeScreen extends StatelessWidget {
             children: [
               PatientField(text: "Price", textEditingController: priceC),
               SizedBox(width: 8.w,),
-              SubmitButton(
-                width: 10.w,
-                radius: 8,
-                title: "Submit Now",
-                press: () {
+              HoverLoadingButton(text: 'Submit Now',
+                  onClicked: () async{
+                    _uploadAppointmentFee(context);
+                  },
+                  isIcon: false,
+                  radius: 8,
+                  width: 10.w,
+                  height: 5.h),
 
-                },),
             ],
           ),
           SizedBox(height: 20.sp,),
@@ -66,60 +71,118 @@ class AppointmentFeeScreen extends StatelessWidget {
             fontFamily: AppFonts.semiBold,),
           SizedBox(height: 10.sp,),
           SizedBox(
-            width: 30.w,
-            child: ListView.separated(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 3,
-              itemBuilder: (context, index) {
-                return Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color: themeColor
-                    )
-                  ),
-                  child: Row(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          AppText(
-                            text: "Video Consultation",
-                            fontSize: 12.sp, fontWeight: FontWeight.w500,
-                            isTextCenter: false, textColor: textColor,
-                            fontFamily: AppFonts.medium,
-                          ),
-                          AppText(
-                            text: "Healthcare services at your home.",
-                            fontSize: 10.sp, fontWeight: FontWeight.w500,
-                            isTextCenter: false, textColor: textColor,
-                          ),
-                        ],),
-                      const Spacer(),
-                      SubmitButton(
-                        title: "120 MAD",
-                        height: 35,
-                        width: 8.w,
-                        radius: 6,
-                        textColor: themeColor,
-                        bdColor: const Color(0xffE6F4F2),
-                        bgColor: const Color(0xffE6F4F2),
-                        press: () {
+              width: 30.w,
+              child: StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection('feeInformation')
+                      .orderBy('timestamp', descending: true)
+                      .snapshots(),
+                  builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    }
 
-                        },)
-                    ],
-                  ),
-                );
-              },
-              separatorBuilder: (context, index) => const SizedBox(height: 20,),
-            ),
-          )
+                    if (snapshot.hasError) {
+                      return Center(child: Text('Error appointmentFee specialties.'));
+                    }
 
-        ],
-      ),
+                    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                      return Center(child: Text('No appointmentFee found.'));
+                    }
+
+                    var appointmentFee = snapshot.data!.docs;
+                    return ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: appointmentFee.length,
+                      itemBuilder: (context, index) {
+                        var model = appointmentFee[index];
+
+                        return Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                  color: themeColor
+                              )
+                          ),
+                          child: Row(
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  AppText(
+                                    text: model["type"],
+                                    fontSize: 12.sp, fontWeight: FontWeight.w500,
+                                    isTextCenter: false, textColor: textColor,
+                                    fontFamily: AppFonts.medium,
+                                  ),
+                                  SizedBox(
+                                    width: 20.w,
+                                    child: AppText(
+                                      text: model["subTitle"],
+                                      fontSize: 10.sp, fontWeight: FontWeight.w500,
+                                      isTextCenter: false, textColor: textColor,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],),
+                              const Spacer(),
+                              SubmitButton(
+                                title: "MAD ${model["fees"]}",
+                                height: 35,
+                                width: 8.w,
+                                radius: 6,
+                                textColor: themeColor,
+                                bdColor: const Color(0xffE6F4F2),
+                                bgColor: const Color(0xffE6F4F2),
+                                press: () {
+
+                                },)
+                            ],
+                          ),
+                        );
+                      },
+                      separatorBuilder: (context, index) => const SizedBox(height: 20,),
+                    );})
+          ),
+          ])
     );
   }
+  void _uploadAppointmentFee(BuildContext context) {
+    var timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
+    if (
+    feeNameC.text.isNotEmpty ||
+    descriptionC.text.isNotEmpty ||
+    priceC.text.isNotEmpty
+    ) {
+      ActionProvider.startLoading();
+      var feeType = FirebaseFirestore.instance
+          .collection('feeInformation')
+          .doc(timeStamp);
+
+      feeType.set({
+        'fees': priceC.text.toString(),
+        'subTitle': descriptionC.text.toString(),
+        'type': feeNameC.text.toString(),
+        'id': timeStamp,
+      }).then((value) {
+        ActionProvider.stopLoading();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Data Uploaded!')),
+        );
+      }).catchError((error) {
+        ActionProvider.stopLoading();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error Occurred: $error')),
+        );
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter all fields')),
+      );
+    }
+  }
+
 }

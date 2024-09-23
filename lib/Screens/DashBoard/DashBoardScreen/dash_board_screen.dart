@@ -23,6 +23,7 @@ import '../../../Provider/DashBoard/Components/side_menu_bar_section.dart';
 import '../../../Provider/DashBoard/dash_board_provider.dart';
 import '../AppointmentFeeScreen/appointment_fee_screen.dart';
 import '../AppointmentScreen/appointment_screen.dart';
+import '../DoctorSpeciality/doctorSpecialityScreen.dart';
 import '../EditProfileScreen/edit_profile_screen.dart';
 import '../HealthCareScren/health_care_screen.dart';
 import '../PatientScreen/patient_screen.dart';
@@ -99,9 +100,10 @@ class DashBoardScreen extends StatelessWidget {
                           :value.selectIndex == 8 ? SubscriptionScreen()
                           :value.selectIndex == 9 ? HelpCenterScreen()
                           :value.selectIndex == 10 ? FaqScreen()
-                          :value.selectIndex == 11 ? ProfileScreen()
-                          :value.selectIndex == 12 ? EditProfileScreen()
-                          :value.selectIndex == 13 ? SettingScreen()
+                          :value.selectIndex == 11 ? DoctorSpecialityScreen()
+                          :value.selectIndex == 12 ? ProfileScreen()
+                          :value.selectIndex == 13 ? EditProfileScreen()
+                          :value.selectIndex == 14 ? SettingScreen()
                           : const SizedBox()
                   );
                 },),

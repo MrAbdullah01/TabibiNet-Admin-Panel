@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:tabibinet_admin_panel/Provider/actionProvider/actionProvider.dart';
+import 'package:tabibinet_admin_panel/Screens/DashBoard/DashBoardScreen/dash_board_screen.dart';
 import 'package:tabibinet_admin_panel/Screens/Start/SplashScreen/splash_screen.dart';
 
 import 'Model/Res/Constants/app_colors.dart';
@@ -45,6 +47,7 @@ class MyApp extends StatelessWidget {
               ChangeNotifierProvider(create: (context) => DoctorPaymentProvider(),),
               ChangeNotifierProvider(create: (context) => SubscriptionProvider(),),
               ChangeNotifierProvider(create: (context) => FaqProvider(),),
+              ChangeNotifierProvider(create: (context) => ActionProvider(),),
             ],
           child: GetMaterialApp(
             debugShowCheckedModeBanner: false,
@@ -53,7 +56,7 @@ class MyApp extends StatelessWidget {
               colorScheme: ColorScheme.fromSeed(seedColor: themeColor,primary: themeColor),
               useMaterial3: true,
             ),
-            home: SplashScreen(),
+            home: DashBoardScreen(),
           ),
         );
     },);
