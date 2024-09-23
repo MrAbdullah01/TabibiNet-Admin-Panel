@@ -221,7 +221,7 @@ class AppTextField3 extends StatelessWidget {
       obscureText: obscureText,
       decoration: InputDecoration(
         hintText: hintText,
-        label: AppTextWidget(
+        label: AppText(
             text: labelText ?? "",
             fontSize: 12.sp, fontWeight: FontWeight.w400,
             isTextCenter: false, textColor: textColor),
