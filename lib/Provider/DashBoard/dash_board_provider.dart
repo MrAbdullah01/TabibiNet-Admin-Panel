@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class DashBoardProvider extends ChangeNotifier{
 
-  int _selectIndex = 2;
+  int _selectIndex = 0;
   bool _isNotification = false;
 
   int get selectIndex => _selectIndex;

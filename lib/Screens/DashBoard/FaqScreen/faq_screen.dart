@@ -47,7 +47,7 @@ class FaqScreen extends StatelessWidget {
         StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection('faq')
-              .orderBy('timestamp', descending: true)
+              .orderBy('id', descending: true)
               .snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {

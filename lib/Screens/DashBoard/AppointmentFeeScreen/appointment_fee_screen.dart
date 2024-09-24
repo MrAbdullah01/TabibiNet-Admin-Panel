@@ -32,10 +32,6 @@ class AppointmentFeeScreen extends StatelessWidget {
                 isTextCenter: false, textColor: textColor,
                 fontFamily: AppFonts.semiBold,),
               SizedBox(width: 3.w,),
-              AddButton(
-                onTap: () {
-
-              },)
             ],
           ),
           SizedBox(height: 20.sp,),
@@ -75,7 +71,7 @@ class AppointmentFeeScreen extends StatelessWidget {
               child: StreamBuilder(
                   stream: FirebaseFirestore.instance
                       .collection('feeInformation')
-                      .orderBy('timestamp', descending: true)
+                      .orderBy('id', descending: true)
                       .snapshots(),
                   builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {

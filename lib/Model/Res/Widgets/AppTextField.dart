@@ -97,6 +97,7 @@ class AppTextField2 extends StatelessWidget {
   final int? maxLines, maxLength;
   final IconData? prefixIcon;
   final Widget? suffixIcon;
+  final Function(String)? onChanged;
 
   const AppTextField2({
     super.key,
@@ -108,6 +109,7 @@ class AppTextField2 extends StatelessWidget {
     this.maxLength,
     this.prefixIcon,
     this.suffixIcon,
+    this.onChanged,
   });
 
   @override
@@ -167,6 +169,7 @@ class AppTextField2 extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
       ),
+      onChanged: onChanged,
     );
   }
 }

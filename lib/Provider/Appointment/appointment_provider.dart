@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../Screens/DashBoard/AppointmentScreen/Components/model/appointmentModel.dart';
+
 class AppointmentProvider extends ChangeNotifier{
 
   int _selectStatus = 0;
@@ -23,16 +25,34 @@ class AppointmentProvider extends ChangeNotifier{
 
   void updateFilter(String value){
     _changeFilter = value;
+    notifyListeners();
   }
 
 
 ///for dropdown
-  String _selectedStatus = 'Choose Status';
+  String selectedStatus = '';
 
-  String get selectedStatus => _selectedStatus;
+  void setStatusType(String newStatus) {
+    selectedStatus = newStatus;
+    notifyListeners();  // Notify listeners to update the UI
+  }
 
-  void setStatusType(String status) {
-    _selectedStatus = status;
+
+
+
+
+
+  ///////for passing data to next screen
+  bool isAppointmentDetails = false;
+  AppointmentDetails? selectedAppointment;
+
+  void setAppointmentsScreen(bool isDetail) {
+    isAppointmentDetails = isDetail;
+    notifyListeners();
+  }
+
+  void setSelectedAppointment(AppointmentDetails appointment) {
+    selectedAppointment = appointment;
     notifyListeners();
   }
 }

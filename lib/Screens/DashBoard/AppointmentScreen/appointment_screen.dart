@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tabibinet_admin_panel/Provider/Appointment/appointment_provider.dart';
@@ -16,25 +19,23 @@ import '../../../Model/Res/Constants/app_fonts.dart';
 import '../../../Model/Res/Constants/app_icons.dart';
 import '../../../Model/Res/Widgets/app_text_widget.dart';
 import '../../../Model/Res/Widgets/submit_button.dart';
+import 'Components/model/appointmentModel.dart';
 
 class AppointmentScreen extends StatelessWidget {
   AppointmentScreen({super.key});
 
   final List<String> status = [
-    "Upcoming",
-    "Approve",
-    "Complete",
+    "upcoming",
+    "approve",
+    "complete",
     "Cancel",
   ];
   @override
   Widget build(BuildContext context) {
-    final appointmentP =
-        Provider.of<AppointmentProvider>(context, listen: false);
+    final appointmentP = Provider.of<AppointmentProvider>(context, listen: false);
     return Consumer<AppointmentProvider>(
       builder: (context, value, child) {
-        return value.isAppointmentDetail
-            ? AppointmentDetailScreen()
-            : ListView(
+        return  ListView(
                 shrinkWrap: true,
                 children: [
                   SizedBox(
@@ -61,6 +62,7 @@ class AppointmentScreen extends StatelessWidget {
                               press: () {
                                 value.updateFilter(status[index].toString().toLowerCase());
                                 value.setStatus(index);
+
                               },
                             );
                           },
@@ -93,15 +95,25 @@ class AppointmentScreen extends StatelessWidget {
                           return Center(child: Text('No appointment found.'));
                         }
 
-                        var appointment = snapshot.data!.docs;
+                        //var appointment = snapshot.data!.docs;
+                        var appointments = snapshot.data!.docs.map((doc) {
+                          // Use the model to map the data
+                          return AppointmentDetails.fromMap(doc.data() as Map<String, dynamic>);
+                        }).toList();
 
                         return ListView.separated(
                           
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount: appointment.length,
+                          itemCount: appointments.length,
                           itemBuilder: (context, index) {
-                            var appointments = appointment[index];
+                            var appointment = appointments[index];
+
+                            // Convert timestamp to DateTime
+                            DateTime appointmentTime = DateTime.fromMillisecondsSinceEpoch(int.parse(appointment.id));
+
+                            // Format the DateTime to mm/dd/yyyy
+                            String formattedTime = DateFormat('dd MMM,yyyy    hh:mm a').format(appointmentTime);
 
                             return Container(
                               padding: const EdgeInsets.all(15),
@@ -123,7 +135,7 @@ class AppointmentScreen extends StatelessWidget {
                                     width: 1.w,
                                   ),
                                   AppText(
-                                    text: appointments["name"] ?? "",
+                                    text: appointment.patientName,
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.w600,
                                     isTextCenter: false,
@@ -143,7 +155,7 @@ class AppointmentScreen extends StatelessWidget {
                                             width: 10,
                                           ),
                                           AppText(
-                                              text: appointments["appointmentDate"]?? "",
+                                              text: formattedTime,
                                               fontSize: 10.sp,
                                               fontWeight: FontWeight.w400,
                                               isTextCenter: false,
@@ -154,7 +166,7 @@ class AppointmentScreen extends StatelessWidget {
                                         height: 1.h,
                                       ),
                                       AppText(
-                                        text: appointments["patientName"]?? "",
+                                        text: appointment.doctorName,
                                         fontSize: 12.sp,
                                         fontWeight: FontWeight.w500,
                                         isTextCenter: false,
@@ -178,7 +190,7 @@ class AppointmentScreen extends StatelessWidget {
                                             width: 10,
                                           ),
                                           AppText(
-                                              text: appointments["doctorId"] ?? "",
+                                              text: appointment.patientEmail,
                                               fontSize: 10.sp,
                                               fontWeight: FontWeight.w400,
                                               isTextCenter: false,
@@ -198,7 +210,7 @@ class AppointmentScreen extends StatelessWidget {
                                             width: 10,
                                           ),
                                           AppText(
-                                              text: appointments["phone"] ?? "",
+                                              text: appointment.patientPhone,
                                               fontSize: 10.sp,
                                               fontWeight: FontWeight.w400,
                                               isTextCenter: false,
@@ -211,7 +223,11 @@ class AppointmentScreen extends StatelessWidget {
                                   SizedBox(width: 3.w,),
                                   InkWell(
                                       onTap: () {
-                                       appointmentP.setAppointmentScreen(true);
+                                        appointmentP.setSelectedAppointment(appointment);
+                                        appointmentP.setAppointmentScreen(true);
+                                       Get.to(
+                                           AppointmentDetailScreen(),
+                                       );
 
                                         },
                                       child: SvgPicture.asset(
