@@ -24,12 +24,12 @@ class AppointmentDetailScreen extends StatelessWidget {
 
 
    AppointmentDetailScreen({super.key});
-  final List<String> status = [
-    "upcoming",
-    "approve",
-    "complete",
-    "cancel",
-  ];
+  // final List<String> status = [
+  //   "upcoming",
+  //   "approve",
+  //   "complete",
+  //   "cancel",
+  // ];
   @override
   Widget build(BuildContext context) {
 
@@ -40,9 +40,6 @@ class AppointmentDetailScreen extends StatelessWidget {
 
     // Format the DateTime to mm/dd/yyyy
     String formattedTime = DateFormat('dd MMM,yyyy    hh:mm a').format(appointmentTime);
-    if (appointment == null) {
-      return const Center(child: Text('No appointment selected'));
-    }
     return Scaffold(
       body: ListView(
         shrinkWrap: true,
@@ -221,57 +218,57 @@ class AppointmentDetailScreen extends StatelessWidget {
           ),
           //AppointmentDetailCard(),
           SizedBox(height: 2.h,),
-          Container(
-            width: 20.w,
-            padding: const EdgeInsets.all(16.0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            child: Consumer<AppointmentProvider>(
-              builder: (context, appointmentP, child) {
-                return DropdownButton<String>(
-                  value: appointmentP.selectedStatus.isEmpty ? null : appointmentP.selectedStatus,
-                  hint: Text(
-                    'Choose Status',
-                    style: TextStyle(
-                      color: Colors.grey[500],
-                      fontSize: 16,
-                    ),
-                  ),
-                  isExpanded: true,
-                  icon: const Icon(Icons.arrow_drop_down),
-                  items: status.map((String status) {
-                    return DropdownMenuItem<String>(
-                      value: status,
-                      child: Text(
-                        status,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    if (newValue != null) {
-                      log(newValue);
-                      // Update the status in the provider
-                      appointmentP.setStatusType(newValue);
-                    }
-                  },
-                );
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: HoverLoadingButton(
-                isIcon: false,
-                text: 'Save', onClicked: () async{
-             await _updateStatus(context);
-            },width: 10.w, height: 5.h),
-          )
+          // Container(
+          //   width: 20.w,
+          //   padding: const EdgeInsets.all(16.0),
+          //   decoration: BoxDecoration(
+          //     color: Colors.white,
+          //     borderRadius: BorderRadius.circular(8.0),
+          //   ),
+          //   child: Consumer<AppointmentProvider>(
+          //     builder: (context, appointmentP, child) {
+          //       return DropdownButton<String>(
+          //         value: appointmentP.selectedStatus.isEmpty ? null : appointmentP.selectedStatus,
+          //         hint: Text(
+          //           'Choose Status',
+          //           style: TextStyle(
+          //             color: Colors.grey[500],
+          //             fontSize: 16,
+          //           ),
+          //         ),
+          //         isExpanded: true,
+          //         icon: const Icon(Icons.arrow_drop_down),
+          //         items: status.map((String status) {
+          //           return DropdownMenuItem<String>(
+          //             value: status,
+          //             child: Text(
+          //               status,
+          //               style: const TextStyle(
+          //                 fontSize: 18,
+          //                 fontWeight: FontWeight.bold,
+          //               ),
+          //             ),
+          //           );
+          //         }).toList(),
+          //         onChanged: (String? newValue) {
+          //           if (newValue != null) {
+          //             log(newValue);
+          //             // Update the status in the provider
+          //             appointmentP.setStatusType(newValue);
+          //           }
+          //         },
+          //       );
+          //     },
+          //   ),
+          // ),
+          // Padding(
+          //   padding: const EdgeInsets.all(16.0),
+          //   child: HoverLoadingButton(
+          //       isIcon: false,
+          //       text: 'Save', onClicked: () async{
+          //    await _updateStatus(context);
+          //   },width: 10.w, height: 5.h),
+          // )
         ],
       ),
     );

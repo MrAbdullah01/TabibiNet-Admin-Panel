@@ -26,7 +26,7 @@ class AppointmentScreen extends StatelessWidget {
 
   final List<String> status = [
     "upcoming",
-    "approve",
+    "pending",
     "complete",
     "Cancel",
   ];
@@ -55,7 +55,7 @@ class AppointmentScreen extends StatelessWidget {
                           itemBuilder: (context, index) {
                             final isSelected = value.selectStatus == index;
                             return SubmitButton(
-                              title: status[index],
+                              title: status[index].toLowerCase(),
                               bgColor: isSelected ? themeColor : bgColor,
                               textColor: isSelected ? bgColor : themeColor,
                               radius: 6,

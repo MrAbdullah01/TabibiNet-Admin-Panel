@@ -14,6 +14,7 @@ class AppTextField extends StatelessWidget {
   final IconData? prefixIcon;
   final Widget? suffixIcon;
   final bool obscureText;
+  final String? Function(String?)? validator;
 
   const AppTextField({
     super.key,
@@ -25,7 +26,7 @@ class AppTextField extends StatelessWidget {
     this.maxLength,
     this.prefixIcon,
     this.suffixIcon,
-    this.obscureText = false,
+    this.obscureText = false, this.validator,
   });
 
   @override
@@ -39,13 +40,7 @@ class AppTextField extends StatelessWidget {
           fontWeight: FontWeight.w500,
           fontFamily: AppFonts.medium
       ),
-      validator: (value) {
-        if(value!.isEmpty){
-          return "Enter the Field";
-        }else{
-          return null;
-        }
-      },
+      validator: validator,
       cursorColor: themeColor,
       controller: inputController,
       maxLength: maxLength,

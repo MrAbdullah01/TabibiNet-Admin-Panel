@@ -89,21 +89,22 @@ class DashBoardScreen extends StatelessWidget {
                   return SizedBox(
                     height: 72.h,
                       width: 75.w,
-                      child: value.selectIndex == 0 ? DashboardSection()
+                      child
+                          :value.selectIndex == 0 ? DashboardSection()
                           :value.selectIndex == 1 ? HealthCareScreen()
                           :value.selectIndex == 2 ? PatientScreen()
                           :value.selectIndex == 3 ? RequestScreen()
                           :value.selectIndex == 4 ? AppointmentScreen()
                           :value.selectIndex == 5 ? AppointmentFeeScreen()
-                          :value.selectIndex == 6 ? DoctorPaymentScreen()
-                          :value.selectIndex == 7 ? PatientPaymentScreen()
+                          :value.selectIndex == 6 ? const DoctorPaymentScreen()
+                          :value.selectIndex == 7 ? const PatientPaymentScreen()
                           :value.selectIndex == 8 ? SubscriptionScreen()
                           :value.selectIndex == 9 ? HelpCenterScreen()
-                          :value.selectIndex == 10 ? FaqScreen()
+                          :value.selectIndex == 10 ? const FaqScreen()
                           :value.selectIndex == 11 ? DoctorSpecialityScreen()
-                          :value.selectIndex == 12 ? ProfileScreen()
+                          :value.selectIndex == 12 ? const ProfileScreen()
                           :value.selectIndex == 13 ? EditProfileScreen()
-                          :value.selectIndex == 14 ? SettingScreen()
+                          :value.selectIndex == 14 ? const SettingScreen()
                           : const SizedBox()
                   );
                 },),
