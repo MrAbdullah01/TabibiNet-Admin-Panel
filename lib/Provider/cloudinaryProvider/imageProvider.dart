@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 class CloudinaryProvider with ChangeNotifier {
   final String _cloudName = 'dz0mfu819';
-  final String _uploadPreset = 'ml_default'; // Set up an unsigned upload preset in Cloudinary
+  final String _uploadPreset = 'tabibinet'; // Set up an unsigned upload preset in Cloudinary
 
   String _imageUrl = '';
 
@@ -20,7 +20,6 @@ class CloudinaryProvider with ChangeNotifier {
   //to display image in container
   void setImageData(Uint8List bytes) {
     _imageData = bytes;
-
     notifyListeners();
   }
 
@@ -31,12 +30,9 @@ class CloudinaryProvider with ChangeNotifier {
   }
 
   Future<void> uploadImage(Uint8List imageBytes) async {
-    //cloud name
     const String cloudName = 'dz0mfu819';
-    //folder name
-    const String uploadPreset = 'ml_default	';
-    const String folderName = 'images'; // Specify the folder
-// signed preset
+    const String uploadPreset = 'tabibinet';
+    const String folderName = 'images'; // Specify the folder name here
 
     final uri = Uri.parse('https://api.cloudinary.com/v1_1/$cloudName/image/upload');
     final request = http.MultipartRequest('POST', uri)
@@ -47,18 +43,21 @@ class CloudinaryProvider with ChangeNotifier {
     try {
       final response = await request.send();
       log("Status Code:: ${response.statusCode}");
+
       if (response.statusCode == 200) {
         final responseBody = await response.stream.bytesToString();
         final jsonResponse = json.decode(responseBody);
         _imageUrl = jsonResponse['secure_url'];
-        log("Image Url:: ${jsonResponse['secure_url']}");
+        log("Image URL:: $_imageUrl");
+
         notifyListeners(); // Notify listeners about the change
       } else {
         final responseBody = await response.stream.bytesToString();
-        log("Response Body:: $responseBody");
+        log("Error Body:: $responseBody");
         throw Exception('Failed to upload image: $responseBody');
       }
     } catch (e) {
+      log('Error uploading image: $e');
       throw Exception('Failed to upload image: $e');
     }
   }

@@ -53,7 +53,7 @@ class HealthCareScreen extends StatelessWidget {
             height: 50,
             child: StreamBuilder(
               stream: FirebaseFirestore.instance
-                  .collection('doctorsSpecialty')
+                  .collection('doctorsSpecialty').orderBy('timestamp', descending: false)
                   .snapshots(),
               builder:  (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {

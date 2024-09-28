@@ -39,6 +39,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ResponsiveSizer(
       builder: (context, orientation, screenType) {
+
         return MultiProvider(
             providers: [
               ChangeNotifierProvider(create: (context) => LogInProvider(),),
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
               ChangeNotifierProvider(create: (context) => AuthenticationProvider(),),
               ChangeNotifierProvider(create: (context) => CloudinaryProvider(),),
             ],
+
           child: GetMaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'TabibiNet',
