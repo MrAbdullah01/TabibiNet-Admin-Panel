@@ -46,7 +46,7 @@ class InfoTile extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 20,
-            backgroundImage: AssetImage(image),
+            backgroundImage: NetworkImage(image),
           ),
           SizedBox(width: 20.sp,),
           AppText(

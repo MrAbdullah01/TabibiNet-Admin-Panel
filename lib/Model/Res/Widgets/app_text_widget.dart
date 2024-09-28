@@ -11,7 +11,9 @@ class AppText extends StatelessWidget {
         required this.textColor,
         this.maxLines,
         this.fontFamily = "Regular",
-        this.valueKey
+        this.valueKey,
+        this.overflow = TextOverflow.ellipsis,
+        this.textDecoration = TextDecoration.none
       });
   final String text;
   final double fontSize;
@@ -21,15 +23,18 @@ class AppText extends StatelessWidget {
   final int? maxLines;
   final String fontFamily;
   final ValueKey<int>? valueKey;
+  final TextOverflow? overflow;
+  final TextDecoration textDecoration;
   @override
   Widget build(BuildContext context) {
     return AutoSizeText(
       key: valueKey,
       text,
       maxLines: maxLines,
-      overflow: TextOverflow.ellipsis,
+      overflow: overflow ?? TextOverflow.ellipsis,
       textAlign: isTextCenter == true ? TextAlign.center: TextAlign.start,
       style: TextStyle(
+          decoration: textDecoration,
           fontSize: fontSize, fontWeight: fontWeight, color: textColor,fontFamily: fontFamily),);
   }
 }

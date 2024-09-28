@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
@@ -9,7 +10,8 @@ import '../../../../Model/Res/Constants/app_icons.dart';
 import '../../../../Model/Res/Widgets/app_text_widget.dart';
 
 class DoctorProfileCard extends StatelessWidget {
-  const DoctorProfileCard({super.key});
+  final  users;
+  const DoctorProfileCard({super.key, required this.users});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,7 @@ class DoctorProfileCard extends StatelessWidget {
                     child: Column(
                       children: [
                         AppText(
-                          text: "Dr. John",
+                          text: users['name'],
                           fontSize: 14.sp, fontWeight: FontWeight.w600,
                           isTextCenter: false, textColor: textColor,
                           fontFamily: AppFonts.semiBold,),
@@ -46,7 +48,7 @@ class DoctorProfileCard extends StatelessWidget {
                               borderRadius: BorderRadius.circular(5)
                           ),
                           child: AppText(
-                              text: "Cardiologist",
+                              text: users["speciality"],
                               fontSize: 10.sp, fontWeight: FontWeight.w500,
                               isTextCenter: false, textColor: bgColor),
                         ),
@@ -69,7 +71,7 @@ class DoctorProfileCard extends StatelessWidget {
                             SvgPicture.asset(AppIcons.locationIcon,height: 14.sp,),
                             const SizedBox(width: 6),
                             Text('Location: ',style: TextStyle(fontSize: 11.sp,fontWeight: FontWeight.w500),),
-                            Text('Hong Kong, China',style: TextStyle(fontSize: 11.sp),),
+                            Expanded(child: Text(users["country"],overflow: TextOverflow.ellipsis,style: TextStyle(fontSize: 11.sp,),)),
                           ],
                         ),
                         const SizedBox(height: 6),
@@ -77,7 +79,7 @@ class DoctorProfileCard extends StatelessWidget {
                           children: [
                             SvgPicture.asset(AppIcons.mailIcon,width: 13.sp,),
                             const SizedBox(width: 6),
-                            Text('info@gmail.com',style: TextStyle(fontSize: 11.sp),),
+                            Expanded(child: Text(users["email"],overflow: TextOverflow.ellipsis,style: TextStyle(fontSize: 11.sp),)),
                           ],
                         ),
                         const SizedBox(height: 6),
@@ -85,12 +87,12 @@ class DoctorProfileCard extends StatelessWidget {
                           children: [
                             SvgPicture.asset(AppIcons.phoneIcon,width: 13.sp,),
                             const SizedBox(width: 6),
-                            Text('123-456-789-0',style: TextStyle(fontSize: 11.sp),),
+                            Text(users["phoneNumber"],style: TextStyle(fontSize: 11.sp),),
                           ],
                         ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -101,7 +103,10 @@ class DoctorProfileCard extends StatelessWidget {
           width: 100,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              image: DecorationImage(image: AssetImage(AppAssets.doctorImage))
+              image: DecorationImage(image:
+              NetworkImage(users["profileUrl"])
+                  ??
+                  AssetImage(AppAssets.doctorImage))
           ),
         ),
         Positioned(

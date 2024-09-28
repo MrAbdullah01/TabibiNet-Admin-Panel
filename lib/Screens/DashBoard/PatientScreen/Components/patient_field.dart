@@ -25,6 +25,7 @@ class PatientField extends StatelessWidget {
           fontSize: 12.sp, fontWeight: FontWeight.w500,
           isTextCenter: false, textColor: textColor,
           fontFamily: AppFonts.medium,),
+        SizedBox(height: 0.5.h,),
         SizedBox(
             width: 15.w,
             child: AppTextField(inputController: textEditingController))
