@@ -93,13 +93,13 @@ class DoctorPaymentScreen extends StatelessWidget {
                               fontFamily: AppFonts.semiBold,),
                             const Spacer(),
                             AppText(
-                              text: "June 9, 2024, 08:22 AM",
+                              text: "Will show the date here",
                               fontSize: 14.sp, fontWeight: FontWeight.w600,
                               isTextCenter: false, textColor: textColor,
                               fontFamily: AppFonts.semiBold,),
                             const Spacer(),
                             AppText(
-                              text: "\$512",
+                              text: "\$0",
                               fontSize: 14.sp, fontWeight: FontWeight.w600,
                               isTextCenter: false, textColor: textColor,
                               fontFamily: AppFonts.semiBold,),

@@ -19,9 +19,16 @@ class AddFaqScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          SizedBox(height: 2.h,),
+          AppText2(
+            text: "FAQS",
+            fontSize: 15.sp, fontWeight: FontWeight.w600,
+            isTextCenter: false, textColor: themeColor,
+          ),
           SizedBox(height: 2.h,),
           AppText2(
               text: "Question:",

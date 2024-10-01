@@ -7,7 +7,7 @@ class AppText extends StatelessWidget {
         required this.text,
         required this.fontSize,
         required this.fontWeight,
-        required this.isTextCenter,
+         this.isTextCenter,
         required this.textColor,
         this.maxLines,
         this.fontFamily = "Regular",
@@ -19,7 +19,7 @@ class AppText extends StatelessWidget {
   final double fontSize;
   final FontWeight fontWeight;
   final Color textColor;
-  final bool isTextCenter;
+  final bool? isTextCenter;
   final int? maxLines;
   final String fontFamily;
   final ValueKey<int>? valueKey;
@@ -28,6 +28,7 @@ class AppText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AutoSizeText(
+      minFontSize: 8.0,
       key: valueKey,
       text,
       maxLines: maxLines,

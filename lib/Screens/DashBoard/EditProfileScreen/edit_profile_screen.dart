@@ -14,6 +14,7 @@
   import 'package:tabibinet_admin_panel/Model/Res/Widgets/AppTextField.dart';
   import 'package:tabibinet_admin_panel/Model/Res/Widgets/app_text_widget.dart';
   import 'package:tabibinet_admin_panel/Model/Res/Widgets/submit_button.dart';
+import 'package:tabibinet_admin_panel/Provider/profileProvider/profileInfo.dart';
   import '../../../Model/Res/Widgets/toast_msg.dart';
   import '../../../Provider/actionProvider/actionProvider.dart';
   import '../../../Provider/cloudinaryProvider/imageProvider.dart';
@@ -29,93 +30,102 @@
 
     @override
     Widget build(BuildContext context) {
-      return ListView(
-        shrinkWrap: true,
-        children: [
-          Row(
+      return Consumer2<ProfileInfoProvider,CloudinaryProvider>(
+        builder: (context, value,provider, child) {
+         return ListView(
+            shrinkWrap: true,
             children: [
-              Stack(
-                alignment: Alignment.bottomRight,
+              Row(
                 children: [
-                  Consumer<CloudinaryProvider>(
-                    builder: (context, provider, child) {
-                      return  CircleAvatar(
+                  Stack(
+                    alignment: Alignment.bottomRight,
+                    children: [
+                      CircleAvatar(
                         radius: 60,
                         backgroundImage: provider.imageData != null
                             ? MemoryImage(provider.imageData!)
+                            : value.profileImageUrl != null
+                            ? NetworkImage(value.profileImageUrl!) // Use NetworkImage if imageUrl is available
                             : const AssetImage(AppAssets.profileImage) as ImageProvider,
-                      );
-                    },
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      _pickAndUploadImage(context);
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(5),
-                      height: 30,
-                      width: 30,
-                      decoration: const BoxDecoration(
-                          color: themeColor,
-                          shape: BoxShape.circle
                       ),
-                      child: SvgPicture.asset(AppIcons.cameraIcon),
-                    ),
-                  )
+                      GestureDetector(
+                        onTap: () {
+                          _pickAndUploadImage(context);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(5),
+                          height: 30,
+                          width: 30,
+                          decoration: const BoxDecoration(
+                              color: themeColor,
+                              shape: BoxShape.circle
+                          ),
+                          child: SvgPicture.asset(AppIcons.cameraIcon),
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(width: 1.5.w,),
+                  SubmitButton(
+                    width: 10.w,
+                    height: 35,
+                    radius: 6,
+                    textSize: 12.sp,
+                    title: "Upload Photo",
+                    press: () {},)
                 ],
               ),
-              SizedBox(width: 1.5.w,),
-              SubmitButton(
-                width: 10.w,
-                height: 35,
-                radius: 6,
-                textSize: 12.sp,
-                title: "Upload Photo",
-                press: () {
+              SizedBox(height: 2.h,),
+              Row(
+                children: [
+                  InfoField(text1:  "First Name",
+                      hint:  value.profileName !=null ?  firstNameC.text = value.profileName.toString() : "Enter First Name",
+                      controller: firstNameC),
+                  SizedBox(width: 10.w,),
+                  InfoField(text1: "Last Name",
+                      hint:  value.profileLastName !=null ?  lastNameC.text = value.profileLastName.toString() : "Enter last Name",
 
+                      controller: lastNameC),
 
-                  // ActionProvider().setLoading(true);
-                  // _pickAndUploadImage(context);
+                ],
+              ),
+              SizedBox(height: 2.h,),
+              Row(
+                children: [
+                  // InfoField(text1: "Email",
+                  //     hint:  value.profileEmail !=null ?  emailC.text = value.profileEmail.toString() : "Enter Email",
+                  //
+                  //     controller: emailC),
+                  // SizedBox(width: 10.w,),
+                  InfoField(text1: "Phone Number",
+                      hint:  value.profilePhone !=null ?  phoneC.text = value.profilePhone.toString() : "Enter Number",
 
+                      controller: phoneC),
+                ],
+              ),
+              SizedBox(height: 2.h,),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  InfoField(text1: "Address",
+                      hint:  value.profileAddress !=null ?  addressC.text = value.profileAddress.toString() : "Enter Address",
 
-              },)
+                      controller: addressC),
+                  SizedBox(width: 10.w,),
+                  SubmitButton(
+                    width: 10.w,
+                    radius: 6,
+                    textSize: 14.sp,
+                    title: "Save",
+                    press: () async{
+
+                      _uploadData(context);
+                    },),
+                ],
+              ),
             ],
-          ),
-          SizedBox(height: 2.h,),
-          Row(
-            children: [
-              InfoField(text1: "First Name", controller: firstNameC),
-              SizedBox(width: 10.w,),
-              InfoField(text1: "Last Name", controller: lastNameC),
-
-            ],
-          ),
-          SizedBox(height: 2.h,),
-          Row(
-            children: [
-              InfoField(text1: "Email", controller: emailC),
-              SizedBox(width: 10.w,),
-              InfoField(text1: "Phone Number", controller: phoneC),
-            ],
-          ),
-          SizedBox(height: 2.h,),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              InfoField(text1: "Address", controller: addressC),
-              SizedBox(width: 10.w,),
-              SubmitButton(
-                width: 10.w,
-                radius: 6,
-                textSize: 14.sp,
-                title: "Save",
-                press: () {
-                   ActionProvider.startLoading();
-                  _uploadData(context);
-                },),
-            ],
-          ),
-        ],
+          );
+        },
       );
     }
     Future<void> _pickAndUploadImage(BuildContext context) async {
@@ -144,12 +154,18 @@
     }
 
     Future<void> _uploadData(BuildContext context) async {
+      ActionProvider.startLoading();
       final cloudinaryProvider = Provider.of<CloudinaryProvider>(context, listen: false);
-
+      // Email validation to check if it contains @gmail.com
+      if (!emailC.text.contains('@gmail.com')) {
+        ActionProvider.stopLoading();
+        ToastMsg().toastMsg('Please enter a valid Gmail address');
+        return;
+      }
 
       if (firstNameC.text.isEmpty ||
           lastNameC.text.isEmpty ||
-          emailC.text.isEmpty ||
+          // emailC.text.isEmpty ||
           phoneC.text.isEmpty ||
           addressC.text.isEmpty ||
           cloudinaryProvider.imageData == null) {
@@ -167,7 +183,7 @@
           await FirebaseFirestore.instance.collection('admin').doc("XcZeK5QjfBpZkrp03pGD").update({
             'firstName': firstNameC.text,
             'lastName': lastNameC.text,
-            'email': emailC.text,
+            // 'email': emailC.text,
             'address': addressC.text,
             'phoneNumber': phoneC.text,
             'imageUrl': cloudinaryProvider.imageUrl.toString(),
@@ -198,9 +214,11 @@
       super.key,
       required this.text1,
       required this.controller,
+       this.hint,
     });
 
     final String text1;
+    final String? hint;
     final TextEditingController controller;
 
     @override
@@ -217,6 +235,7 @@
           SizedBox(
               width: 15.w,
               child: AppTextField(
+                hintText: hint ?? "",
                   inputController: controller,
 
               ))

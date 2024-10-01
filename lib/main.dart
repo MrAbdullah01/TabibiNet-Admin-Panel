@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tabibinet_admin_panel/Provider/actionProvider/Authen_provider.dart';
 import 'package:tabibinet_admin_panel/Provider/actionProvider/actionProvider.dart';
+import 'package:tabibinet_admin_panel/Provider/chatProvider/chatProvider.dart';
 import 'package:tabibinet_admin_panel/Screens/DashBoard/DashBoardScreen/dash_board_screen.dart';
 import 'package:tabibinet_admin_panel/Screens/Start/SplashScreen/splash_screen.dart';
 
@@ -18,6 +19,8 @@ import 'Provider/Login/login_provider.dart';
 import 'Provider/Patient/patient_provider.dart';
 import 'Provider/Subscription/subscription_provider.dart';
 import 'Provider/cloudinaryProvider/imageProvider.dart';
+import 'Provider/profileProvider/profileInfo.dart';
+import 'Screens/Start/LogInScreen/login_screen.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -27,7 +30,18 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+    options: const FirebaseOptions(
+        apiKey: "AIzaSyC4paZlhPhuJUcOkq4B0TXGWAmoRCddohs",
+        authDomain: "tabibinet.firebaseapp.com",
+        databaseURL: "https://tabibinet-default-rtdb.firebaseio.com",
+        projectId: "tabibinet",
+        storageBucket: "tabibinet.appspot.com",
+        messagingSenderId: "996553373997",
+        appId: "1:996553373997:web:0c9ecd23d68dad34463ba4",
+        measurementId: "G-5ST4F98X09"
+
+    ),
+
   );
 }
 
@@ -37,7 +51,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ResponsiveSizer(
+    return Sizer(
       builder: (context, orientation, screenType) {
 
         return MultiProvider(
@@ -53,6 +67,8 @@ class MyApp extends StatelessWidget {
               ChangeNotifierProvider(create: (context) => ActionProvider(),),
               ChangeNotifierProvider(create: (context) => AuthenticationProvider(),),
               ChangeNotifierProvider(create: (context) => CloudinaryProvider(),),
+              ChangeNotifierProvider(create: (context) => ProfileInfoProvider(),),
+              ChangeNotifierProvider(create: (context) => ChatProvider(),),
             ],
 
           child: GetMaterialApp(
@@ -62,7 +78,7 @@ class MyApp extends StatelessWidget {
               colorScheme: ColorScheme.fromSeed(seedColor: themeColor,primary: themeColor),
               useMaterial3: true,
             ),
-            home: const DashBoardScreen(),
+            home:  DashBoardScreen(),
           ),
         );
     },);

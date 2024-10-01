@@ -8,6 +8,7 @@ import 'package:tabibinet_admin_panel/Model/Res/Constants/app_fonts.dart';
 import 'package:tabibinet_admin_panel/Model/Res/Constants/app_icons.dart';
 import 'package:tabibinet_admin_panel/Model/Res/Widgets/app_text_widget.dart';
 import 'package:tabibinet_admin_panel/Provider/DashBoard/dash_board_provider.dart';
+import '../../../Provider/profileProvider/profileInfo.dart';
 import '../../../Screens/Start/LogInScreen/login_screen.dart';
 import '../Constants/app_assets.dart';
 import '../Constants/app_colors.dart';
@@ -18,47 +19,61 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final profileProvider = Provider.of<ProfileInfoProvider>(context, listen: false);
+
+    // Initialize the profile listener when the widget is first built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      profileProvider.listenToProfileInfo();
+    });
     final dashP = Provider.of<DashBoardProvider>(context,listen: false);
+
     return Column(
       children: [
-        Container(
-          width: 100.w,
-          height: 10.h,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          decoration: const BoxDecoration(
-              color: themeColor,
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.grey,
-                    offset: Offset(0, 6)
-                )
-              ]
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              InkWell(
-                onTap: () {
-                  _showCustomPopupMenu(context, _buildProfilePopUp(context));
-                },
-                child: const CircleAvatar(
-                  backgroundImage: AssetImage(AppAssets.profileImage),
+        Consumer<ProfileInfoProvider>(
+        builder: (context, profileInfo, child) {
+          return Container(
+            width: 100.w,
+            height: 10.h,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            decoration: const BoxDecoration(
+                color: themeColor,
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey,
+                      offset: Offset(0, 6)
+                  )
+                ]
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                InkWell(
+                  onTap: () {
+                    _showCustomPopupMenu(context, _buildProfilePopUp(context));
+                  },
+                  child: CircleAvatar(
+                    backgroundImage: profileInfo.profileImageUrl != null
+                        ? NetworkImage(profileInfo.profileImageUrl!)
+                        : const AssetImage(
+                        AppAssets.profileImage) as ImageProvider,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 10,),
-              InkWell(
-                onTap: () {
-                  _showCustomPopupMenu(context,_buildNotificationList());
-                },
-                child: SvgPicture.asset(AppIcons.bellIcon,height: 20,)),
-              const SizedBox(width: 10,),
-              InkWell(
-                onTap: () {
-                  dashP.setSelectedIndex(14);
-                },
-                child: SvgPicture.asset(AppIcons.settingIcon,height: 20,)),
-            ],
-          ),
+                const SizedBox(width: 10,),
+                // InkWell(
+                //     onTap: () {
+                //       _showCustomPopupMenu(context, _buildNotificationList());
+                //     },
+                //     child: SvgPicture.asset(AppIcons.bellIcon, height: 20,)),
+                // const SizedBox(width: 10,),
+                InkWell(
+                    onTap: () {
+                      dashP.setSelectedIndex(14);
+                    },
+                    child: SvgPicture.asset(AppIcons.settingIcon, height: 20,)),
+              ],
+            ),
+          );
+        }
         ),
         SizedBox(
           width: 100.w,
@@ -82,6 +97,7 @@ class Header extends StatelessWidget {
       ],
     );
   }
+
   void _showCustomPopupMenu(BuildContext context,Widget child) {
     final RenderBox overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
 
@@ -106,103 +122,114 @@ class Header extends StatelessWidget {
 
   Widget _buildProfilePopUp(context){
     final dashP = Provider.of<DashBoardProvider>(context,listen: false);
-    return Center(
-      child: Container(
-        decoration: BoxDecoration(
-          color: bgColor,
-          borderRadius: BorderRadius.circular(10)
-        ),
-        height: 200,
-        width: 120,
-        child: Column(
-          children: [
-            const CircleAvatar(
-              radius: 20,
-              backgroundImage: AssetImage(AppAssets.profileImage),
-            ),
-            AppText(
-                text: "Mian Uzair",
-                fontSize: 10.sp, fontWeight: FontWeight.w600,
-                isTextCenter: false, textColor: themeColor,
-                fontFamily:  AppFonts.regular),
-            AppText(
-                text: "info@gmail.com",
-                fontSize: 10.sp, fontWeight: FontWeight.w600,
-                isTextCenter: false, textColor: Colors.grey,
-                fontFamily:  AppFonts.regular,maxLines: 2,),
-            InkWell(
-              onTap: () {
-                dashP.setSelectedIndex(12);
-                Navigator.pop(context);
+    final profileProvider = Provider.of<ProfileInfoProvider>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      profileProvider.listenToProfileInfo();
+    });
+    return Consumer<ProfileInfoProvider>(
+        builder: (context, profileInfo, child) {
+
+          return Center(
+        child: Container(
+          decoration: BoxDecoration(
+            color: bgColor,
+            borderRadius: BorderRadius.circular(10)
+          ),
+          height: 200,
+          width: 120,
+          child: Column(
+            children: [
+               CircleAvatar(
+                radius: 20,
+                backgroundImage: profileInfo.profileImageUrl != null
+                    ? NetworkImage(profileInfo.profileImageUrl!)
+                    : const AssetImage(AppAssets.profileImage) as ImageProvider,
+              ),
+              AppText(
+                  text: profileInfo.profileName.toString() + profileInfo.profileLastName.toString(),
+                  fontSize: 10.sp, fontWeight: FontWeight.w600,
+                  isTextCenter: false, textColor: themeColor,
+                  fontFamily:  AppFonts.regular),
+              AppText(
+                  text: profileInfo.profileEmail.toString(),
+                  fontSize: 10.sp, fontWeight: FontWeight.w600,
+                  isTextCenter: false, textColor: Colors.grey,
+                  overflow: TextOverflow.ellipsis,
+                  fontFamily:  AppFonts.regular,maxLines: 1,),
+              InkWell(
+                onTap: () {
+                  dashP.setSelectedIndex(12);
+                  Navigator.pop(context);
+                  },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SvgPicture.asset(
+                        AppIcons.visible2Icon,
+                        height: 15,
+                        colorFilter: const ColorFilter.mode(textColor, BlendMode.srcIn),),
+                      SizedBox(width: 1.h,),
+                      AppText(
+                          text: "View Profile",
+                          fontSize: 10.sp, fontWeight: FontWeight.w600,
+                          isTextCenter: false, textColor: textColor, fontFamily: AppFonts.medium,)
+                    ],
+                  ),
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  dashP.setSelectedIndex(13);
+                  Navigator.pop(context);
+                  },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SvgPicture.asset(
+                        AppIcons.personIcon,
+                        height: 15,
+                        colorFilter: const ColorFilter.mode(textColor, BlendMode.srcIn),),
+                      SizedBox(width: 1.h,),
+                      AppText(
+                          text: "Edit Profile",
+                          fontSize: 10.sp, fontWeight: FontWeight.w600,
+                          isTextCenter: false, textColor: textColor, fontFamily: AppFonts.medium,)
+                    ],
+                  ),
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  auth.signOut().whenComplete(() {
+                    Get.offAll(()=>LoginScreen());
+                  },);
                 },
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SvgPicture.asset(
-                      AppIcons.visible2Icon,
-                      height: 15,
-                      colorFilter: const ColorFilter.mode(textColor, BlendMode.srcIn),),
-                    SizedBox(width: 1.h,),
-                    AppText(
-                        text: "View Profile",
-                        fontSize: 10.sp, fontWeight: FontWeight.w600,
-                        isTextCenter: false, textColor: textColor, fontFamily: AppFonts.medium,)
-                  ],
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SvgPicture.asset(
+                        AppIcons.logout2Icon,
+                        height: 15,
+                        colorFilter: const ColorFilter.mode(textColor, BlendMode.srcIn),),
+                      SizedBox(width: 1.h,),
+                      AppText(
+                          text: "Log Out",
+                          fontSize: 10.sp, fontWeight: FontWeight.w600,
+                          isTextCenter: false, textColor: textColor, fontFamily: AppFonts.medium,)
+                    ],
+                  ),
                 ),
               ),
-            ),
-            InkWell(
-              onTap: () {
-                dashP.setSelectedIndex(13);
-                Navigator.pop(context);
-                },
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SvgPicture.asset(
-                      AppIcons.personIcon,
-                      height: 15,
-                      colorFilter: const ColorFilter.mode(textColor, BlendMode.srcIn),),
-                    SizedBox(width: 1.h,),
-                    AppText(
-                        text: "Edit Profile",
-                        fontSize: 10.sp, fontWeight: FontWeight.w600,
-                        isTextCenter: false, textColor: textColor, fontFamily: AppFonts.medium,)
-                  ],
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                auth.signOut().whenComplete(() {
-                  Get.offAll(()=>LoginScreen());
-                },);
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SvgPicture.asset(
-                      AppIcons.logout2Icon,
-                      height: 15,
-                      colorFilter: const ColorFilter.mode(textColor, BlendMode.srcIn),),
-                    SizedBox(width: 1.h,),
-                    AppText(
-                        text: "Log Out",
-                        fontSize: 10.sp, fontWeight: FontWeight.w600,
-                        isTextCenter: false, textColor: textColor, fontFamily: AppFonts.medium,)
-                  ],
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
+      );}
     );
   }
 
@@ -308,5 +335,4 @@ class Header extends StatelessWidget {
       },
     );
   }
-
 }

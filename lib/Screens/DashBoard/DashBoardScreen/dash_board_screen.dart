@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tabibinet_admin_panel/Model/Res/Constants/firebase.dart';
+import 'package:tabibinet_admin_panel/Screens/DashBoard/AddFaqScreen/add_faq_screen.dart';
+import 'package:tabibinet_admin_panel/Screens/DashBoard/AppointmentDetailScreen/appointment_detail_screen.dart';
 import 'package:tabibinet_admin_panel/Screens/DashBoard/DoctorPaymentScreen/doctor_payment_screen.dart';
 import 'package:tabibinet_admin_panel/Screens/DashBoard/FaqScreen/faq_screen.dart';
 import 'package:tabibinet_admin_panel/Screens/DashBoard/HelpCenterScreen/help_center_screen.dart';
@@ -21,6 +23,7 @@ import '../../../Model/Res/Widgets/header.dart';
 import '../../../Model/Res/Widgets/submit_button.dart';
 import '../../../Provider/DashBoard/Components/side_menu_bar_section.dart';
 import '../../../Provider/DashBoard/dash_board_provider.dart';
+import '../../../Provider/profileProvider/profileInfo.dart';
 import '../AppointmentFeeScreen/appointment_fee_screen.dart';
 import '../AppointmentScreen/appointment_screen.dart';
 import '../DoctorSpeciality/doctorSpecialityScreen.dart';
@@ -35,6 +38,7 @@ class DashBoardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dashInfoo = Provider.of<ProfileInfoProvider>(context);
     return Scaffold(
       backgroundColor: greyColor,
       body: Column(
@@ -51,37 +55,45 @@ class DashBoardScreen extends StatelessWidget {
                   color: bgColor,
                   borderRadius: BorderRadius.circular(15)
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(height: 2.h,),
-                    const CircleAvatar(
-                      backgroundImage: AssetImage(AppAssets.profileImage),
-                    ),
-                    SizedBox(height: 1.h,),
-                    AppText(
-                        text: "Mian Uzair",
-                        fontSize: 14.sp, fontWeight: FontWeight.w600,
-                        isTextCenter: false, textColor: themeColor,
-                        fontFamily:  AppFonts.semiBold),
-                    const Divider(
-                      color: themeColor,
-                      indent: 10,
-                      endIndent: 10,
-                    ),
-                    SideMenuBarSection(),
-                    SizedBox(height: 10.sp,),
-                    SubmitButton2(
-                      width: 18.w,
-                      height: 40,
-                      title: "Logout",
-                      icon: AppIcons.logOutIcon,
-                      press: () {
-                        auth.signOut().whenComplete(() {
-                          Get.offAll(()=>LoginScreen());
-                        },);
-                      },)
-                  ],
+                child: Consumer<ProfileInfoProvider>(
+                  builder: (context, dashInfo, child) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(height: 2.h,),
+                        CircleAvatar(
+                          backgroundImage:
+                          dashInfo.profileImageUrl != null
+                              ? NetworkImage(dashInfo.profileImageUrl!)
+                              : AssetImage(AppAssets.profileImage),
+                        ),
+                        SizedBox(height: 1.h,),
+                        AppText(
+                            text:   dashInfo.profileName != null
+                                ? dashInfo.profileName.toString()   +" "+ dashInfo.profileLastName.toString(): "Loading...",
+                            fontSize: 14.sp, fontWeight: FontWeight.w600,
+                            isTextCenter: false, textColor: themeColor,
+                            fontFamily:  AppFonts.semiBold),
+                        const Divider(
+                          color: themeColor,
+                          indent: 10,
+                          endIndent: 10,
+                        ),
+                        SideMenuBarSection(),
+                        SizedBox(height: 10.sp,),
+                        SubmitButton2(
+                          width: 18.w,
+                          height: 40,
+                          title: "Logout",
+                          icon: AppIcons.logOutIcon,
+                          press: () {
+                            auth.signOut().whenComplete(() {
+                              Get.offAll(()=>LoginScreen());
+                            },);
+                          },)
+                      ],
+                    );
+                  },
                 ),
               ),
               Consumer<DashBoardProvider>(
@@ -93,18 +105,20 @@ class DashBoardScreen extends StatelessWidget {
                           :value.selectIndex == 0 ? DashboardSection()
                           :value.selectIndex == 1 ? HealthCareScreen()
                           :value.selectIndex == 2 ? PatientScreen()
-                          :value.selectIndex == 3 ? RequestScreen()
-                          :value.selectIndex == 4 ? AppointmentScreen()
-                          :value.selectIndex == 5 ? AppointmentFeeScreen()
-                          :value.selectIndex == 6 ? const DoctorPaymentScreen()
-                          :value.selectIndex == 7 ? const PatientPaymentScreen()
-                          :value.selectIndex == 8 ? SubscriptionScreen()
-                          :value.selectIndex == 9 ? HelpCenterScreen()
-                          :value.selectIndex == 10 ? const FaqScreen()
-                          :value.selectIndex == 11 ? DoctorSpecialityScreen()
-                          :value.selectIndex == 12 ? const ProfileScreen()
-                          :value.selectIndex == 13 ? EditProfileScreen()
-                          :value.selectIndex == 14 ? const SettingScreen()
+                          // :value.selectIndex == 3 ? RequestScreen()
+                          :value.selectIndex == 3 ? AppointmentScreen()
+                          :value.selectIndex == 4 ? AppointmentFeeScreen()
+                          :value.selectIndex == 5 ? const DoctorPaymentScreen()
+                          :value.selectIndex == 6 ? const PatientPaymentScreen()
+                          :value.selectIndex == 7 ? SubscriptionScreen()
+                          :value.selectIndex == 8 ? HelpCenterScreen()
+                          :value.selectIndex == 9 ? const FaqScreen()
+                          :value.selectIndex == 10 ? DoctorSpecialityScreen()
+                          :value.selectIndex == 11 ? const ProfileScreen()
+                          :value.selectIndex == 12 ? EditProfileScreen()
+                          :value.selectIndex == 13 ? const SettingScreen()
+                          :value.selectIndex == 14 ?  AddFaqScreen()
+                          :value.selectIndex == 15 ?  AppointmentDetailScreen()
                           : const SizedBox()
                   );
                 },),

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:tabibinet_admin_panel/Provider/DashBoard/dash_board_provider.dart';
 
 import '../../../Model/Res/Constants/app_colors.dart';
 import '../../../Model/Res/Constants/app_fonts.dart';
@@ -19,6 +20,7 @@ class FaqScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final pro = Provider.of<DashBoardProvider>(context);
     return ListView(
       shrinkWrap: true,
       children: [
@@ -37,17 +39,19 @@ class FaqScreen extends StatelessWidget {
                 SizedBox(width: 1.w),
                 AddButton(
                   onTap: () {
-                    Get.to(AddFaqScreen());
+                    pro.setSelectedIndex(14);
+                    // Get.to(AddFaqScreen());
                   },
                 ),
               ],
             );
           },
         ),
+        SizedBox(height: 2.h,),
         StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection('faq')
-              .orderBy('id', descending: true)
+              .orderBy('id', descending: false)
               .snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
