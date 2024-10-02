@@ -20,6 +20,7 @@ import '../../../Model/Res/Constants/app_colors.dart';
 import '../../../Model/Res/Constants/app_fonts.dart';
 import '../../../Model/Res/Constants/app_icons.dart';
 import '../../../Model/Res/Widgets/app_text_widget.dart';
+import '../../../Provider/DashBoard/dash_board_provider.dart';
 import '../AppointmentScreen/Components/appointment_card.dart';
 
 class AppointmentDetailScreen extends StatelessWidget {
@@ -37,6 +38,8 @@ class AppointmentDetailScreen extends StatelessWidget {
 
     final appointment = Provider.of<AppointmentProvider>(context).selectedAppointment;
     final appointmentP = Provider.of<AppointmentProvider>(context,listen: false);
+    final pro = Provider.of<DashBoardProvider>(context);
+
     // Convert timestamp to DateTime
     DateTime appointmentTime = DateTime.fromMillisecondsSinceEpoch(int.parse(appointment!.id));
 
@@ -49,8 +52,10 @@ class AppointmentDetailScreen extends StatelessWidget {
           Row(
             children: [
               InkWell(
+                  onTap: () {
+    pro.setSelectedIndex(3);
 
-                  onTap: () => appointmentP.setAppointmentScreen(false),
+    },
                   child: SvgPicture.asset(AppIcons.undoIcon)),
               SizedBox(width: 1.w,),
               AppText2(
@@ -142,7 +147,7 @@ class AppointmentDetailScreen extends StatelessWidget {
                             isTextCenter: false, textColor: textColor,fontFamily: AppFonts.medium),
                         SizedBox(height: 1.h,),
                         AppText(
-                            text: "\$${appointment.doctorFee}",
+                            text: "${appointment.doctorFee} MAD",
                             textDecoration: TextDecoration.underline,
                             fontSize: 12.sp, fontWeight: FontWeight.w500,
                             isTextCenter: false, textColor: Colors.grey,fontFamily: AppFonts.medium,

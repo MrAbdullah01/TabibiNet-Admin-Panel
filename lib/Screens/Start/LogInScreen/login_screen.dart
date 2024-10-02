@@ -19,6 +19,7 @@ import 'package:tabibinet_admin_panel/Provider/Login/login_provider.dart';
 import 'package:tabibinet_admin_panel/Screens/DashBoard/DashBoardScreen/dash_board_screen.dart';
 
 import '../../../Model/Res/utils/app_utils.dart';
+import '../../../Provider/DashBoard/dash_board_provider.dart';
 import '../../../Provider/actionProvider/Authen_provider.dart';
 import '../../../Provider/actionProvider/actionProvider.dart';
 
@@ -141,8 +142,10 @@ class LoginScreen extends StatelessWidget {
         email: emailC.text.toString(),
         password: passwordC.text.toString()
     ).then((value) {
+
       Get.to(()=> DashBoardScreen());
       ToastMsg().toastMsg("Log In Successfully!");
+
     },).onError((error, stackTrace) {
       ToastMsg().toastMsg(error.toString());
     },);

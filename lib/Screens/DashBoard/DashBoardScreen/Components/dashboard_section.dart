@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -14,59 +16,31 @@ import 'package:tabibinet_admin_panel/Screens/DashBoard/DashBoardScreen/Componen
 import 'monthly_charts.dart';
 
 
-class DashboardSection extends StatelessWidget {
+class DashboardSection extends StatefulWidget {
 
   DashboardSection({super.key});
 
-  // final List<Map<String, String>> items = [
-  //   {
-  //     "title" : "\$0",
-  //     "subTitle" : "Earning",
-  //     "icon" : AppIcons.dollarIcon,
-  //   },
-  //   {
-  //     "title" : "\$0",
-  //     "subTitle" : "Total Revenue",
-  //     "icon" : AppIcons.revenueIcon,
-  //   },
-  //   {
-  //     "title" : "36",
-  //     "subTitle" : "Patients",
-  //     "icon" : AppIcons.patient2Icon,
-  //   },
-  //   {
-  //     "title" : "56",
-  //     "subTitle" : "Doctors",
-  //     "icon" : AppIcons.doctorIcon,
-  //   },
-  //   {
-  //     "title" : "16",
-  //     "subTitle" : "Appointment",
-  //     "icon" : AppIcons.appointmentIcon,
-  //   },
-  //   {
-  //     "title" : "8",
-  //     "subTitle" : "Cancel\nAppointment",
-  //     "icon" : AppIcons.cancelAppointmentIcon,
-  //   },
-  //   {
-  //     "title" : "36",
-  //     "subTitle" : "Doctor Request",
-  //     "icon" : AppIcons.doctorRequestIcon,
-  //   },
-  //   {
-  //     "title" : "56",
-  //     "subTitle" : "Subscribers",
-  //     "icon" : AppIcons.crownIcon,
-  //   },
-  // ];
+  @override
+  State<DashboardSection> createState() => _DashboardSectionState();
+}
 
+class _DashboardSectionState extends State<DashboardSection> {
+  // This is the future to hold the result
+  Future<Map<String, int>>? userCountFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch user count by month only once in initState
+    userCountFuture = getUserCountByMonth();
+  }
+  // final List<Map<String, String>> items = [
   @override
   Widget build(BuildContext context) {
 
     return Consumer<DashBoardProvider>(
       builder: (context, value, child) {
-      final dashboardProvider = Provider.of<DashBoardProvider>(context, listen: false);
+      final dashboardProvider = Provider.of<DashBoardProvider>(context,);
 
       // Initialize listeners when the widget is first built
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -182,43 +156,55 @@ class DashboardSection extends StatelessWidget {
             ),
             SizedBox(height: 15.sp,),
             // PatientCountLineChart()
-            FutureBuilder<Map<String, int>>(
-              future: getUserCountByMonth(), // The future that resolves to user counts
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return const Center(child: Text('Error loading data'));
-                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(child: Text('No data available'));
-                } else {
-                  // Pass the user count data to the BarChartSample1 widget
-                  return BarChartSample1(userCounts: snapshot.data!);
-                }
-              },
-            ),
+            // FutureBuilder<Map<String, int>>(
+            //   future: userCountFuture, // The future that resolves to user counts
+            //   builder: (context, snapshot) {
+            //     if (snapshot.connectionState == ConnectionState.waiting) {
+            //       return const Center(child: Text("Waiting for Data"));
+            //     } else if (snapshot.hasError) {
+            //       return const Center(child: Text('Error loading data'));
+            //     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            //       return const Center(child: Text('No data available'));
+            //     } else {
+            //       // Pass the user count data to the BarChartSample1 widget
+            //       return BarChartSample1(userCounts: snapshot.data!);
+            //     }
+            //   },
+            // ),
+            BarChartSample1(),
           ],
         );
       },
       );
   });
 }
+
   Future<Map<String, int>> getUserCountByMonth() async {
     Map<String, int> userCountByMonth = {};
 
-    QuerySnapshot snapshot =
-    await FirebaseFirestore.instance.collection('users').get();
+    try {
+      QuerySnapshot snapshot =
+      await FirebaseFirestore.instance.collection('users').get();
 
-    for (var doc in snapshot.docs) {
-      Timestamp joinDateTimestamp = doc['creationDate'];
-      DateTime joinDate = joinDateTimestamp.toDate();
-      String formattedDate = DateFormat('MMMM yyyy').format(joinDate);
+      for (var doc in snapshot.docs) {
+        if (doc['creationDate'] != null && doc['creationDate'] is Timestamp) {
+          Timestamp joinDateTimestamp = doc['creationDate'];
+          DateTime joinDate = joinDateTimestamp.toDate();
+          String formattedDate = DateFormat('MMMM yyyy').format(joinDate);
 
-      if (userCountByMonth.containsKey(formattedDate)) {
-        userCountByMonth[formattedDate] = userCountByMonth[formattedDate]! + 1;
-      } else {
-        userCountByMonth[formattedDate] = 1;
+          // Increment the count for the specific month
+          if (userCountByMonth.containsKey(formattedDate)) {
+            userCountByMonth[formattedDate] = userCountByMonth[formattedDate]! + 1;
+            log("number iss::${userCountByMonth[formattedDate]}");
+          } else {
+            userCountByMonth[formattedDate] = 1;
+          }
+        } else {
+          print("Error: CreatedDate field is missing or not a valid Timestamp");
+        }
       }
+    } catch (e) {
+      print("Error fetching user data: $e");
     }
 
     return userCountByMonth;

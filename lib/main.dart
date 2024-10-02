@@ -6,6 +6,7 @@ import 'package:sizer/sizer.dart';
 import 'package:tabibinet_admin_panel/Provider/actionProvider/Authen_provider.dart';
 import 'package:tabibinet_admin_panel/Provider/actionProvider/actionProvider.dart';
 import 'package:tabibinet_admin_panel/Provider/chatProvider/chatProvider.dart';
+import 'package:tabibinet_admin_panel/Provider/userCounter/userCountProvider.dart';
 import 'package:tabibinet_admin_panel/Screens/DashBoard/DashBoardScreen/dash_board_screen.dart';
 import 'package:tabibinet_admin_panel/Screens/Start/SplashScreen/splash_screen.dart';
 
@@ -69,6 +70,7 @@ class MyApp extends StatelessWidget {
               ChangeNotifierProvider(create: (context) => CloudinaryProvider(),),
               ChangeNotifierProvider(create: (context) => ProfileInfoProvider(),),
               ChangeNotifierProvider(create: (context) => ChatProvider(),),
+              ChangeNotifierProvider(create: (context) => UserCountProvider(),),
             ],
 
           child: GetMaterialApp(

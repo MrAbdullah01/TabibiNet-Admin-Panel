@@ -119,6 +119,7 @@ class DashBoardScreen extends StatelessWidget {
                           :value.selectIndex == 13 ? const SettingScreen()
                           :value.selectIndex == 14 ?  AddFaqScreen()
                           :value.selectIndex == 15 ?  AppointmentDetailScreen()
+                          :value.selectIndex == 16 ?  SettingScreen()
                           : const SizedBox()
                   );
                 },),

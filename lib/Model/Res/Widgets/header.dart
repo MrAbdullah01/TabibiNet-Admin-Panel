@@ -67,7 +67,7 @@ class Header extends StatelessWidget {
                 // const SizedBox(width: 10,),
                 InkWell(
                     onTap: () {
-                      dashP.setSelectedIndex(14);
+                      dashP.setSelectedIndex(16);
                     },
                     child: SvgPicture.asset(AppIcons.settingIcon, height: 20,)),
               ],
@@ -158,7 +158,7 @@ class Header extends StatelessWidget {
                   fontFamily:  AppFonts.regular,maxLines: 1,),
               InkWell(
                 onTap: () {
-                  dashP.setSelectedIndex(12);
+                  dashP.setSelectedIndex(11);
                   Navigator.pop(context);
                   },
                 child: Container(
@@ -181,7 +181,7 @@ class Header extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  dashP.setSelectedIndex(13);
+                  dashP.setSelectedIndex(12);
                   Navigator.pop(context);
                   },
                 child: Container(
