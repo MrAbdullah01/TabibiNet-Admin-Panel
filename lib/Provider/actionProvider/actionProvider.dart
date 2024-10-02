@@ -49,18 +49,22 @@ class ActionProvider extends ChangeNotifier{
   }
 ///to update the value of button on updating speciality
   String _buttonText = 'Add';
+  String _buttonFaqText = 'Delete';
   String? _editingId;
   String get buttonText => _buttonText;
+  String get buttonFaqText => _buttonFaqText;
   String? get editingId => _editingId;
 
   void setEditingMode(String id) {
     _buttonText = 'Update';
+    _buttonFaqText = 'Update';
     _editingId = id;
     notifyListeners();
   }
 
   void resetMode() {
     _buttonText = 'Add';
+    _buttonFaqText = 'Delete';
     _editingId = null;
     notifyListeners();
   }

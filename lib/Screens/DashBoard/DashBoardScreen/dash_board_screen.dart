@@ -26,6 +26,7 @@ import '../../../Provider/DashBoard/dash_board_provider.dart';
 import '../../../Provider/profileProvider/profileInfo.dart';
 import '../AppointmentFeeScreen/appointment_fee_screen.dart';
 import '../AppointmentScreen/appointment_screen.dart';
+import '../DoctorPaymentScreen/Components/invoice_dialogue_card.dart';
 import '../DoctorSpeciality/doctorSpecialityScreen.dart';
 import '../EditProfileScreen/edit_profile_screen.dart';
 import '../HealthCareScren/health_care_screen.dart';
@@ -112,7 +113,7 @@ class DashBoardScreen extends StatelessWidget {
                           :value.selectIndex == 6 ? const PatientPaymentScreen()
                           :value.selectIndex == 7 ? SubscriptionScreen()
                           :value.selectIndex == 8 ? HelpCenterScreen()
-                          :value.selectIndex == 9 ? const FaqScreen()
+                          :value.selectIndex == 9 ?  AddFaqScreen()
                           :value.selectIndex == 10 ? DoctorSpecialityScreen()
                           :value.selectIndex == 11 ? const ProfileScreen()
                           :value.selectIndex == 12 ? EditProfileScreen()
@@ -120,6 +121,7 @@ class DashBoardScreen extends StatelessWidget {
                           :value.selectIndex == 14 ?  AddFaqScreen()
                           :value.selectIndex == 15 ?  AppointmentDetailScreen()
                           :value.selectIndex == 16 ?  SettingScreen()
+                          :value.selectIndex == 17 ?  InvoiceDialogueCard()
                           : const SizedBox()
                   );
                 },),

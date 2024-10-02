@@ -151,9 +151,9 @@ class InvoiceDialogueCard extends StatelessWidget {
                         const Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            RowText(text1: "Subtotal: ", text2: "\$220"),
+                            RowText(text1: "Subtotal: ", text2: "220 MAD"),
                             RowText(text1: "Disscount: ", text2: "-10%"),
-                            RowText(text1: "Total: ", text2: "\$205"),
+                            RowText(text1: "Total: ", text2: "205 MAD"),
                           ],
                         )
                       ],

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:tabibinet_admin_panel/Provider/DashBoard/dash_board_provider.dart';
 import 'package:tabibinet_admin_panel/Screens/DashBoard/DoctorPaymentScreen/Components/invoice_dialogue_card.dart';
 
 import '../../../Model/Res/Constants/app_assets.dart';
@@ -17,6 +18,7 @@ class DoctorPaymentScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final pro = Provider.of<DashBoardProvider>(context);
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -117,7 +119,8 @@ class DoctorPaymentScreen extends StatelessWidget {
                             SizedBox(width: 1.w,),
                             IconButton(
                                 onPressed: () {
-                                  value.setIndex(index);
+                                  // value.setIndex(index);
+                                  pro.setSelectedIndex(17);
                                 },
                                 icon: Icon(
                                   isSelected ?

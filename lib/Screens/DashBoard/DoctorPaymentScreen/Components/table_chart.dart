@@ -73,7 +73,7 @@ class TableChart extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text(
-                  '\$220',
+                  '220 MAD',
                   textAlign: TextAlign.right,
                   style: TextStyle(
                       fontFamily: AppFonts.medium
