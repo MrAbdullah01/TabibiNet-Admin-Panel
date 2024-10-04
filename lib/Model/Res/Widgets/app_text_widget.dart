@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:tabibinet_admin_panel/Model/Res/Constants/app_colors.dart';
 
 class AppText extends StatelessWidget {
   const AppText(
@@ -36,6 +37,7 @@ class AppText extends StatelessWidget {
       textAlign: isTextCenter == true ? TextAlign.center: TextAlign.start,
       style: TextStyle(
           decoration: textDecoration,
+          decorationColor: themeColor,
           fontSize: fontSize, fontWeight: fontWeight, color: textColor,fontFamily: fontFamily),);
   }
 }

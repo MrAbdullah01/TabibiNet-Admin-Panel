@@ -92,11 +92,12 @@ import 'package:tabibinet_admin_panel/Provider/profileProvider/profileInfo.dart'
               SizedBox(height: 2.h,),
               Row(
                 children: [
-                  // InfoField(text1: "Email",
-                  //     hint:  value.profileEmail !=null ?  emailC.text = value.profileEmail.toString() : "Enter Email",
-                  //
-                  //     controller: emailC),
-                  // SizedBox(width: 10.w,),
+                  InfoField(
+                      text1: "Email",
+                      hint:  value.profileEmail !=null ?  emailC.text = value.profileEmail.toString() : "Enter Email",
+
+                      controller: emailC),
+                  SizedBox(width: 10.w,),
                   InfoField(text1: "Phone Number",
                       hint:  value.profilePhone !=null ?  phoneC.text = value.profilePhone.toString() : "Enter Number",
 
@@ -157,11 +158,11 @@ import 'package:tabibinet_admin_panel/Provider/profileProvider/profileInfo.dart'
       ActionProvider.startLoading();
       final cloudinaryProvider = Provider.of<CloudinaryProvider>(context, listen: false);
       // Email validation to check if it contains @gmail.com
-      if (!emailC.text.contains('@gmail.com')) {
-        ActionProvider.stopLoading();
-        ToastMsg().toastMsg('Please enter a valid Gmail address');
-        return;
-      }
+      // if (!emailC.text.contains('@gmail.com')) {
+      //   ActionProvider.stopLoading();
+      //   ToastMsg().toastMsg('Please enter a valid Gmail address');
+      //   return;
+      // }
 
       if (firstNameC.text.isEmpty ||
           lastNameC.text.isEmpty ||
@@ -183,7 +184,7 @@ import 'package:tabibinet_admin_panel/Provider/profileProvider/profileInfo.dart'
           await FirebaseFirestore.instance.collection('admin').doc("XcZeK5QjfBpZkrp03pGD").update({
             'firstName': firstNameC.text,
             'lastName': lastNameC.text,
-            // 'email': emailC.text,
+            'email': emailC.text,
             'address': addressC.text,
             'phoneNumber': phoneC.text,
             'imageUrl': cloudinaryProvider.imageUrl.toString(),
@@ -215,10 +216,12 @@ import 'package:tabibinet_admin_panel/Provider/profileProvider/profileInfo.dart'
       required this.text1,
       required this.controller,
        this.hint,
+      this.readOnly =false,
     });
 
     final String text1;
     final String? hint;
+    final bool readOnly;
     final TextEditingController controller;
 
     @override
@@ -235,6 +238,7 @@ import 'package:tabibinet_admin_panel/Provider/profileProvider/profileInfo.dart'
           SizedBox(
               width: 15.w,
               child: AppTextField(
+                readOnly: readOnly,
                 hintText: hint ?? "",
                   inputController: controller,
 

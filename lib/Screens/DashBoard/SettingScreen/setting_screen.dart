@@ -11,6 +11,7 @@ import '../../../Model/Res/Constants/app_colors.dart';
 import '../../../Model/Res/Constants/app_fonts.dart';
 import '../../../Model/Res/Constants/firebase.dart';
 import '../../../Model/Res/Widgets/app_text_widget.dart';
+import '../../Start/LogInScreen/loginF.dart';
 import '../../Start/LogInScreen/login_screen.dart';
 
 class SettingScreen extends StatelessWidget {
@@ -33,7 +34,7 @@ class SettingScreen extends StatelessWidget {
           title: "Edit Profile",
           icon: AppIcons.editIcon,
           press: () {
-
+            dashP.setSelectedIndex(12);
           },),
         SizedBox(height: 2.h,),
         Row(

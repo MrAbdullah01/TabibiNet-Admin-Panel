@@ -8,6 +8,7 @@ import 'package:sizer/sizer.dart';
 import '../../../Model/Res/Constants/app_assets.dart';
 import '../../../Model/Res/Constants/app_colors.dart';
 import '../../../Model/Services/SplashServices/splash_services.dart';
+import '../LogInScreen/loginF.dart';
 import '../LogInScreen/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {

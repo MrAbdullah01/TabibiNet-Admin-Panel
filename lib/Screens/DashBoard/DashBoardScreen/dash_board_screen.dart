@@ -24,6 +24,7 @@ import '../../../Model/Res/Widgets/submit_button.dart';
 import '../../../Provider/DashBoard/Components/side_menu_bar_section.dart';
 import '../../../Provider/DashBoard/dash_board_provider.dart';
 import '../../../Provider/profileProvider/profileInfo.dart';
+import '../../Start/LogInScreen/loginF.dart';
 import '../AppointmentFeeScreen/appointment_fee_screen.dart';
 import '../AppointmentScreen/appointment_screen.dart';
 import '../DoctorPaymentScreen/Components/invoice_dialogue_card.dart';

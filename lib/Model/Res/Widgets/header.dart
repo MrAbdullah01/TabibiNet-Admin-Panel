@@ -9,6 +9,7 @@ import 'package:tabibinet_admin_panel/Model/Res/Constants/app_icons.dart';
 import 'package:tabibinet_admin_panel/Model/Res/Widgets/app_text_widget.dart';
 import 'package:tabibinet_admin_panel/Provider/DashBoard/dash_board_provider.dart';
 import '../../../Provider/profileProvider/profileInfo.dart';
+import '../../../Screens/Start/LogInScreen/loginF.dart';
 import '../../../Screens/Start/LogInScreen/login_screen.dart';
 import '../Constants/app_assets.dart';
 import '../Constants/app_colors.dart';
@@ -146,7 +147,7 @@ class Header extends StatelessWidget {
                     : const AssetImage(AppAssets.profileImage) as ImageProvider,
               ),
               AppText(
-                  text: profileInfo.profileName.toString() + profileInfo.profileLastName.toString(),
+                  text: profileInfo.profileName.toString() + " "+profileInfo.profileLastName.toString(),
                   fontSize: 10.sp, fontWeight: FontWeight.w600,
                   isTextCenter: false, textColor: themeColor,
                   fontFamily:  AppFonts.regular),
