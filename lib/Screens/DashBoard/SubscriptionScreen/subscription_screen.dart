@@ -10,6 +10,7 @@ import 'package:tabibinet_admin_panel/Screens/DashBoard/EditSubscriptionScreen/e
 
 import '../../../Model/Res/Constants/app_assets.dart';
 import '../../../Model/Res/Widgets/info_tile.dart';
+import '../../../Model/data/user_model.dart';
 
 class SubscriptionScreen extends StatelessWidget {
   SubscriptionScreen({super.key});
@@ -62,70 +63,89 @@ class SubscriptionScreen extends StatelessWidget {
           builder: (context, value, child) {
             return value.isEditSub ?
             EditSubscriptionScreen() :
-            ListView.separated(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return InfoTile(
-                  nameText: "name",
-                  emailText: "email",
-                  phoneText: "phone number will show here",
-                  statusText: "Basics",
-                  isAddIcon: false,
-                  isStatusText: true,
-                  image: AppAssets.profileImage,
-                  editTap: (){
-                    value.setSub(true);
-                  },
-                  delTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          backgroundColor: greenColor,
-                          title: const Text(
-                            'Delete Subscription!',
-                            style: TextStyle(
-                                fontFamily: AppFonts.semiBold,
-                                color: bgColor
-                            ),
-                          ),
-                          content: const Text(
-                            'Are you sure you want to Delete Subscription of Alex?',
-                            style: TextStyle(
-                                fontFamily: AppFonts.regular,
-                                color: bgColor
-                            ),
-                          ),
-                          actions: <Widget>[
-                            SubmitButton(
-                              height: 30,
-                              width: 8.w,
-                              textSize: 12.sp,
-                              bgColor: greenColor,
-                              textColor: bgColor,
-                              bdColor: bgColor,
-                              title: "No",
-                              press: () => Get.back(),),
-                            SubmitButton(
-                              height: 30,
-                              width: 8.w,
-                              textSize: 12.sp,
-                              bgColor: bgColor,
-                              textColor: greenColor,
-                              bdColor: bgColor,
-                              title: "Yes",
-                              press: () => Get.back(),),
-                          ],
+            StreamBuilder<List<UserModel>>(
+              stream: value.fetchUsers(),
+              builder: (context, snapshot) {
+
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                }
+                if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Text("No Users Found");
+                }
+
+                final users = snapshot.data!;
+
+                return ListView.separated(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: users.length,
+                  itemBuilder: (context, index) {
+                    final user = users[index];
+                    return InfoTile(
+                      nameText: user.name,
+                      emailText: user.email,
+                      phoneText: user.phoneNumber,
+                      statusText: user.memberShip,
+                      isAddIcon: false,
+                      isEditIcon: false,
+                      isStatusText: true,
+                      image: AppAssets.profileImage,
+                      editTap: (){
+                        value.setSub(true);
+                      },
+                      delTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              backgroundColor: greenColor,
+                              title: const Text(
+                                'Delete Subscription!',
+                                style: TextStyle(
+                                    fontFamily: AppFonts.semiBold,
+                                    color: bgColor
+                                ),
+                              ),
+                              content: const Text(
+                                'Are you sure you want to Delete Subscription of Alex?',
+                                style: TextStyle(
+                                    fontFamily: AppFonts.regular,
+                                    color: bgColor
+                                ),
+                              ),
+                              actions: <Widget>[
+                                SubmitButton(
+                                  height: 30,
+                                  width: 8.w,
+                                  textSize: 12.sp,
+                                  bgColor: greenColor,
+                                  textColor: bgColor,
+                                  bdColor: bgColor,
+                                  title: "No",
+                                  press: () => Get.back(),),
+                                SubmitButton(
+                                  height: 30,
+                                  width: 8.w,
+                                  textSize: 12.sp,
+                                  bgColor: bgColor,
+                                  textColor: greenColor,
+                                  bdColor: bgColor,
+                                  title: "Yes",
+                                  press: () => Get.back(),),
+                              ],
+                            );
+                          },
                         );
                       },
                     );
                   },
-                );
-              },
-              separatorBuilder: (context, index) {
-                return SizedBox(height: 15.sp,);
+                  separatorBuilder: (context, index) {
+                    return SizedBox(height: 15.sp,);
+                  },);
               },);
           },)
       ],
