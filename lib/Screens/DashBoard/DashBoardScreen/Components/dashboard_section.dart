@@ -200,7 +200,7 @@ class _DashboardSectionState extends State<DashboardSection> {
             userCountByMonth[formattedDate] = 1;
           }
         } else {
-          print("Error: CreatedDate field is missing or not a valid Timestamp");
+          log("Error: CreatedDate field is missing or not a valid Timestamp");
         }
       }
     } catch (e) {
