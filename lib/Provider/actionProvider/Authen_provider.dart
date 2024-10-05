@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -51,5 +52,59 @@ class AuthenticationProvider extends ChangeNotifier{
       }
     }
   }
+
+
+
+  ////for image and name from firebase/////////
+
+
+
+  String _userName = '';
+  String _profileImageUrl = '';
+
+  String get userName => _userName;
+  String get profileImageUrl => _profileImageUrl;
+
+  Future<void> fetchUserProfile(String userId) async {
+    try {
+      DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance
+          .collection('admin')
+          .doc('XcZeK5QjfBpZkrp03pGD')
+          .get();
+
+      if (snapshot.exists) {
+        final data = snapshot.data();
+        _userName = data?['firstName'] ?? 'N/A';
+        _profileImageUrl = data?['imageUrl'] ?? '';
+        notifyListeners();
+      }
+    } catch (e) {
+      print('Error fetching user profile: $e');
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

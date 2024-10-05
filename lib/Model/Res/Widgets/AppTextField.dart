@@ -13,7 +13,7 @@ class AppTextField extends StatelessWidget {
   final int? maxLines, maxLength;
   final IconData? prefixIcon;
   final Widget? suffixIcon;
-  final bool obscureText;
+  final bool obscureText,readOnly;
   final String? Function(String?)? validator;
 
   const AppTextField({
@@ -26,12 +26,13 @@ class AppTextField extends StatelessWidget {
     this.maxLength,
     this.prefixIcon,
     this.suffixIcon,
-    this.obscureText = false, this.validator,
+    this.obscureText = false, this.validator,  this.readOnly= false,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      readOnly: readOnly,
       maxLines: maxLines,
       textInputAction: textInputAction,
       keyboardType: type,

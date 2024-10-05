@@ -8,8 +8,9 @@ class AppointmentDetails {
   final String doctorName;
   final String doctorLocation;
   final String checkUpType;
+  final String image;
 
-  AppointmentDetails({required this.checkUpType,
+  AppointmentDetails( {required this.checkUpType,required this.image,
     required this.doctorName,required this.doctorLocation,required this.id, required this.patientName, required this.patientEmail, required this.patientPhone, required this.doctorFee, required this.appointmentTime,
   });
 
@@ -25,6 +26,7 @@ class AppointmentDetails {
       doctorName: data['doctorName'] ?? '',
       doctorLocation: data['doctorLocation'] ?? '',
       checkUpType: data['feesType'] ?? '',
+      image: data['image'] ?? '',
     );
   }
 }

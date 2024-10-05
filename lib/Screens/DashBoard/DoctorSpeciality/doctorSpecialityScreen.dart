@@ -123,14 +123,18 @@ class DoctorSpecialityScreen extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              AppText(
-                                text:
-                                specialty["specialty"],
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                isTextCenter: false,
-                                textColor: themeColor,
-                                fontFamily: AppFonts.medium,
+                              SizedBox(
+                                width: 20.w,
+                                child: AppText(
+                                  text:
+                                  specialty["specialty"],
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  isTextCenter: false,
+                                  textColor: themeColor,
+                                  overflow: TextOverflow.ellipsis ,
+                                  fontFamily: AppFonts.medium,
+                                ),
                               ),
                               const Spacer(),
                               Row(

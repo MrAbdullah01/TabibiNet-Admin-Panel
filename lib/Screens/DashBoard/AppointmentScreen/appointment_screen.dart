@@ -19,6 +19,7 @@ import '../../../Model/Res/Constants/app_fonts.dart';
 import '../../../Model/Res/Constants/app_icons.dart';
 import '../../../Model/Res/Widgets/app_text_widget.dart';
 import '../../../Model/Res/Widgets/submit_button.dart';
+import '../../../Provider/DashBoard/dash_board_provider.dart';
 import 'Components/model/appointmentModel.dart';
 
 class AppointmentScreen extends StatelessWidget {
@@ -33,6 +34,8 @@ class AppointmentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appointmentP = Provider.of<AppointmentProvider>(context, listen: false);
+    final pro = Provider.of<DashBoardProvider>(context);
+
     return Consumer<AppointmentProvider>(
       builder: (context, value, child) {
         return  ListView(
@@ -77,7 +80,7 @@ class AppointmentScreen extends StatelessWidget {
                       stream: FirebaseFirestore.instance
                           .collection('appointment')
                       .where("status" ,isEqualTo: value.changeFilter)
-                          //.orderBy('id', descending: true)
+                         // .orderBy('id', descending: true)
                           .snapshots(),
                       builder:
                           (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -127,9 +130,12 @@ class AppointmentScreen extends StatelessWidget {
                                     width: 80,
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
-                                        image: const DecorationImage(
-                                            image: AssetImage(
-                                                AppAssets.doctorImage))),
+                                        image:  DecorationImage(
+                                          image: appointment.image != null? NetworkImage(appointment.image)
+                                            : AssetImage(
+                                                 AppAssets.doctorImage),
+                                        ),
+                                    ),
                                   ),
                                   SizedBox(
                                     width: 1.w,
@@ -225,9 +231,11 @@ class AppointmentScreen extends StatelessWidget {
                                       onTap: () {
                                         appointmentP.setSelectedAppointment(appointment);
                                         appointmentP.setAppointmentScreen(true);
-                                       Get.to(
-                                           AppointmentDetailScreen(),
-                                       );
+                                        pro.setSelectedIndex(15);
+
+                                       //  Get.to(
+                                       //     AppointmentDetailScreen(),
+                                       // );
 
                                         },
                                       child: SvgPicture.asset(

@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:tabibinet_admin_panel/Model/Res/Constants/app_colors.dart';
 
 class AppText extends StatelessWidget {
   const AppText(
@@ -7,7 +8,7 @@ class AppText extends StatelessWidget {
         required this.text,
         required this.fontSize,
         required this.fontWeight,
-        required this.isTextCenter,
+         this.isTextCenter,
         required this.textColor,
         this.maxLines,
         this.fontFamily = "Regular",
@@ -19,7 +20,7 @@ class AppText extends StatelessWidget {
   final double fontSize;
   final FontWeight fontWeight;
   final Color textColor;
-  final bool isTextCenter;
+  final bool? isTextCenter;
   final int? maxLines;
   final String fontFamily;
   final ValueKey<int>? valueKey;
@@ -28,6 +29,7 @@ class AppText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AutoSizeText(
+      minFontSize: 8.0,
       key: valueKey,
       text,
       maxLines: maxLines,
@@ -35,6 +37,7 @@ class AppText extends StatelessWidget {
       textAlign: isTextCenter == true ? TextAlign.center: TextAlign.start,
       style: TextStyle(
           decoration: textDecoration,
+          decorationColor: themeColor,
           fontSize: fontSize, fontWeight: fontWeight, color: textColor,fontFamily: fontFamily),);
   }
 }

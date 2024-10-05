@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../Screens/DashBoard/DashBoardScreen/dash_board_screen.dart';
+import '../../../Screens/Start/LogInScreen/loginF.dart';
 import '../../../Screens/Start/LogInScreen/login_screen.dart';
 
 class SplashServices {

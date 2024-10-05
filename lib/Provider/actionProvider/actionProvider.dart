@@ -49,19 +49,35 @@ class ActionProvider extends ChangeNotifier{
   }
 ///to update the value of button on updating speciality
   String _buttonText = 'Add';
+  String _buttonFaqText = 'Delete';
+  String _buttonLoginText = 'Login';
   String? _editingId;
+  bool _isUpdate = false;
   String get buttonText => _buttonText;
+  String get buttonFaqText => _buttonFaqText;
+  String get buttonLoginText => _buttonLoginText;
   String? get editingId => _editingId;
+  bool get isUpdate => _isUpdate;
 
   void setEditingMode(String id) {
     _buttonText = 'Update';
+    _buttonFaqText = 'Update';
+    _buttonLoginText = 'Update Password';
     _editingId = id;
+    notifyListeners();
+  }
+  void setLoginMode(bool value) {
+    _buttonLoginText = 'Update Password';
+    _isUpdate = value;
     notifyListeners();
   }
 
   void resetMode() {
     _buttonText = 'Add';
+    _buttonFaqText = 'Delete';
+    _buttonLoginText = 'Login';
     _editingId = null;
+    _isUpdate = false;
     notifyListeners();
   }
 
@@ -170,5 +186,18 @@ class ActionProvider extends ChangeNotifier{
     _endDate = dateTimeRange.end;
     notifyListeners();  // Notify listeners (UI will be updated)
   }
+  //////////////forget password/////////////
+
+
+
+  bool _isForgetPasswordVisible = false;
+
+  bool get isForgetPasswordVisible => _isForgetPasswordVisible;
+
+  void toggleForgetPasswordField() {
+    _isForgetPasswordVisible = !_isForgetPasswordVisible;
+    notifyListeners();
+  }
+
 
 }

@@ -85,7 +85,7 @@ class PatientPaymentScreen extends StatelessWidget {
                           fontFamily: AppFonts.semiBold,),
                         const Spacer(),
                         AppText(
-                          text: "June 9, 2024, 08:22 AM",
+                          text: "will show the date here",
                           fontSize: 14.sp, fontWeight: FontWeight.w600,
                           isTextCenter: false, textColor: textColor,
                           fontFamily: AppFonts.semiBold,),
@@ -98,7 +98,7 @@ class PatientPaymentScreen extends StatelessWidget {
                               isTextCenter: false, textColor: textColor,
                               fontFamily: AppFonts.semiBold,),
                             AppText2(
-                              text: "Cardiology",
+                              text: "speciality",
                               fontSize: 11.sp, fontWeight: FontWeight.w600,
                               isTextCenter: false, textColor: themeColor,
                               fontFamily: AppFonts.medium,),
@@ -106,7 +106,7 @@ class PatientPaymentScreen extends StatelessWidget {
                         ),
                         const Spacer(),
                         AppText(
-                          text: "\$512",
+                          text: "\$0",
                           fontSize: 14.sp, fontWeight: FontWeight.w600,
                           isTextCenter: false, textColor: textColor,
                           fontFamily: AppFonts.semiBold,),

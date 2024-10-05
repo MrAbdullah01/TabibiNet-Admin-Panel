@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tabibinet_admin_panel/Provider/Faq/faq_provider.dart';
 import 'package:tabibinet_admin_panel/Provider/Subscription/subscription_provider.dart';
+import 'package:tabibinet_admin_panel/Provider/profileProvider/profileInfo.dart';
 import 'package:tabibinet_admin_panel/Screens/DashBoard/AddFaqScreen/add_faq_screen.dart';
 
 import '../../../Model/Res/Constants/app_colors.dart';
@@ -29,10 +30,10 @@ class SideMenuBarSection extends StatelessWidget {
       "title" : "Patients",
       "icon" : AppIcons.patientIcon
     },
-    {
-      "title" : "Requests",
-      "icon" : AppIcons.resultIcon
-    },
+    // {
+    //   "title" : "Requests",
+    //   "icon" : AppIcons.resultIcon
+    // },
     {
       "title" : "Appointments",
       "icon" : AppIcons.appointmentIcon

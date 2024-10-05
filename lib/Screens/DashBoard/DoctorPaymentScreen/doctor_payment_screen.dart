@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:tabibinet_admin_panel/Provider/DashBoard/dash_board_provider.dart';
 import 'package:tabibinet_admin_panel/Screens/DashBoard/DoctorPaymentScreen/Components/invoice_dialogue_card.dart';
 
 import '../../../Model/Res/Constants/app_assets.dart';
@@ -17,6 +18,7 @@ class DoctorPaymentScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final pro = Provider.of<DashBoardProvider>(context);
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -93,13 +95,13 @@ class DoctorPaymentScreen extends StatelessWidget {
                               fontFamily: AppFonts.semiBold,),
                             const Spacer(),
                             AppText(
-                              text: "June 9, 2024, 08:22 AM",
+                              text: "Will show the date here",
                               fontSize: 14.sp, fontWeight: FontWeight.w600,
                               isTextCenter: false, textColor: textColor,
                               fontFamily: AppFonts.semiBold,),
                             const Spacer(),
                             AppText(
-                              text: "\$512",
+                              text: "\$0",
                               fontSize: 14.sp, fontWeight: FontWeight.w600,
                               isTextCenter: false, textColor: textColor,
                               fontFamily: AppFonts.semiBold,),
@@ -117,7 +119,8 @@ class DoctorPaymentScreen extends StatelessWidget {
                             SizedBox(width: 1.w,),
                             IconButton(
                                 onPressed: () {
-                                  value.setIndex(index);
+                                  // value.setIndex(index);
+                                  pro.setSelectedIndex(17);
                                 },
                                 icon: Icon(
                                   isSelected ?

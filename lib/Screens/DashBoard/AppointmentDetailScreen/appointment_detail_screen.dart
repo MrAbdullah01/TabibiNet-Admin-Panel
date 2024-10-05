@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -18,6 +20,7 @@ import '../../../Model/Res/Constants/app_colors.dart';
 import '../../../Model/Res/Constants/app_fonts.dart';
 import '../../../Model/Res/Constants/app_icons.dart';
 import '../../../Model/Res/Widgets/app_text_widget.dart';
+import '../../../Provider/DashBoard/dash_board_provider.dart';
 import '../AppointmentScreen/Components/appointment_card.dart';
 
 class AppointmentDetailScreen extends StatelessWidget {
@@ -35,6 +38,8 @@ class AppointmentDetailScreen extends StatelessWidget {
 
     final appointment = Provider.of<AppointmentProvider>(context).selectedAppointment;
     final appointmentP = Provider.of<AppointmentProvider>(context,listen: false);
+    final pro = Provider.of<DashBoardProvider>(context);
+
     // Convert timestamp to DateTime
     DateTime appointmentTime = DateTime.fromMillisecondsSinceEpoch(int.parse(appointment!.id));
 
@@ -47,7 +52,10 @@ class AppointmentDetailScreen extends StatelessWidget {
           Row(
             children: [
               InkWell(
-                  onTap: () => appointmentP.setAppointmentScreen(false),
+                  onTap: () {
+    pro.setSelectedIndex(3);
+
+    },
                   child: SvgPicture.asset(AppIcons.undoIcon)),
               SizedBox(width: 1.w,),
               AppText2(
@@ -70,11 +78,15 @@ class AppointmentDetailScreen extends StatelessWidget {
                   children: [
                     Container(
                       height: 80,
-                      width: 100,
+                      width: 80,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          image: const DecorationImage(
-                              image: AssetImage(AppAssets.doctorImage)
+                          borderRadius: BorderRadius.circular(80),
+                          image:  DecorationImage(
+                              image:
+                              appointment.image != null && appointment.image.isNotEmpty
+                                  ? NetworkImage(appointment.image) // If image URL is valid, load from network
+                                  : AssetImage(AppAssets.doctorImage) as ImageProvider,
+                            fit: BoxFit.cover,
                           )
                       ),
                     ),
@@ -135,7 +147,7 @@ class AppointmentDetailScreen extends StatelessWidget {
                             isTextCenter: false, textColor: textColor,fontFamily: AppFonts.medium),
                         SizedBox(height: 1.h,),
                         AppText(
-                            text: "\$${appointment.doctorFee}",
+                            text: "${appointment.doctorFee} MAD",
                             textDecoration: TextDecoration.underline,
                             fontSize: 12.sp, fontWeight: FontWeight.w500,
                             isTextCenter: false, textColor: Colors.grey,fontFamily: AppFonts.medium,

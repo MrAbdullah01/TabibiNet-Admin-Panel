@@ -1,10 +1,15 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tabibinet_admin_panel/Model/Res/components/loadingButton.dart';
+import 'package:tabibinet_admin_panel/Model/Res/components/suggestionContainer.dart';
 
 import '../../../Model/Res/Constants/app_colors.dart';
 import '../../../Model/Res/Constants/app_fonts.dart';
+import '../../../Model/Res/Constants/app_icons.dart';
 import '../../../Model/Res/Widgets/add_button.dart';
 import '../../../Model/Res/Widgets/app_text_widget.dart';
 import '../../../Model/Res/Widgets/submit_button.dart';
@@ -67,7 +72,7 @@ class AppointmentFeeScreen extends StatelessWidget {
             fontFamily: AppFonts.semiBold,),
           SizedBox(height: 10.sp,),
           SizedBox(
-              width: 30.w,
+              width: 40.w,
               child: StreamBuilder(
                   stream: FirebaseFirestore.instance
                       .collection('feeInformation')
@@ -75,15 +80,15 @@ class AppointmentFeeScreen extends StatelessWidget {
                       .snapshots(),
                   builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     }
 
                     if (snapshot.hasError) {
-                      return Center(child: Text('Error appointmentFee specialties.'));
+                      return const Center(child: Text('Error appointmentFee specialties.'));
                     }
 
                     if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                      return Center(child: Text('No appointmentFee found.'));
+                      return const Center(child: Text('No appointmentFee found.'));
                     }
 
                     var appointmentFee = snapshot.data!.docs;
@@ -108,11 +113,15 @@ class AppointmentFeeScreen extends StatelessWidget {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  AppText(
-                                    text: model["type"],
-                                    fontSize: 12.sp, fontWeight: FontWeight.w500,
-                                    isTextCenter: false, textColor: textColor,
-                                    fontFamily: AppFonts.medium,
+                                  SizedBox(
+                                    width: 15.w,
+                                    child: AppText(
+                                      text: model["type"],
+                                      fontSize: 12.sp, fontWeight: FontWeight.w500,
+                                      isTextCenter: false, textColor: textColor,
+                                      fontFamily: AppFonts.medium,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
                                   SizedBox(
                                     width: 20.w,
@@ -125,17 +134,25 @@ class AppointmentFeeScreen extends StatelessWidget {
                                   ),
                                 ],),
                               const Spacer(),
-                              SubmitButton(
-                                title: "MAD ${model["fees"]}",
+                              SuggestionContainer(
+                                text: "${model["fees"]}MAD",
                                 height: 35,
                                 width: 8.w,
                                 radius: 6,
                                 textColor: themeColor,
-                                bdColor: const Color(0xffE6F4F2),
                                 bgColor: const Color(0xffE6F4F2),
-                                press: () {
+                                overflow: TextOverflow.ellipsis,
+                                onTap: () {
 
-                                },)
+                                },),
+                              Padding(
+                                padding:  EdgeInsets.only(left: 2.w,right: 1.w),
+                                child: InkWell(
+                                    onTap:  (){
+                                      deleteFeeInfo(context,model['id']);
+                                    },
+                                    child: SvgPicture.asset(AppIcons.deleteIcon,height: 4.h,)),
+                              ),
                             ],
                           ),
                         );
@@ -179,6 +196,23 @@ class AppointmentFeeScreen extends StatelessWidget {
         const SnackBar(content: Text('Please enter all fields')),
       );
     }
+  }
+
+  void deleteFeeInfo(context,String userID) {
+    log("user id is:::${userID}");
+    FirebaseFirestore.instance
+       .collection('feeInformation')
+       .doc(userID)
+       .delete()
+       .then((value) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Appointment Fee deleted!')),
+          );
+        }).catchError((error) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error Occurred: $error')),
+          );
+        });
   }
 
 }

@@ -68,9 +68,9 @@ class SubscriptionScreen extends StatelessWidget {
               itemCount: 10,
               itemBuilder: (context, index) {
                 return InfoTile(
-                  nameText: "ALexon",
-                  emailText: "info@gmail.com",
-                  phoneText: "+92 356 678 90",
+                  nameText: "name",
+                  emailText: "email",
+                  phoneText: "phone number will show here",
                   statusText: "Basics",
                   isAddIcon: false,
                   isStatusText: true,

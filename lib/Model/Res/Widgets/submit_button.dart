@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
@@ -58,9 +59,9 @@ class SubmitButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (title != null)
-              Text(
+              AutoSizeText(
                 title!,
-                style: TextStyle(
+                style: TextStyle(overflow: TextOverflow.ellipsis,
                     color: textColor ?? Colors.white, fontSize: textSize, fontWeight: FontWeight.w500,fontFamily: "Medium"),
               ),
             if (icon != null)

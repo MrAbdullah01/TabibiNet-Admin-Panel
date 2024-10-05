@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -49,11 +51,13 @@ class PatientScreen extends StatelessWidget {
                 stream: FirebaseFirestore.instance
                     .collection('users')
                     .where('userType', isEqualTo: "Patient")
+                .orderBy("specialityId", descending: true)
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
+                    log(snapshot.error.toString());
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                     return const Center(child: Text('No users found'));
@@ -80,9 +84,15 @@ class PatientScreen extends StatelessWidget {
                                   TableRow(
                                     children: [
                                       CircleAvatar(
-                                        child: user['profileUrl'].toString().isNotEmpty
-                                            ? Image.network(user['profileUrl'], fit: BoxFit.fill,) :
-                                        Image.asset(AppAssets.doctorImage,fit: BoxFit.fill,),
+                                        radius: 18,
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(50),
+                                          child: user['profileUrl'].toString().isNotEmpty
+                                              ? Image.network(user['profileUrl'], fit: BoxFit.cover, width: 36,  // The same size as CircleAvatar's diameter
+                                            height: 36,) :
+                                          Image.asset(AppAssets.doctorImage,fit: BoxFit.cover, width: 36,  // The same size as CircleAvatar's diameter
+                                            height: 36,),
+                                        )
 
                                       ),
                                       Padding(
@@ -114,10 +124,10 @@ class PatientScreen extends StatelessWidget {
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.end,
                                         children: [
-                                          InkWell(
-                                              onTap: (){},
-                                              child: SvgPicture.asset(AppIcons.pencilIcon,height: 4.h,)),
-                                          SizedBox(width: 15.sp,),
+                                          // InkWell(
+                                          //     onTap: (){},
+                                          //     child: SvgPicture.asset(AppIcons.pencilIcon,height: 4.h,)),
+                                          // SizedBox(width: 15.sp,),
                                           InkWell(
                                               onTap:  (){
                                                 _deleteUser(context,user["userUid"]);

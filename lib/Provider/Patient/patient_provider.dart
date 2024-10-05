@@ -50,4 +50,41 @@ class PatientProvider extends ChangeNotifier {
     }
   }
 
+  //////////////////////////search query for doctors/////////////
+
+
+  String _searchDocQuery = '';
+  List<QueryDocumentSnapshot> _filteredDoc = [];
+  List<QueryDocumentSnapshot> _allDocs = [];
+
+  String get searchDocQuery => _searchDocQuery;
+  List<QueryDocumentSnapshot> get filteredDoc => _filteredDoc;
+
+  // Method to set the search query and trigger filtering
+  void setDocSearchQuery(String query) {
+    _searchDocQuery = query;
+    filterDocs();
+    notifyListeners();
+  }
+
+  // Method to set the complete list of docs
+  void setDocs(List<QueryDocumentSnapshot> docs) {
+    _allDocs = docs;
+    filterDocs();  // Apply the initial filter
+  }
+
+  // Filtering logic
+  void filterDocs() {
+    if (_searchDocQuery.isEmpty) {
+      // Show all docs if no search query is entered
+      _filteredDoc = _allDocs;
+    } else {
+      // Filter docs whose name starts with the search query
+      _filteredDoc = _allDocs.where((user) {
+        final name = user['name'].toString().toLowerCase();
+        return name.startsWith(_searchDocQuery.toLowerCase());  // Filtering by the starting characters
+      }).toList();
+    }
+  }
+
 }

@@ -10,7 +10,7 @@ import '../../../../Model/Res/Constants/app_icons.dart';
 import '../../../../Model/Res/Widgets/app_text_widget.dart';
 
 class DoctorProfileCard extends StatelessWidget {
-  final  users;
+  final users;
   const DoctorProfileCard({super.key, required this.users});
 
   @override
@@ -21,10 +21,12 @@ class DoctorProfileCard extends StatelessWidget {
       children: [
         Column(
           children: [
-            SizedBox(height: 9.h,),
+            SizedBox(
+              height: 9.h,
+            ),
             Container(
               width: 200,
-              height: 220,
+              height: 250,
               decoration: BoxDecoration(
                 color: bgColor,
                 borderRadius: BorderRadius.circular(15),
@@ -38,21 +40,28 @@ class DoctorProfileCard extends StatelessWidget {
                       children: [
                         AppText(
                           text: users['name'],
-                          fontSize: 14.sp, fontWeight: FontWeight.w600,
-                          isTextCenter: false, textColor: textColor,
-                          fontFamily: AppFonts.semiBold,),
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                          isTextCenter: false,
+                          textColor: textColor,
+                          fontFamily: AppFonts.semiBold,
+                        ),
                         Container(
-                          padding: EdgeInsets.symmetric(vertical:8.sp,horizontal: 10.sp),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 8.sp, horizontal: 10.sp),
                           decoration: BoxDecoration(
                               color: themeColor,
-                              borderRadius: BorderRadius.circular(5)
-                          ),
+                              borderRadius: BorderRadius.circular(5)),
                           child: AppText(
                               text: users["speciality"],
-                              fontSize: 10.sp, fontWeight: FontWeight.w500,
-                              isTextCenter: false, textColor: bgColor),
+                              fontSize: 10.sp,
+                              fontWeight: FontWeight.w500,
+                              isTextCenter: false,
+                              textColor: bgColor),
                         ),
-                        SizedBox(height: 10.sp,),
+                        SizedBox(
+                          height: 10.sp,
+                        ),
                         const SizedBox(height: 10),
                       ],
                     ),
@@ -68,26 +77,54 @@ class DoctorProfileCard extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            SvgPicture.asset(AppIcons.locationIcon,height: 14.sp,),
+                            SvgPicture.asset(
+                              AppIcons.locationIcon,
+                              height: 14.sp,
+                            ),
                             const SizedBox(width: 6),
-                            Text('Location: ',style: TextStyle(fontSize: 11.sp,fontWeight: FontWeight.w500),),
-                            Expanded(child: Text(users["country"],overflow: TextOverflow.ellipsis,style: TextStyle(fontSize: 11.sp,),)),
+                            Text(
+                              'Location: ',
+                              style: TextStyle(
+                                  fontSize: 11.sp, fontWeight: FontWeight.w500),
+                            ),
+                            Expanded(
+                                child: Text(
+                              users["country"],
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 11.sp,
+                              ),
+                            )),
                           ],
                         ),
                         const SizedBox(height: 6),
                         Row(
                           children: [
-                            SvgPicture.asset(AppIcons.mailIcon,width: 13.sp,),
+                            SvgPicture.asset(
+                              AppIcons.mailIcon,
+                              width: 13.sp,
+                            ),
                             const SizedBox(width: 6),
-                            Expanded(child: Text(users["email"],overflow: TextOverflow.ellipsis,style: TextStyle(fontSize: 11.sp),)),
+                            Expanded(
+                                child: Text(
+                              users["email"],
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(fontSize: 11.sp),
+                            )),
                           ],
                         ),
                         const SizedBox(height: 6),
                         Row(
                           children: [
-                            SvgPicture.asset(AppIcons.phoneIcon,width: 13.sp,),
+                            SvgPicture.asset(
+                              AppIcons.phoneIcon,
+                              width: 13.sp,
+                            ),
                             const SizedBox(width: 6),
-                            Text(users["phoneNumber"],style: TextStyle(fontSize: 11.sp),),
+                            Text(
+                              users["phoneNumber"],
+                              style: TextStyle(fontSize: 11.sp),
+                            ),
                           ],
                         ),
                       ],
@@ -103,44 +140,45 @@ class DoctorProfileCard extends StatelessWidget {
           width: 100,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              image: DecorationImage(image:
-              NetworkImage(users["profileUrl"])
-                  ??
-                  AssetImage(AppAssets.doctorImage))
-          ),
+              image: DecorationImage(
+                  image: users["profileUrl"] != null
+                      ? NetworkImage(users["profileUrl"])
+                      : AssetImage(AppAssets.doctorImage))),
         ),
         Positioned(
           right: 12.sp,
           top: 26.sp,
           child: PopupMenuButton(
-            icon: SvgPicture.asset(AppIcons.verticalMenuIcon,height: 12.sp,),
+            icon: SvgPicture.asset(
+              AppIcons.verticalMenuIcon,
+              height: 12.sp,
+            ),
             color: greenColor,
             itemBuilder: (context) {
               return <PopupMenuEntry<String>>[
                 PopupMenuItem(
                     child: SizedBox(
-                      width: 30.sp,
-                      child: AppText(
-                          text: "Remove",
-                          fontSize: 10.sp,
-                          fontWeight: FontWeight.w600,
-                          isTextCenter: false,
-                          textColor: bgColor
-                      ),
-                    )),
-                PopupMenuItem(
-                    child: SizedBox(
-                      width: 30.sp,
-                      child: AppText(
-                          text: "Edit",
-                          fontSize: 10.sp,
-                          fontWeight: FontWeight.w600,
-                          isTextCenter: false,
-                          textColor: bgColor
-                      ),
-                    )),
+                  width: 30.sp,
+                  child: AppText(
+                      text: "Remove",
+                      fontSize: 10.sp,
+                      fontWeight: FontWeight.w600,
+                      isTextCenter: false,
+                      textColor: bgColor),
+                )),
+                // PopupMenuItem(
+                //     child: SizedBox(
+                //   width: 30.sp,
+                //   child: AppText(
+                //       text: "Edit",
+                //       fontSize: 10.sp,
+                //       fontWeight: FontWeight.w600,
+                //       isTextCenter: false,
+                //       textColor: bgColor),
+                // )),
               ];
-            },),
+            },
+          ),
         ),
       ],
     );

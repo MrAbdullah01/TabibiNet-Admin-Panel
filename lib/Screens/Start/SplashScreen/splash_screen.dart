@@ -8,6 +8,7 @@ import 'package:sizer/sizer.dart';
 import '../../../Model/Res/Constants/app_assets.dart';
 import '../../../Model/Res/Constants/app_colors.dart';
 import '../../../Model/Services/SplashServices/splash_services.dart';
+import '../LogInScreen/loginF.dart';
 import '../LogInScreen/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -25,6 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
     Timer(const Duration(seconds: 3), () {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
     },);
