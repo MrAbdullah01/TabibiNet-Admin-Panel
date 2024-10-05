@@ -1,82 +1,84 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:tabibinet_admin_panel/Model/Res/Constants/app_colors.dart';
-
+import 'package:pdf/widgets.dart' as pw;
+import 'package:pdf/pdf.dart';
 import '../../../../Model/Res/Constants/app_fonts.dart';
+import '../../../../Model/Res/Constants/app_colors.dart';
 
-class TableChart extends StatelessWidget {
-  const TableChart({super.key});
+class TableChart {
+  const TableChart();
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Table(
-        border: TableBorder.all(color: Colors.grey),
-        columnWidths: const <int, TableColumnWidth>{
-          0: FlexColumnWidth(1),
-          1: FlexColumnWidth(1),
-          2: FlexColumnWidth(1),
+  // Method to build a pw.Widget (pw.Table)
+  pw.Widget build() {
+    return pw.Padding(
+      padding: const pw.EdgeInsets.all(16.0),
+      child: pw.Table(
+        border: pw.TableBorder.all(color: PdfColors.grey),
+        columnWidths: const <int, pw.TableColumnWidth>{
+          0: pw.FlexColumnWidth(1),
+          1: pw.FlexColumnWidth(1),
+          2: pw.FlexColumnWidth(1),
         },
-        children: const [
-          TableRow(
-            decoration: BoxDecoration(
-              color: greyColor, // Grey background for header
+        children: [
+          pw.TableRow(
+            decoration: pw.BoxDecoration(
+              color: PdfColors.grey, // Grey background for header
             ),
             children: [
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
+              pw.Padding(
+                padding: const pw.EdgeInsets.all(8.0),
+                child: pw.Text(
                   'Description',
-                  style: TextStyle(fontWeight: FontWeight.bold,fontFamily: AppFonts.medium),
+                  style: pw.TextStyle(
+                    fontWeight: pw.FontWeight.bold,
+                  ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
+              pw.Padding(
+                padding: const pw.EdgeInsets.all(8.0),
+                child: pw.Text(
                   'Patient Quantity',
-                  style: TextStyle(fontWeight: FontWeight.bold,fontFamily: AppFonts.medium),
-                  textAlign: TextAlign.center,
+                  style: pw.TextStyle(
+                    fontWeight: pw.FontWeight.bold,
+                  ),
+                  textAlign: pw.TextAlign.center,
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
+              pw.Padding(
+                padding: const pw.EdgeInsets.all(8.0),
+                child: pw.Text(
                   'Total Payment',
-                  style: TextStyle(fontWeight: FontWeight.bold,fontFamily: AppFonts.medium),
-                  textAlign: TextAlign.right,
+                  style: pw.TextStyle(
+                    fontWeight: pw.FontWeight.bold,
+                  ),
+                  textAlign: pw.TextAlign.right,
                 ),
               ),
             ],
           ),
-          TableRow(
+          pw.TableRow(
             children: [
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                    'Heart Checkup',
-                  style: TextStyle(
-                      fontFamily: AppFonts.medium
+              pw.Padding(
+                padding: const pw.EdgeInsets.all(8.0),
+                child: pw.Text(
+                  'Heart Checkup',
+                  style: pw.TextStyle(
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
+              pw.Padding(
+                padding: const pw.EdgeInsets.all(8.0),
+                child: pw.Text(
                   '1',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: AppFonts.medium
+                  textAlign: pw.TextAlign.center,
+                  style: pw.TextStyle(
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
+              pw.Padding(
+                padding: const pw.EdgeInsets.all(8.0),
+                child: pw.Text(
                   '220 MAD',
-                  textAlign: TextAlign.right,
-                  style: TextStyle(
-                      fontFamily: AppFonts.medium
+                  textAlign: pw.TextAlign.right,
+                  style: pw.TextStyle(
                   ),
                 ),
               ),
