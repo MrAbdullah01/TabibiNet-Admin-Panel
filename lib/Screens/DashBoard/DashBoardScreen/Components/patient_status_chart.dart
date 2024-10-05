@@ -28,7 +28,7 @@ class PatientStatusChart extends StatelessWidget {
             fontFamily: AppFonts.semiBold,),
           const SizedBox(height: 20),
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: bgColor,
             ),
             child: Column(
