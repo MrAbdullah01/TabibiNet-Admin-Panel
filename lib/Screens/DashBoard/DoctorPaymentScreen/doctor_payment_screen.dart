@@ -11,6 +11,7 @@ import '../../../Model/Res/Constants/app_colors.dart';
 import '../../../Model/Res/Constants/app_fonts.dart';
 import '../../../Model/Res/Widgets/app_text_widget.dart';
 import '../../../Model/Res/Widgets/submit_button.dart';
+import '../../../Provider/Appointment/paymentProvider.dart';
 import '../../../Provider/DoctorPayment/doctor_payment_provider.dart';
 
 class DoctorPaymentScreen extends StatelessWidget {
@@ -19,6 +20,8 @@ class DoctorPaymentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pro = Provider.of<DashBoardProvider>(context);
+    final paymentProvider = Provider.of<PaymentProvider>(context); // Access the payment provider
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -119,13 +122,13 @@ class DoctorPaymentScreen extends StatelessWidget {
                             SizedBox(width: 1.w,),
                             IconButton(
                                 onPressed: () {
-                                  // value.setIndex(index);
-                                  pro.setSelectedIndex(17);
+                                  value.setIndex(index);
+                                  //pro.setSelectedIndex(17);
                                 },
                                 icon: Icon(
                                   isSelected ?
-                                  CupertinoIcons.chevron_down :
-                                  CupertinoIcons.chevron_up,
+                                  CupertinoIcons.chevron_up :
+                                  CupertinoIcons.chevron_down,
                                   color: Colors.grey,)
                             )
                             // SvgPicture.asset(AppIcons.visibleIcon,height: 30,)
@@ -148,9 +151,13 @@ class DoctorPaymentScreen extends StatelessWidget {
                                 textSize: 10.sp,
                                 width: 8.w,
                                 press: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) => const InvoiceDialogueCard(),);
+                                  pro.setSelectedIndex(17);
+                                  // showDialog(
+                                  //   context: context,
+                                  //   builder: (context){
+                                  //     return InvoiceDialogueCard();
+                                  // }
+                                  // );
                                 },)
                             ],
                           ),
@@ -173,7 +180,7 @@ class PayText extends StatelessWidget {
     required this.text1,
     required this.text2,
   });
-  
+
   final String text1;
   final String text2;
 
@@ -188,9 +195,9 @@ class PayText extends StatelessWidget {
         ),
         AppText(
             text: text2,
-            fontSize: 10.sp, fontWeight: FontWeight.w500, 
+            fontSize: 10.sp, fontWeight: FontWeight.w500,
             isTextCenter: false, textColor: textColor)
-        
+
       ],
     );
   }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:tabibinet_admin_panel/Provider/Appointment/paymentProvider.dart';
 import 'package:tabibinet_admin_panel/Provider/actionProvider/Authen_provider.dart';
 import 'package:tabibinet_admin_panel/Provider/actionProvider/actionProvider.dart';
 import 'package:tabibinet_admin_panel/Provider/chatProvider/chatProvider.dart';
@@ -71,6 +72,7 @@ class MyApp extends StatelessWidget {
               ChangeNotifierProvider(create: (context) => ProfileInfoProvider(),),
               ChangeNotifierProvider(create: (context) => ChatProvider(),),
               ChangeNotifierProvider(create: (context) => UserCountProvider(),),
+              ChangeNotifierProvider(create: (context) => PaymentProvider(),),
             ],
 
           child: GetMaterialApp(
