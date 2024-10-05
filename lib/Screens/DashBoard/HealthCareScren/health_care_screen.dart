@@ -81,7 +81,7 @@ class HealthCareScreen extends StatelessWidget {
                   itemCount: specialty.length,
                   itemBuilder: (context, index) {
                     final isSelected = provider.selectIndex == index;
-                    final specialtys = specialty[index].data();
+                    final specialties = specialty[index].data();
                     final specialtyId = specialty[index].id;
 
                     // return SubmitButton(
@@ -99,7 +99,7 @@ class HealthCareScreen extends StatelessWidget {
                     //   },
                     // );
                     return  SuggestionContainer(
-                      text: specialtys["specialty"],
+                      text: specialties["specialty"],
                       bgColor: isSelected ? themeColor : bgColor,
                       textColor: isSelected ? bgColor : themeColor,
                       radius: 6,
@@ -107,7 +107,7 @@ class HealthCareScreen extends StatelessWidget {
                       onTap: () {
                         log("doctor id is:: $specialtyId");
                         provider.setIndex(index);
-                        provider.setSelectedSpecialty(specialtys["id"]);
+                        provider.setSelectedSpecialty(specialties["id"]);
                       },
                     );
                   },
@@ -144,16 +144,16 @@ class HealthCareScreen extends StatelessWidget {
                 return GridView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 4,
                       mainAxisSpacing: 10,
                       crossAxisSpacing: 20,
-                      mainAxisExtent: 48.h),
+                      mainAxisExtent: 305),
                   itemCount: filteredDocs.length,
                   itemBuilder: (context, index) {
-                    final userss = filteredDocs[index];
+                    final users = filteredDocs[index];
                     return DoctorProfileCard(
-                      users: userss,
+                      users: users,
                     );
                   },
                 );

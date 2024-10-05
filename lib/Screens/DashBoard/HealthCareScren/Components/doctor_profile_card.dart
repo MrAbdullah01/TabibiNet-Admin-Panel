@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tabibinet_admin_panel/Model/Res/Constants/app_colors.dart';
+import 'package:tabibinet_admin_panel/Model/Res/Constants/firebase.dart';
 
 import '../../../../Model/Res/Constants/app_assets.dart';
 import '../../../../Model/Res/Constants/app_fonts.dart';
@@ -60,9 +61,8 @@ class DoctorProfileCard extends StatelessWidget {
                               textColor: bgColor),
                         ),
                         SizedBox(
-                          height: 10.sp,
+                          height: 5.sp,
                         ),
-                        const SizedBox(height: 10),
                       ],
                     ),
                   ),
@@ -157,30 +157,26 @@ class DoctorProfileCard extends StatelessWidget {
             itemBuilder: (context) {
               return <PopupMenuEntry<String>>[
                 PopupMenuItem(
+                    onTap: () {
+                      deleteDoctor(users.id);
+                    },
                     child: SizedBox(
-                  width: 30.sp,
-                  child: AppText(
-                      text: "Remove",
-                      fontSize: 10.sp,
-                      fontWeight: FontWeight.w600,
-                      isTextCenter: false,
-                      textColor: bgColor),
-                )),
-                // PopupMenuItem(
-                //     child: SizedBox(
-                //   width: 30.sp,
-                //   child: AppText(
-                //       text: "Edit",
-                //       fontSize: 10.sp,
-                //       fontWeight: FontWeight.w600,
-                //       isTextCenter: false,
-                //       textColor: bgColor),
-                // )),
+                      width: 30.sp,
+                      child: AppText(
+                          text: "Remove",
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.w600,
+                          isTextCenter: false,
+                          textColor: bgColor),
+                    )),
               ];
             },
           ),
         ),
       ],
     );
+  }
+  Future<void> deleteDoctor(id)async{
+    fireStore.collection("users").doc(id).delete();
   }
 }
