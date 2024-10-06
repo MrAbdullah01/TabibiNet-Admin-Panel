@@ -1,8 +1,12 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:tabibinet_admin_panel/Model/data/paymentModel/paymentModel.dart';
 import 'package:tabibinet_admin_panel/Provider/DashBoard/dash_board_provider.dart';
 import 'package:tabibinet_admin_panel/Screens/DashBoard/DoctorPaymentScreen/Components/invoice_dialogue_card.dart';
 
@@ -61,110 +65,130 @@ class DoctorPaymentScreen extends StatelessWidget {
               ),)
             ],
           ),
-          Consumer<DoctorPaymentProvider>(
-            builder: (context, value, child) {
-              return ListView.builder(
-                shrinkWrap: true,
-                itemCount: 10,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  final isSelected = value.selectIndex == index;
-                  return Container(
-                    width: 100.w,
-                    padding: const EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                        color: isSelected ? greyColor : bgColor,
-                        borderRadius: BorderRadius.circular(15)
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              height: 80,
-                              width: 80,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  image: const DecorationImage(
-                                      image: AssetImage(AppAssets.doctorImage)
-                                  )
-                              ),
-                            ),
-                            SizedBox(width: 1.w,),
-                            AppText(
-                              text: "Alex",
-                              fontSize: 14.sp, fontWeight: FontWeight.w600,
-                              isTextCenter: false, textColor: textColor,
-                              fontFamily: AppFonts.semiBold,),
-                            const Spacer(),
-                            AppText(
-                              text: "Will show the date here",
-                              fontSize: 14.sp, fontWeight: FontWeight.w600,
-                              isTextCenter: false, textColor: textColor,
-                              fontFamily: AppFonts.semiBold,),
-                            const Spacer(),
-                            AppText(
-                              text: "\$0",
-                              fontSize: 14.sp, fontWeight: FontWeight.w600,
-                              isTextCenter: false, textColor: textColor,
-                              fontFamily: AppFonts.semiBold,),
-                            const Spacer(),
-                            SubmitButton(
-                              width: 8.w,
-                              height: 40,
-                              bgColor: greenColor,
-                              textColor: bgColor,
-                              bdColor: greenColor,
-                              title: "Completed",
-                              press: () {
+          Consumer2<DoctorPaymentProvider,PaymentProvider>(
+            builder: (context, value, payment,child) {
+              return StreamBuilder<List<PaymentModel>>(
+                stream: payment.fetchAppointments(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
 
-                              },),
-                            SizedBox(width: 1.w,),
-                            IconButton(
-                                onPressed: () {
-                                  value.setIndex(index);
-                                  //pro.setSelectedIndex(17);
-                                },
-                                icon: Icon(
-                                  isSelected ?
-                                  CupertinoIcons.chevron_up :
-                                  CupertinoIcons.chevron_down,
-                                  color: Colors.grey,)
+                  if (snapshot.hasError) {
+                    return Center(child: Text("Error: ${snapshot.error}"));
+                  }
+
+                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return Center(child: Text("No appointments available"));
+                  }
+
+                  final appointments = snapshot.data!;
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: appointments.length,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      final isSelected = value.selectIndex == index;
+                      final appointment = appointments[index]; // Get each appointment
+                      return Container(
+                        width: 100.w,
+                        padding: const EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                            color: isSelected ? greyColor : bgColor,
+                            borderRadius: BorderRadius.circular(15)
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  height: 80,
+                                  width: 80,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      image: const DecorationImage(
+                                          image: AssetImage(AppAssets.doctorImage)
+                                      )
+                                  ),
+                                ),
+                                SizedBox(width: 1.w,),
+                                AppText(
+                                  text: appointment.doctorName,
+                                  fontSize: 14.sp, fontWeight: FontWeight.w600,
+                                  isTextCenter: false, textColor: textColor,
+                                  fontFamily: AppFonts.semiBold,),
+                                const Spacer(),
+                                AppText(
+                                  text: appointment.appointmentDate,
+                                  fontSize: 14.sp, fontWeight: FontWeight.w600,
+                                  isTextCenter: false, textColor: textColor,
+                                  fontFamily: AppFonts.semiBold,),
+                                const Spacer(),
+                                AppText(
+                                  text: "MAD ${appointment.fees}",
+                                  fontSize: 14.sp, fontWeight: FontWeight.w600,
+                                  isTextCenter: false, textColor: textColor,
+                                  fontFamily: AppFonts.semiBold,),
+                                const Spacer(),
+                                SubmitButton(
+                                  width: 8.w,
+                                  height: 40,
+                                  bgColor: greenColor,
+                                  textColor: bgColor,
+                                  bdColor: greenColor,
+                                  title: appointment.status,
+                                  press: () {
+
+                                  },),
+                                SizedBox(width: 1.w,),
+                                IconButton(
+                                    onPressed: () {
+                                      value.setIndex(index);
+                                      //pro.setSelectedIndex(17);
+                                    },
+                                    icon: Icon(
+                                      isSelected ?
+                                      CupertinoIcons.chevron_up :
+                                      CupertinoIcons.chevron_down,
+                                      color: Colors.grey,)
+                                )
+                                // SvgPicture.asset(AppIcons.visibleIcon,height: 30,)
+                              ],
+                            ),
+                            Visibility(
+                                visible: isSelected,
+                                child: const Divider(color: Colors.grey,)),
+                            Visibility(
+                              visible: isSelected,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                   PayText(text1: "ID Payment", text2: appointment.id),
+                                   PayText(text1: "Date Paid", text2: appointment.appointmentDate),
+                                   PayText(text1: "Invoice Date", text2: appointment.appointmentDate),
+                                  SubmitButton(
+                                    title: "Check Invoice",
+                                    height: 30,
+                                    textSize: 10.sp,
+                                    width: 8.w,
+                                    press: () {
+                                      pro.setSelectedIndex(17);
+                                      // showDialog(
+                                      //   context: context,
+                                      //   builder: (context){
+                                      //     return InvoiceDialogueCard();
+                                      // }
+                                      // );
+                                    },)
+                                ],
+                              ),
                             )
-                            // SvgPicture.asset(AppIcons.visibleIcon,height: 30,)
                           ],
                         ),
-                        Visibility(
-                            visible: isSelected,
-                            child: const Divider(color: Colors.grey,)),
-                        Visibility(
-                          visible: isSelected,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const PayText(text1: "ID Payment", text2: "#001278965"),
-                              const PayText(text1: "Date Paid", text2: "9-3-2024"),
-                              const PayText(text1: "Invoice Date", text2: "June 9,2024"),
-                              SubmitButton(
-                                title: "Check Invoice",
-                                height: 30,
-                                textSize: 10.sp,
-                                width: 8.w,
-                                press: () {
-                                  pro.setSelectedIndex(17);
-                                  // showDialog(
-                                  //   context: context,
-                                  //   builder: (context){
-                                  //     return InvoiceDialogueCard();
-                                  // }
-                                  // );
-                                },)
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+                      );
+                    },
                   );
+
                 },
               );
             },)

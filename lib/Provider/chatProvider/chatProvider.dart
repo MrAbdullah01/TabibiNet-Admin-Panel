@@ -621,4 +621,15 @@ class ChatProvider with ChangeNotifier {
         .map((doc) => MessageModel.fromMap(doc.data(),doc.id))
         .toList());
   }
+  UserchatModel getUserDetailsByEmail(String email) {
+    return users.firstWhere((user) => user.email == email, orElse: () => UserchatModel(
+      id: '',
+      name: 'Unknown',
+      email: email,
+      profileUrl: '',
+      userUid: '',
+      isOnline: false,
+    ));
+  }
+
 }

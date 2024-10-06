@@ -6,11 +6,12 @@ class PaymentModel {
   final String status;
   final String fees;
   final String userUid;
-  final String applyDate;
+  final String appointmentDate;
   final String feesId;
+  final String feesType;
 
   PaymentModel({required this.feesId,
-    required this.applyDate,
+    required this.appointmentDate,
     required this.id,
     required this.doctorName,
     required this.email,
@@ -18,6 +19,7 @@ class PaymentModel {
     required this.status,
     required this.fees,
     required this.userUid,
+    required this.feesType,
   });
 
   factory PaymentModel.fromMap(Map<String, dynamic> map,String documentId) {
@@ -29,15 +31,14 @@ class PaymentModel {
       fees: map['fees'] ?? "",
       image: map['image'] ?? "",
       userUid: map['userUID'] ?? "",
-      applyDate: map['applyDate'] ?? "",
+      appointmentDate: map['appointmentDate'] ?? "",
       feesId: map['feesId'] ?? "",
+      feesType: map['feesType'] ?? "",
     );
   }
 
   @override
   String toString() {
-    return 'UserModel{id: $id, doctorName: $doctorName, email: $email, image: $status,status: $fees: $fees, applyDate: $applyDate,feesId: $feesId,'
-
-        '}';
+    return 'UserModel{id: $id,feesType $feesType, doctorName: $doctorName, email: $email, image: $status,status: $fees: $fees, appointmentDate: $appointmentDate,feesId: $feesId,';
   }
 }

@@ -165,20 +165,6 @@ class HelpCenterScreen extends StatelessWidget {
                                   ],
                                 ),
                                 onTap: () async {
-                                  // final chatRoomId = await context.read<ChatProvider>().createOrGetChatRoom(otherUserEmail, "");
-                                  // Provider.of<ChatProvider>(context,listen: false).setResponse(
-                                  //     chatRoomId: chatRoomId,
-                                  //     otherUserEmail: otherUserEmail
-                                  // );
-                                  // await chatProvider.getUnreadMessageCount(chatRoom.id);
-                                  // log("message ${ chatProvider.getUnreadMessageCount(chatRoom.id).toString()}");
-                                  // context.read<ChatProvider>().updateMessageStatus(chatRoomId);
-                                  // //show data to right side
-                                  // Get.to(
-                                  //     RightSideScreen(
-                                  //   chatRoomId: chatRoom.id,
-                                  //   otherUserEmail: otherUserEmail,
-                                  // ));
                                   final chatRoomId = await context.read<ChatProvider>().createOrGetChatRoom(otherUserEmail, "");
                                   final selectedChatRoom = chatRooms[index]; // Get the selected chat room
 
@@ -189,6 +175,7 @@ class HelpCenterScreen extends StatelessWidget {
                                   await chatProvider.getUnreadMessageCount(selectedChatRoom.id);
                                   await chatProvider.markMessageAsRead(selectedChatRoom.id);
                                   await chatProvider.updateDeliveryStatus(selectedChatRoom.id);
+                                  await chatProvider.getUserStatus(selectedChatRoom.id);
                                   context.read<ChatProvider>().updateMessageStatus(chatRoomId);
                                 },
                               ),

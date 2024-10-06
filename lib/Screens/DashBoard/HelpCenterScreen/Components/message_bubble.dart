@@ -11,6 +11,7 @@ class MessageBubble extends StatelessWidget {
   final bool isSender;
   final String time;
   final String? url; // URL for image or voice
+  final String? profileImageUrl; // URL for image or voice
 
 
   const MessageBubble({
@@ -19,6 +20,7 @@ class MessageBubble extends StatelessWidget {
     required this.isSender,
     required this.time,
     this.url,
+    this.profileImageUrl   ,
     Key? key,
   }) : super(key: key);
 
@@ -86,7 +88,9 @@ class MessageBubble extends StatelessWidget {
           if (!isSender) // Only show avatar for receiver's message
             CircleAvatar(
               backgroundColor: Colors.grey[200],
-              child: Image.asset(AppAssets.profileImage),
+              backgroundImage: profileImageUrl != null && profileImageUrl!.isNotEmpty
+                  ? NetworkImage(profileImageUrl!) // Load the user's profile image
+                  : AssetImage(AppAssets.profileImage) as ImageProvider, // Fallback to a default image
             ),
           SizedBox(width: 1.w),
           Column(

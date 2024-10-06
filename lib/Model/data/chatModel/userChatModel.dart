@@ -4,6 +4,7 @@ class UserchatModel {
   final String email;
   final String profileUrl;
   final String userUid;
+  final bool isOnline; // New field for online status
 
   UserchatModel({
     required this.id,
@@ -11,6 +12,8 @@ class UserchatModel {
     required this.email,
     required this.profileUrl,
     required this.userUid,
+    this.isOnline = false, // Default to false
+
   });
 
   factory UserchatModel.fromMap(Map<String, dynamic> map) {
@@ -20,11 +23,12 @@ class UserchatModel {
       email: map['email'] ?? "",
       profileUrl: map['profileUrl'] ?? "",
       userUid: map['userUID'] ?? "",
+      isOnline: map['userStatus'] ?? "",
     );
   }
 
   @override
   String toString() {
-    return 'UserModel{id: $id, name: $name, email: $email, image: $profileUrl}';
+    return 'UserModel{id: $id, name: $name, email: $email, image: $profileUrl, userUid: $userUid, isOnline: $isOnline}';
   }
 }
