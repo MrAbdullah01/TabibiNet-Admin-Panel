@@ -20,6 +20,7 @@ import '../../../Model/Res/Constants/app_icons.dart';
 import '../../../Model/Res/Widgets/app_text_widget.dart';
 import '../../../Model/Res/Widgets/submit_button.dart';
 import '../../../Provider/DashBoard/dash_board_provider.dart';
+import '../PatientPaymentScreen/patientDataProvider/patientDataProvider.dart';
 import 'Components/model/appointmentModel.dart';
 
 class AppointmentScreen extends StatelessWidget {
@@ -125,16 +126,33 @@ class AppointmentScreen extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(15)),
                               child: Row(
                                 children: [
-                                  Container(
-                                    height: 80,
-                                    width: 80,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        image:  DecorationImage(
-                                          image: appointment.image != null? NetworkImage(appointment.image)
-                                            : AssetImage(
-                                                 AppAssets.doctorImage),
-                                        ),
+                                  InkWell(
+                                    onTap: () {
+                                      Provider.of<PatientDataProvider>(context, listen: false).setPatientDataDetails(
+                                          patientName: appointment.patientName,
+                                          appointmentDate: appointment.appointmentTime,
+                                          fees: "0.0",
+                                          feesId: appointment.id,
+                                          country: appointment.doctorLocation,
+                                          patientPhone: appointment.patientPhone,
+                                          userType: "N/A",
+                                          patientProblem: "N/A",
+                                          patientAge: "N/A",
+                                          patientEmail: appointment.patientEmail);
+                                      pro.setSelectedIndex(20);
+                                    },
+                                    child: Container(
+                                      height: 80,
+                                      width: 80,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10),
+                                          image:  DecorationImage(
+                                            image: appointment.image.isNotEmpty
+                                                ? NetworkImage(appointment.image)
+                                              : AssetImage(
+                                                   AppAssets.doctorImage),
+                                          ),
+                                      ),
                                     ),
                                   ),
                                   SizedBox(
@@ -231,7 +249,7 @@ class AppointmentScreen extends StatelessWidget {
                                       onTap: () {
                                         appointmentP.setSelectedAppointment(appointment);
                                         appointmentP.setAppointmentScreen(true);
-                                        pro.setSelectedIndex(15);
+                                        pro.setSelectedIndex(17);
 
                                        //  Get.to(
                                        //     AppointmentDetailScreen(),

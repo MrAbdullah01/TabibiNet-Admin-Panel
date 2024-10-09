@@ -115,12 +115,15 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../Model/Res/Constants/app_assets.dart';
 import '../../../../Model/Res/Constants/app_colors.dart';
 import '../../../../Model/Res/Constants/app_fonts.dart';
+import '../../../../Model/Res/Constants/firebase.dart';
 import '../../../../Model/Res/Widgets/app_text_widget.dart';
 import '../../../../Model/data/chatModel/messageModel.dart';
 import '../../../../Provider/chatProvider/chatProvider.dart';
@@ -190,6 +193,27 @@ class RightSideScreen extends StatelessWidget {
             isTextCenter: false,
             textColor: Colors.grey,
           ),
+          trailing: PopupMenuButton(
+            icon: Icon(Icons.more_vert, size: 24.0,color: themeColor,),
+            color: greenColor,
+            itemBuilder: (context) {
+              return <PopupMenuEntry<String>>[
+                PopupMenuItem(
+                    onTap: () {
+                      deleteChat(chatProvider.selectedChatRoom!.id);
+                    },
+                    child: SizedBox(
+                      width: 30.sp,
+                      child: AppText(
+                          text: "Delete Chat",
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.w600,
+                          isTextCenter: false,
+                          textColor: themeColor),
+                    )),
+              ];
+            },
+          ),
         ),
         const Divider(color: themeColor),
         Expanded(
@@ -238,8 +262,7 @@ class RightSideScreen extends StatelessWidget {
                             type: message.type,
                             url: message.url, // Show image in MessageBubble
                           );
-                        } else if (message.type == 'voice' &&
-                            message.url != null) {
+                        } else if (message.type == 'voice' && message.url != null) {
                           // Voice message
                           return MessageBubble(
                             profileImageUrl: selectedUser.profileUrl,
@@ -252,7 +275,21 @@ class RightSideScreen extends StatelessWidget {
                             url: message
                                 .url, // Pass the voice URL to the MessageBubble
                           );
-                        } else {
+                        }else if (message.type == 'document' ) {
+                          // Voice message
+                          return MessageBubble(
+                            profileImageUrl: selectedUser.profileUrl,
+                            message:
+                            'document', // Placeholder for voice message text
+                            isSender:
+                            message.sender == chatProvider.currentUserId,
+                            time: relativeTime,
+                            type: message.type,
+                            url: message
+                                .url, // Pass the voice URL to the MessageBubble
+                          );
+                        }
+                        else {
                           // Text message
                           return MessageBubble(
                             profileImageUrl: selectedUser.profileUrl,
@@ -282,4 +319,9 @@ class RightSideScreen extends StatelessWidget {
       ],
     );
   }
+
+  Future<void> deleteChat(id)async{
+    fireStore.collection("chatRooms").doc(id).delete();
+    Get.back();
+    }
 }

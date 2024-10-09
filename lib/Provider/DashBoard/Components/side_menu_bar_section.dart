@@ -30,10 +30,10 @@ class SideMenuBarSection extends StatelessWidget {
       "title" : "Patients",
       "icon" : AppIcons.patientIcon
     },
-    // {
-    //   "title" : "Requests",
-    //   "icon" : AppIcons.resultIcon
-    // },
+    {
+      "title" : "Requests",
+      "icon" : AppIcons.resultIcon
+    },
     {
       "title" : "Appointments",
       "icon" : AppIcons.appointmentIcon
@@ -64,6 +64,9 @@ class SideMenuBarSection extends StatelessWidget {
     },{
       "title" : "Doctor Speciality ",
       "icon" : AppIcons.doctorIcon
+    },{
+      "title" : "Banner Ads ",
+      "icon" : AppIcons.adsReq
     },
   ];
 

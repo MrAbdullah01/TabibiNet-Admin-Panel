@@ -24,13 +24,17 @@ import '../../../Model/Res/Widgets/submit_button.dart';
 import '../../../Provider/DashBoard/Components/side_menu_bar_section.dart';
 import '../../../Provider/DashBoard/dash_board_provider.dart';
 import '../../../Provider/profileProvider/profileInfo.dart';
+import '../../AdsRequest/AdsRequestScreen.dart';
 import '../../Start/LogInScreen/loginF.dart';
 import '../AppointmentFeeScreen/appointment_fee_screen.dart';
 import '../AppointmentScreen/appointment_screen.dart';
 import '../DoctorPaymentScreen/Components/invoice_dialogue_card.dart';
+import '../DoctorPaymentScreen/doctorPaymentDetails.dart';
 import '../DoctorSpeciality/doctorSpecialityScreen.dart';
 import '../EditProfileScreen/edit_profile_screen.dart';
+import '../EditSubscriptionScreen/edit_subscription_screen.dart';
 import '../HealthCareScren/health_care_screen.dart';
+import '../PatientPaymentScreen/patientPaymentDetails.dart';
 import '../PatientScreen/patient_screen.dart';
 import '../RequestScreen/request_screen.dart';
 import 'Components/dashboard_section.dart';
@@ -107,22 +111,26 @@ class DashBoardScreen extends StatelessWidget {
                           :value.selectIndex == 0 ? DashboardSection()
                           :value.selectIndex == 1 ? HealthCareScreen()
                           :value.selectIndex == 2 ? PatientScreen()
-                          // :value.selectIndex == 3 ? RequestScreen()
-                          :value.selectIndex == 3 ? AppointmentScreen()
-                          :value.selectIndex == 4 ? AppointmentFeeScreen()
-                          :value.selectIndex == 5 ? const DoctorPaymentScreen()
-                          :value.selectIndex == 6 ? const PatientPaymentScreen()
-                          :value.selectIndex == 7 ? SubscriptionScreen()
-                          :value.selectIndex == 8 ? HelpCenterScreen()
-                          :value.selectIndex == 9 ?  AddFaqScreen()
-                          :value.selectIndex == 10 ? DoctorSpecialityScreen()
-                          :value.selectIndex == 11 ? const ProfileScreen()
-                          :value.selectIndex == 12 ? EditProfileScreen()
-                          :value.selectIndex == 13 ? const SettingScreen()
-                          :value.selectIndex == 14 ?  AddFaqScreen()
-                          :value.selectIndex == 15 ?  AppointmentDetailScreen()
-                          :value.selectIndex == 16 ?  SettingScreen()
-                          :value.selectIndex == 17 ?  InvoiceDialogueCard()
+                          :value.selectIndex == 3 ? RequestScreen()
+                          :value.selectIndex == 4 ? AppointmentScreen()
+                          :value.selectIndex == 5 ? AppointmentFeeScreen()
+                          :value.selectIndex == 6 ? const DoctorPaymentScreen()
+                          :value.selectIndex == 7 ? const PatientPaymentScreen()
+                          :value.selectIndex == 8 ? SubscriptionScreen()
+                          :value.selectIndex == 9 ? HelpCenterScreen()
+                          :value.selectIndex == 10 ?  AddFaqScreen()
+                          :value.selectIndex == 11 ?  DoctorSpecialityScreen()
+                          :value.selectIndex == 12 ? AdsRequest()
+                          :value.selectIndex == 13 ? const ProfileScreen()
+                          :value.selectIndex == 14 ? EditProfileScreen()
+                          :value.selectIndex == 15 ? const SettingScreen()
+                          :value.selectIndex == 16 ?  AddFaqScreen()
+                          :value.selectIndex == 17 ?  AppointmentDetailScreen()
+                          :value.selectIndex == 18 ?  SettingScreen()
+                          :value.selectIndex == 19 ?  InvoiceDialogueCard()
+                          :value.selectIndex == 20 ?  PatientPaymentDetails()
+                          :value.selectIndex == 21 ?  DoctorPaymentDetails()
+                          :value.selectIndex == 22 ?  EditSubscriptionScreen()
                           : const SizedBox()
                   );
                 },),

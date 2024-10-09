@@ -5,6 +5,7 @@ import 'package:sizer/sizer.dart';
 import 'package:tabibinet_admin_panel/Model/Res/Constants/app_colors.dart';
 import 'package:tabibinet_admin_panel/Model/Res/Constants/app_fonts.dart';
 import 'package:tabibinet_admin_panel/Model/Res/Widgets/submit_button.dart';
+import 'package:tabibinet_admin_panel/Provider/DashBoard/dash_board_provider.dart';
 import 'package:tabibinet_admin_panel/Provider/Subscription/subscription_provider.dart';
 import 'package:tabibinet_admin_panel/Screens/DashBoard/EditSubscriptionScreen/edit_subscription_screen.dart';
 
@@ -23,6 +24,7 @@ class SubscriptionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final pro = Provider.of<DashBoardProvider>(context,listen: false);
     return ListView(
       shrinkWrap: true,
       children: [
@@ -61,8 +63,9 @@ class SubscriptionScreen extends StatelessWidget {
         SizedBox(height: 1.h,),
         Consumer<SubscriptionProvider>(
           builder: (context, value, child) {
-            return value.isEditSub ?
-            EditSubscriptionScreen() :
+            return
+            //   value.isEditSub ?
+            // EditSubscriptionScreen() :
             StreamBuilder<List<UserModel>>(
               stream: value.fetchUsers(),
               builder: (context, snapshot) {
@@ -91,18 +94,27 @@ class SubscriptionScreen extends StatelessWidget {
                       phoneText: user.phoneNumber,
                       statusText: user.memberShip,
                       isAddIcon: false,
-                      isEditIcon: false,
+                      isEditIcon: true,
                       isStatusText: true,
                       image: AppAssets.profileImage,
                       editTap: (){
-                        value.setSub(true);
+                        Provider.of<SubscriptionProvider>(context, listen: false).setSubscriptionDataDetails(
+                         name: user.name,
+                          email : user.email,
+                          number: user.phoneNumber,
+                          status: user.memberShip,
+                          id: user.userUid,
+
+                        );
+                        pro.setSelectedIndex(22);
+                        // value.setSub(true);
                       },
                       delTap: () {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              backgroundColor: greenColor,
+                              backgroundColor: themeColor,
                               title: const Text(
                                 'Delete Subscription!',
                                 style: TextStyle(
@@ -122,7 +134,7 @@ class SubscriptionScreen extends StatelessWidget {
                                   height: 30,
                                   width: 8.w,
                                   textSize: 12.sp,
-                                  bgColor: greenColor,
+                                  bgColor: themeColor,
                                   textColor: bgColor,
                                   bdColor: bgColor,
                                   title: "No",
@@ -132,7 +144,7 @@ class SubscriptionScreen extends StatelessWidget {
                                   width: 8.w,
                                   textSize: 12.sp,
                                   bgColor: bgColor,
-                                  textColor: greenColor,
+                                  textColor: themeColor,
                                   bdColor: bgColor,
                                   title: "Yes",
                                   press: () => Get.back(),),

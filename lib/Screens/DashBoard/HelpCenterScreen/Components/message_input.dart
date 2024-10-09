@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -73,6 +75,7 @@ class MessageInput extends StatelessWidget {
   }
 
   Future<void> _pickAndUploadImage(BuildContext context) async {
+    final provider = Provider.of<ChatProvider>(context,listen: false);
     final html.FileUploadInputElement uploadInput = html.FileUploadInputElement();
     uploadInput.accept = 'image/*'; // Accept only images
 
@@ -89,6 +92,20 @@ class MessageInput extends StatelessWidget {
         // Set image data using Provider to display in the container
         final cloudinaryProvider = Provider.of<CloudinaryProvider>(context, listen: false);
         cloudinaryProvider.setImageData(bytes);
+        if(cloudinaryProvider.imageUrl.isNotEmpty){
+          await provider.sendMessage(
+            chatRoomId: chatRoomId,
+            message: cloudinaryProvider.imageUrl,
+            otherEmail: otherUserEmail,
+            type: 'image',
+          );
+          log("image url of image  is:::${ cloudinaryProvider.imageUrl}");
+          log("chatroom of image  is:::${ chatRoomId}");
+          log("other user email   is:::${ otherUserEmail}");
+          cloudinaryProvider.clearImage(); // Reset the image data to avoid duplication in the chat list
+        }
+
+
 
         ToastMsg().toastMsg('Image uploaded successfully');
       });

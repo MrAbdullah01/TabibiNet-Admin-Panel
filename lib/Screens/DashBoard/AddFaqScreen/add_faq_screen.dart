@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tabibinet_admin_panel/Model/Res/Widgets/AppTextField.dart';
@@ -10,6 +12,7 @@ import 'package:tabibinet_admin_panel/Model/Res/components/loadingButton.dart';
 import '../../../Model/Res/Constants/app_colors.dart';
 import '../../../Model/Res/Constants/app_fonts.dart';
 import '../../../Model/Res/Widgets/app_text_widget.dart';
+import '../../../Model/Res/Widgets/toast_msg.dart';
 import '../../../Provider/Faq/faq_provider.dart';
 import '../../../Provider/actionProvider/actionProvider.dart';
 
@@ -18,6 +21,7 @@ class AddFaqScreen extends StatelessWidget {
 
   final quesC = TextEditingController();
   final ansC = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +30,7 @@ class AddFaqScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
+        controller: _scrollController,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -177,6 +182,7 @@ class AddFaqScreen extends StatelessWidget {
                                      quesC.text = faqData['question'];
                                      ansC.text = faqData['answer'];
                                      provider.setEditingMode(id);
+                                     _scrollToTextField();
                                    },
                                  ),
                                ),
@@ -193,7 +199,52 @@ class AddFaqScreen extends StatelessWidget {
                                      radius: 5,
                                      title: 'Delete',
                                      press: () {
-                                         _deleteFaq(faqData.id);
+                                       showDialog(
+                                         context: context,
+                                         builder: (BuildContext context) {
+                                           return AlertDialog(
+                                             backgroundColor: themeColor,
+                                             title: const Text(
+                                               'Delete FAQ!',
+                                               style: TextStyle(
+                                                   fontFamily: AppFonts.semiBold,
+                                                   color: bgColor
+                                               ),
+                                             ),
+                                             content: const Text(
+                                               'Are you sure you want to Delete this FAQ?',
+                                               style: TextStyle(
+                                                   fontFamily: AppFonts.regular,
+                                                   color: bgColor
+                                               ),
+                                             ),
+                                             actions: <Widget>[
+                                               SubmitButton(
+                                                 height: 30,
+                                                 width: 8.w,
+                                                 textSize: 12.sp,
+                                                 bgColor: themeColor,
+                                                 textColor: bgColor,
+                                                 bdColor: bgColor,
+                                                 title: "No",
+                                                 press: () => Get.back(),),
+                                               SubmitButton(
+                                                   height: 30,
+                                                   width: 8.w,
+                                                   textSize: 12.sp,
+                                                   bgColor: bgColor,
+                                                   textColor: themeColor,
+                                                   bdColor: bgColor,
+                                                   title: "Yes",
+                                                   press: () {
+                                                     _deleteFaq(faqData.id);
+                                                     ToastMsg().toastMsg("FAQ deleted successfully");
+                                                     Get.back();
+                                                   }),
+                                             ],
+                                           );
+                                         },
+                                       );
                                      },
                                    ),
                                  ),
@@ -212,6 +263,15 @@ class AddFaqScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  void _scrollToTextField() {
+    // Scroll to the TextField position
+    _scrollController.animateTo(
+      10.0, // Adjust this value based on your layout
+      duration: Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
     );
   }
   void _uploadFaq(BuildContext context) {

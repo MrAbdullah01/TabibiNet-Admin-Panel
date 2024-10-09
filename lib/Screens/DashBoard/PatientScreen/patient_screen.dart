@@ -4,12 +4,20 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:tabibinet_admin_panel/Provider/DashBoard/dash_board_provider.dart';
 import '../../../Model/Res/Constants/app_assets.dart';
+import '../../../Model/Res/Constants/app_colors.dart';
+import '../../../Model/Res/Constants/app_fonts.dart';
 import '../../../Model/Res/Constants/app_icons.dart';
 import '../../../Model/Res/Widgets/AppTextField.dart';
+import '../../../Model/Res/Widgets/submit_button.dart';
+import '../../../Model/Res/Widgets/toast_msg.dart';
 import '../../../Provider/Patient/patient_provider.dart';
+import '../PatientPaymentScreen/patientDataProvider/patientDataProvider.dart';
 
 
 class PatientScreen extends StatelessWidget {
@@ -23,6 +31,7 @@ class PatientScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final patientProvider = Provider.of<PatientProvider>(context, listen: false);
+    final pro = Provider.of<DashBoardProvider>(context, listen: false);
 
     return ListView(
             shrinkWrap: true,
@@ -83,17 +92,37 @@ class PatientScreen extends StatelessWidget {
                                 children: [
                                   TableRow(
                                     children: [
-                                      CircleAvatar(
-                                        radius: 18,
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(50),
-                                          child: user['profileUrl'].toString().isNotEmpty
-                                              ? Image.network(user['profileUrl'], fit: BoxFit.cover, width: 36,  // The same size as CircleAvatar's diameter
-                                            height: 36,) :
-                                          Image.asset(AppAssets.doctorImage,fit: BoxFit.cover, width: 36,  // The same size as CircleAvatar's diameter
-                                            height: 36,),
-                                        )
+                                      InkWell(
+                                        focusColor: Colors.transparent,
+                                        hoverColor: Colors.transparent,
+                                        highlightColor: Colors.transparent,
+                                        splashColor: Colors.transparent,
+                                        onTap: () {
+                                          Provider.of<PatientDataProvider>(context, listen: false).setPatientDataDetails(
+                                              patientName: user["name"],
+                                              appointmentDate: user["creationDate"].toString(),
+                                              fees: user["reviews"].toString(),
+                                              feesId: user["reviews"].toString(),
+                                              country: user["country"].toString(),
+                                              patientPhone: user["phoneNumber"].toString(),
+                                              userType: user["speciality"].toString() ?? "",
+                                              patientProblem: user["speciality"].toString(),
+                                              patientAge: user["birthDate"].toString() ??"",
+                                              patientEmail: user["email"].toString(),);
+                                          pro.setSelectedIndex(20);
+                                        },
+                                        child: CircleAvatar(
+                                          radius: 18,
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(50),
+                                            child: user['profileUrl'].toString().isNotEmpty
+                                                ? Image.network(user['profileUrl'], fit: BoxFit.cover, width: 36,  // The same size as CircleAvatar's diameter
+                                              height: 36,) :
+                                            Image.asset(AppAssets.doctorImage,fit: BoxFit.cover, width: 36,  // The same size as CircleAvatar's diameter
+                                              height: 36,),
+                                          )
 
+                                        ),
                                       ),
                                       Padding(
                                         padding:  EdgeInsets.only(top: 1.5.h),
@@ -130,7 +159,52 @@ class PatientScreen extends StatelessWidget {
                                           // SizedBox(width: 15.sp,),
                                           InkWell(
                                               onTap:  (){
-                                                _deleteUser(context,user["userUid"]);
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (BuildContext context) {
+                                                    return AlertDialog(
+                                                      backgroundColor: themeColor,
+                                                      title: const Text(
+                                                        'Delete Patient!',
+                                                        style: TextStyle(
+                                                            fontFamily: AppFonts.semiBold,
+                                                            color: bgColor
+                                                        ),
+                                                      ),
+                                                      content: const Text(
+                                                        'Are you sure you want to Delete this Patient?',
+                                                        style: TextStyle(
+                                                            fontFamily: AppFonts.regular,
+                                                            color: bgColor
+                                                        ),
+                                                      ),
+                                                      actions: <Widget>[
+                                                        SubmitButton(
+                                                          height: 30,
+                                                          width: 8.w,
+                                                          textSize: 12.sp,
+                                                          bgColor: themeColor,
+                                                          textColor: bgColor,
+                                                          bdColor: bgColor,
+                                                          title: "No",
+                                                          press: () => Get.back(),),
+                                                        SubmitButton(
+                                                            height: 30,
+                                                            width: 8.w,
+                                                            textSize: 12.sp,
+                                                            bgColor: bgColor,
+                                                            textColor: themeColor,
+                                                            bdColor: bgColor,
+                                                            title: "Yes",
+                                                            press: () {
+                                                              _deleteUser(context,user["userUid"]);
+                                                              ToastMsg().toastMsg("Patient deleted successfully");
+                                                              Get.back();
+                                                            }),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
                                               },
                                               child: SvgPicture.asset(AppIcons.deleteIcon,height: 4.h,)),
                                         ],)

@@ -6,6 +6,7 @@ import 'dart:typed_data';
 import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 import 'package:provider/provider.dart';
+import 'package:tabibinet_admin_panel/global_provider.dart';
 import 'package:universal_html/html.dart' as html; // For web downloads
 import '../../../../Model/Res/Constants/app_colors.dart';
 import '../../../../Model/Res/Constants/app_fonts.dart';
@@ -13,6 +14,8 @@ import '../../../../Model/Res/Constants/app_icons.dart';
 import '../../../../Model/Res/Widgets/app_text_widget.dart';
 import '../../../../Model/Res/Widgets/submit_button.dart';
 import 'package:tabibinet_admin_panel/Provider/DashBoard/dash_board_provider.dart';
+
+import '../../PatientPaymentScreen/patientDataProvider/patientDataProvider.dart';
 
 class InvoiceDialogueCard extends StatefulWidget {
   const InvoiceDialogueCard({super.key});
@@ -52,7 +55,7 @@ class _InvoiceDialogueCardState extends State<InvoiceDialogueCard> {
                 ),
                 InkWell(
                   onTap: () {
-                    pro.setSelectedIndex(5);
+                    pro.setSelectedIndex(6);
                   },
                   child: const Icon(Icons.close, size: 30), // Close button
                 ),
@@ -110,12 +113,22 @@ class _InvoiceDialogueCardState extends State<InvoiceDialogueCard> {
 
   // Generates the PDF and returns Uint8List for preview and download
   Future<Uint8List> generatePdfForWeb() async {
+    final model = Provider.of<PatientDataProvider>(context,listen: false);
     final pdf = pw.Document();
     final customColoR = PdfColor.fromInt(0xff0596DE);
     final customColoOr = PdfColor.fromInt(0xffFFAB00);
 // Load the custom font
     final ttf = await rootBundle.load("assets/fonts/DejaVuSans.ttf");
     final font = pw.Font.ttf(ttf);
+    // Example of total fees
+    double totalFees = double.tryParse(model.fees) ?? 0.0; // Assume fees is a string
+    double taxPercentage = 0.20; // 20%
+    double tax = totalFees * taxPercentage; // Calculate tax
+    double totalAmount = totalFees + tax; // Total amount including tax
+
+    // Convert totalAmount to string for display
+    String totalAmountString = totalAmount.toStringAsFixed(2); // Format to 2 decimal places
+
 
     // Load PNG image (after converting SVG to PNG)
     final Uint8List imageData = await rootBundle
@@ -151,7 +164,7 @@ class _InvoiceDialogueCardState extends State<InvoiceDialogueCard> {
                          text: pw.TextSpan(
                            children: [
                              pw.TextSpan(
-                               text: 'Tabibi ', // First word
+                               text: 'Tabibi', // First word
                                style: pw.TextStyle(
                                  color: customColoR, // Color for 'Tabibi'
                                  fontSize: 24,
@@ -173,9 +186,9 @@ class _InvoiceDialogueCardState extends State<InvoiceDialogueCard> {
                    ),
                     pw.Column(
                       children: [
-                        const RowText(text1: "Invoice No: ", text2: "#123456")
+                         RowText(text1: "Invoice No: ", text2: model.feesId)
                             .build(),
-                        const RowText(text1: "Issued Date: ", text2: "11 June")
+                         RowText(text1: "Issued Date: ", text2: model.appointmentDate)
                             .build(),
                       ],
                     ),
@@ -186,20 +199,20 @@ class _InvoiceDialogueCardState extends State<InvoiceDialogueCard> {
                   mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: pw.CrossAxisAlignment.center,
                   children: [
-                    const ColumnText(
+                     ColumnText(
                       headingText: "Billing From",
-                      text1: "Mian Uzair",
-                      text2: "New York, America",
+                      text1: model.patientName,
+                      text2: model.doctorLocation,
                       text3: "",
                     ).build(),
-                    const ColumnText(
+                     ColumnText(
                       headingText: "Billing To",
-                      text1: "Dr. John",
-                      text2: "New York, America",
+                      text1: model.doctorName,
+                      text2: model.doctorLocation,
                       text3: "",
                     ).build(),
 
-                    const ColumnText(
+                     ColumnText(
                       headingText: "Payment Method",
                       text1: "Debit Card",
                       text2: "xxxxxxxxxx-251",
@@ -210,7 +223,7 @@ class _InvoiceDialogueCardState extends State<InvoiceDialogueCard> {
                 pw.SizedBox(height: 20),
                 pw.Text("Invoice Details", style: const pw.TextStyle(fontSize: 14)),
                 pw.SizedBox(height: 10),
-                TableChart().build(),
+                TableChart(model).build(),
                 pw.SizedBox(height: 10),
                 pw.Row(
                   mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
@@ -240,9 +253,10 @@ class _InvoiceDialogueCardState extends State<InvoiceDialogueCard> {
                     pw.Column(
                       crossAxisAlignment: pw.CrossAxisAlignment.start,
                       children: [
-                        const RowText(text1: "Subtotal: ", text2: "220 MAD").build(),
-                        const RowText(text1: "Discount: ", text2: "-10%").build(),
-                        const RowText(text1: "Total: ", text2: "205 MAD").build(),
+                         RowText(text1: "Subtotal: ", text2: model.fees).build(),
+                         RowText(text1: "Discount: ", text2: "0%").build(),
+                         RowText(text1: "Vat: ", text2: "20%").build(),
+                         RowText(text1: "Total: ", text2: totalAmountString).build(),
                       ],
                     ),
                   ]
@@ -343,6 +357,9 @@ class ColumnText {
 }
 
 class TableChart {
+  final PatientDataProvider model;
+
+  TableChart(this.model);
   pw.Widget build() {
     return pw.Table.fromTextArray(
       headerDecoration: pw.BoxDecoration(
@@ -350,7 +367,7 @@ class TableChart {
       ),
       headers: ["Description", "Patient Quantity", "Total Payment"],
       data: [
-        ["Heart Checkup", "1",  "200 MAD"],
+        [model.patientProblem, "1",  model.fees],
       ],
     );
   }

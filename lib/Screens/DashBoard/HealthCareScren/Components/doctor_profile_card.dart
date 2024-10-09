@@ -23,7 +23,7 @@ class DoctorProfileCard extends StatelessWidget {
         Column(
           children: [
             SizedBox(
-              height: 9.h,
+              height: 4.h,
             ),
             Container(
               width: 200,

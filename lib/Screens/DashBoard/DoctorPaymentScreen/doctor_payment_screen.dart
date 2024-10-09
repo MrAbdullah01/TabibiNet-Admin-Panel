@@ -17,6 +17,7 @@ import '../../../Model/Res/Widgets/app_text_widget.dart';
 import '../../../Model/Res/Widgets/submit_button.dart';
 import '../../../Provider/Appointment/paymentProvider.dart';
 import '../../../Provider/DoctorPayment/doctor_payment_provider.dart';
+import '../PatientPaymentScreen/patientDataProvider/patientDataProvider.dart';
 
 class DoctorPaymentScreen extends StatelessWidget {
   const DoctorPaymentScreen({super.key});
@@ -25,6 +26,8 @@ class DoctorPaymentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final pro = Provider.of<DashBoardProvider>(context);
     final paymentProvider = Provider.of<PaymentProvider>(context); // Access the payment provider
+    final pData = Provider.of<PatientDataProvider>(context,);
+
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -101,14 +104,30 @@ class DoctorPaymentScreen extends StatelessWidget {
                           children: [
                             Row(
                               children: [
-                                Container(
-                                  height: 80,
-                                  width: 80,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      image: const DecorationImage(
-                                          image: AssetImage(AppAssets.doctorImage)
-                                      )
+                                InkWell(
+                                  onTap: () {
+                                    Provider.of<PatientDataProvider>(context, listen: false).setDoctorDataDetails(
+                                      doctorName: appointment.doctorName,
+                                      fees: appointment.fees,
+                                      feesId: appointment.feesType,
+                                      docPhoneNumber: appointment.docPhoneNumber,
+                                      doctorLocation: appointment.doctorLocation,
+                                    );
+                                    pro.setSelectedIndex(21);
+                                  },
+
+                                  child: Container(
+                                    height: 80,
+                                    width: 80,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        image:  DecorationImage(
+                                            image:
+                                            appointment.image.isNotEmpty ?
+                                            NetworkImage(appointment.image):
+                                            AssetImage(AppAssets.doctorImage)
+                                        )
+                                    ),
                                   ),
                                 ),
                                 SizedBox(width: 1.w,),
@@ -172,7 +191,14 @@ class DoctorPaymentScreen extends StatelessWidget {
                                     textSize: 10.sp,
                                     width: 8.w,
                                     press: () {
-                                      pro.setSelectedIndex(17);
+                                      Provider.of<PatientDataProvider>(context, listen: false).setDoctorDataDetails(
+                                        doctorName: appointment.doctorName,
+                                        fees: appointment.fees,
+                                        feesId: appointment.feesType,
+                                        docPhoneNumber: appointment.docPhoneNumber,
+                                        doctorLocation: appointment.doctorLocation,
+                                      );
+                                      pro.setSelectedIndex(19);
                                       // showDialog(
                                       //   context: context,
                                       //   builder: (context){

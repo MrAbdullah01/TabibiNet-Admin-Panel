@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tabibinet_admin_panel/Provider/Appointment/paymentProvider.dart';
+import 'package:tabibinet_admin_panel/Provider/DashBoard/dash_board_provider.dart';
+import 'package:tabibinet_admin_panel/Screens/DashBoard/PatientPaymentScreen/patientDataProvider/patientDataProvider.dart';
 
 import '../../../Model/Res/Constants/app_assets.dart';
 import '../../../Model/Res/Constants/app_colors.dart';
@@ -16,6 +18,9 @@ class PatientPaymentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final payment = Provider.of<PaymentProvider>(context,listen: false);
+    final pro = Provider.of<DashBoardProvider>(context,listen: false);
+    final pData = Provider.of<PatientDataProvider>(context, listen: false);
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -91,14 +96,34 @@ class PatientPaymentScreen extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            Container(
-                              height: 80,
-                              width: 80,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  image: const DecorationImage(
-                                      image: AssetImage(AppAssets.doctorImage)
-                                  )
+                            InkWell(
+                              onTap: () {
+                                Provider.of<PatientDataProvider>(context, listen: false).setPatientDataDetails(
+                                  patientName: appointment.patientName,
+                                  appointmentDate: appointment.appointmentDate,
+                                  fees: appointment.fees,
+                                  feesId: appointment.feesType,
+                                  country: appointment.country,
+                                  patientPhone: appointment.patientPhone,
+                                  userType: appointment.userType,
+                                  patientProblem: appointment.patientProblem,
+                                  patientAge: appointment.patientAge,
+                                  patientEmail: appointment.email
+                                );
+                                pro.setSelectedIndex(20);
+                              },
+                              child: Container(
+                                height: 80,
+                                width: 80,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    image:  DecorationImage(
+                                        // image: AssetImage(AppAssets.doctorImage)
+                                      image:   appointment.image.isNotEmpty ?
+                                        NetworkImage(appointment.image):
+                                        AssetImage(AppAssets.doctorImage)
+                                    )
+                                ),
                               ),
                             ),
                             SizedBox(width: 1.w,),
@@ -142,7 +167,19 @@ class PatientPaymentScreen extends StatelessWidget {
                               textColor: themeColor,
                               title: "Details",
                               press: () {
-
+                                Provider.of<PatientDataProvider>(context, listen: false).setPatientDataDetails(
+                                  patientName: appointment.patientName,
+                                  appointmentDate: appointment.appointmentDate,
+                                  fees: appointment.fees,
+                                  feesId: appointment.feesType,
+                                  country: appointment.country,
+                                  patientPhone: appointment.patientPhone,
+                                  userType: appointment.userType,
+                                    patientProblem: appointment.patientProblem,
+                                    patientAge: appointment.patientAge,
+                                    patientEmail: appointment.email
+                                );
+                                pro.setSelectedIndex(20);
                               },),
                             // SvgPicture.asset(AppIcons.visibleIcon,height: 30,)
                           ],

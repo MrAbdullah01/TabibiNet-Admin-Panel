@@ -34,7 +34,7 @@ class SettingScreen extends StatelessWidget {
           title: "Edit Profile",
           icon: AppIcons.editIcon,
           press: () {
-            dashP.setSelectedIndex(12);
+            dashP.setSelectedIndex(14);
           },),
         SizedBox(height: 2.h,),
         Row(

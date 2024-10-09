@@ -53,7 +53,7 @@ class AppointmentDetailScreen extends StatelessWidget {
             children: [
               InkWell(
                   onTap: () {
-    pro.setSelectedIndex(3);
+    pro.setSelectedIndex(4);
 
     },
                   child: SvgPicture.asset(AppIcons.undoIcon)),

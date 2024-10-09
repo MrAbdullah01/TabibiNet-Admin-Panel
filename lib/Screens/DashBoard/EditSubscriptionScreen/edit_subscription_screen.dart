@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -21,6 +22,8 @@ class EditSubscriptionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final pData = Provider.of<SubscriptionProvider>(context, listen: false);
+
     return ListView(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -36,12 +39,12 @@ class EditSubscriptionScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AppText(
-                  text: "Alex",
+                  text: pData.name,
                   fontSize: 16.sp, fontWeight: FontWeight.w600,
                   isTextCenter: false, textColor: textColor,
                   fontFamily: AppFonts.semiBold,),
                 AppText(
-                  text: "info@gmail.com",
+                  text: pData.email,
                   fontSize: 14.sp, fontWeight: FontWeight.w500,
                   isTextCenter: false, textColor: Colors.grey,
                   fontFamily: AppFonts.medium,),
@@ -58,7 +61,7 @@ class EditSubscriptionScreen extends StatelessWidget {
                   fontFamily: AppFonts.medium,),
                 SizedBox(height: 1.h,),
                 SubmitButton(
-                  title: "Basic",
+                  title: pData.subscription,
                   width: 10.w,
                   height: 40,
                   bgColor: Colors.grey,
@@ -99,7 +102,9 @@ class EditSubscriptionScreen extends StatelessWidget {
             SubmitButton(
               width: 15.w,
               title: "Change Subscription",
-              press: () => null,
+              press: () {
+                updateSubscription(context,);
+              },
             ),
           ],
         ),
@@ -108,4 +113,24 @@ class EditSubscriptionScreen extends StatelessWidget {
       ],
     );
   }
+
+  void updateSubscription(BuildContext context) {
+    final provider = Provider.of<SubscriptionProvider>(context, listen: false);
+
+    String userId = provider.id;
+
+    FirebaseFirestore.instance.collection("users").doc(userId).update({
+      "membership": provider.selectSub,
+    }).then((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Subscription updated successfully!'))
+      );
+    }).catchError((error) {
+      // Handle any errors that occur during the update
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to update subscription: $error'))
+      );
+    });
+  }
+
 }

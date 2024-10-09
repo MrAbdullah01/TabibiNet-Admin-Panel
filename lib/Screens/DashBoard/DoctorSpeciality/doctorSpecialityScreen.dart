@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:tabibinet_admin_panel/Model/Res/Widgets/toast_msg.dart';
 import 'package:tabibinet_admin_panel/Provider/actionProvider/actionProvider.dart';
 
 import '../../../Model/Res/Constants/app_colors.dart';
@@ -10,6 +13,7 @@ import '../../../Model/Res/Constants/app_fonts.dart';
 import '../../../Model/Res/Constants/app_icons.dart';
 import '../../../Model/Res/Widgets/add_button.dart';
 import '../../../Model/Res/Widgets/app_text_widget.dart';
+import '../../../Model/Res/Widgets/submit_button.dart';
 import '../../../Model/Res/components/loadingButton.dart';
 import '../PatientScreen/Components/patient_field.dart';
 
@@ -17,11 +21,13 @@ class DoctorSpecialityScreen extends StatelessWidget {
   DoctorSpecialityScreen({super.key});
 
   final doctorSpecialityC = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<ActionProvider>(context,listen: false);
     return SingleChildScrollView(
+      controller: _scrollController,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 3.w),
         child: Column(
@@ -145,6 +151,7 @@ class DoctorSpecialityScreen extends StatelessWidget {
                                       doctorSpecialityC.text = specialty["specialty"];
                                       provider
                                           .setEditingMode(specialtyData.id);
+                                      _scrollToTextField();
                                     },
                                     child: SvgPicture.asset(
                                       AppIcons.pencilIcon,
@@ -154,9 +161,55 @@ class DoctorSpecialityScreen extends StatelessWidget {
                                   SizedBox(width: 15.sp),
                                   InkWell(
                                     onTap: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            backgroundColor: themeColor,
+                                            title: const Text(
+                                              'Delete Speciality!',
+                                              style: TextStyle(
+                                                  fontFamily: AppFonts.semiBold,
+                                                  color: bgColor
+                                              ),
+                                            ),
+                                            content: const Text(
+                                              'Are you sure you want to Delete Doctors Speciality?',
+                                              style: TextStyle(
+                                                  fontFamily: AppFonts.regular,
+                                                  color: bgColor
+                                              ),
+                                            ),
+                                            actions: <Widget>[
+                                              SubmitButton(
+                                                height: 30,
+                                                width: 8.w,
+                                                textSize: 12.sp,
+                                                bgColor: themeColor,
+                                                textColor: bgColor,
+                                                bdColor: bgColor,
+                                                title: "No",
+                                                press: () => Get.back(),),
+                                              SubmitButton(
+                                                height: 30,
+                                                width: 8.w,
+                                                textSize: 12.sp,
+                                                bgColor: bgColor,
+                                                textColor: themeColor,
+                                                bdColor: bgColor,
+                                                title: "Yes",
+                                                press: () {
+                                                  _deleteSpecialty(
+                                                      context, specialtyData.id);
+                                                  ToastMsg().toastMsg("Specialty deleted successfully");
+                                                  Get.back();
+                                                }),
+                                            ],
+                                          );
+                                        },
+                                      );
                                       // Handle delete icon tap
-                                      _deleteSpecialty(
-                                          context, specialtyData.id);
+
                                     },
                                     child: SvgPicture.asset(
                                       AppIcons.deleteIcon,
@@ -179,7 +232,14 @@ class DoctorSpecialityScreen extends StatelessWidget {
       ),
     );
   }
-
+  void _scrollToTextField() {
+    // Scroll to the TextField position
+    _scrollController.animateTo(
+      10.0, // Adjust this value based on your layout
+      duration: Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
   void _uploadDoctorSpecialty(BuildContext context) {
     var timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
     if (doctorSpecialityC.text.isNotEmpty) {

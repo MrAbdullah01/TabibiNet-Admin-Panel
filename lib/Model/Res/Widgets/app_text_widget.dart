@@ -6,10 +6,10 @@ class AppText extends StatelessWidget {
   const AppText(
       {super.key,
         required this.text,
-        required this.fontSize,
-        required this.fontWeight,
+         this.fontSize = 12,
+         this.fontWeight = FontWeight.normal,
          this.isTextCenter,
-        required this.textColor,
+         this.textColor = Colors.black,
         this.maxLines,
         this.fontFamily = "Regular",
         this.valueKey,

@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tabibinet_admin_panel/Model/Res/components/loadingButton.dart';
 import 'package:tabibinet_admin_panel/Model/Res/components/suggestionContainer.dart';
@@ -13,6 +15,7 @@ import '../../../Model/Res/Constants/app_icons.dart';
 import '../../../Model/Res/Widgets/add_button.dart';
 import '../../../Model/Res/Widgets/app_text_widget.dart';
 import '../../../Model/Res/Widgets/submit_button.dart';
+import '../../../Model/Res/Widgets/toast_msg.dart';
 import '../../../Provider/actionProvider/actionProvider.dart';
 import '../PatientScreen/Components/patient_field.dart';
 
@@ -149,7 +152,52 @@ class AppointmentFeeScreen extends StatelessWidget {
                                 padding:  EdgeInsets.only(left: 2.w,right: 1.w),
                                 child: InkWell(
                                     onTap:  (){
-                                      deleteFeeInfo(context,model['id']);
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            backgroundColor: themeColor,
+                                            title: const Text(
+                                              'Delete Appointment Fee!',
+                                              style: TextStyle(
+                                                  fontFamily: AppFonts.semiBold,
+                                                  color: bgColor
+                                              ),
+                                            ),
+                                            content: const Text(
+                                              'Are you sure you want to Delete Appointment Fee?',
+                                              style: TextStyle(
+                                                  fontFamily: AppFonts.regular,
+                                                  color: bgColor
+                                              ),
+                                            ),
+                                            actions: <Widget>[
+                                              SubmitButton(
+                                                height: 30,
+                                                width: 8.w,
+                                                textSize: 12.sp,
+                                                bgColor: themeColor,
+                                                textColor: bgColor,
+                                                bdColor: bgColor,
+                                                title: "No",
+                                                press: () => Get.back(),),
+                                              SubmitButton(
+                                                  height: 30,
+                                                  width: 8.w,
+                                                  textSize: 12.sp,
+                                                  bgColor: bgColor,
+                                                  textColor: themeColor,
+                                                  bdColor: bgColor,
+                                                  title: "Yes",
+                                                  press: () {
+                                                    deleteFeeInfo(context,model['id']);
+                                                    ToastMsg().toastMsg("Appointment Fee deleted successfully");
+                                                    Get.back();
+                                                  }),
+                                            ],
+                                          );
+                                        },
+                                      );
                                     },
                                     child: SvgPicture.asset(AppIcons.deleteIcon,height: 4.h,)),
                               ),

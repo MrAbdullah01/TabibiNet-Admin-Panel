@@ -17,7 +17,7 @@ class HealthCareScreen extends StatelessWidget {
   HealthCareScreen({super.key});
 
   final searchC = TextEditingController();
-
+  final ScrollController _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<HealthCareProvider>(context);
@@ -76,6 +76,7 @@ class HealthCareScreen extends StatelessWidget {
                 final specialty = snapshot.data!.docs;
 
                 return ListView.separated(
+                  controller: _scrollController,
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   itemCount: specialty.length,
@@ -84,20 +85,6 @@ class HealthCareScreen extends StatelessWidget {
                     final specialties = specialty[index].data();
                     final specialtyId = specialty[index].id;
 
-                    // return SubmitButton(
-                    //   width: 15.w,
-                    //   radius: 6,
-                    //   bgColor: isSelected ? themeColor : bgColor,
-                    //   textColor: isSelected ? bgColor : themeColor,
-                    //   textSize: 10.sp,
-                    //   bdColor: Colors.transparent,
-                    //   title: specialtys["specialty"],
-                    //   press: () {
-                    //     log("doctor id is:: $specialtyId");
-                    //     provider.setIndex(index);
-                    //     provider.setSelectedSpecialty(specialtys["id"]);
-                    //   },
-                    // );
                     return  SuggestionContainer(
                       text: specialties["specialty"],
                       bgColor: isSelected ? themeColor : bgColor,
@@ -108,6 +95,7 @@ class HealthCareScreen extends StatelessWidget {
                         log("doctor id is:: $specialtyId");
                         provider.setIndex(index);
                         provider.setSelectedSpecialty(specialties["id"]);
+                        _scrollController;
                       },
                     );
                   },

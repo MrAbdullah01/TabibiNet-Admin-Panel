@@ -22,6 +22,7 @@ import 'Provider/Patient/patient_provider.dart';
 import 'Provider/Subscription/subscription_provider.dart';
 import 'Provider/cloudinaryProvider/imageProvider.dart';
 import 'Provider/profileProvider/profileInfo.dart';
+import 'Screens/DashBoard/PatientPaymentScreen/patientDataProvider/patientDataProvider.dart';
 import 'Screens/Start/LogInScreen/login_screen.dart';
 import 'firebase_options.dart';
 
@@ -73,6 +74,7 @@ class MyApp extends StatelessWidget {
               ChangeNotifierProvider(create: (context) => ChatProvider(),),
               ChangeNotifierProvider(create: (context) => UserCountProvider(),),
               ChangeNotifierProvider(create: (context) => PaymentProvider(),),
+              ChangeNotifierProvider(create: (context) => PatientDataProvider(),),
             ],
 
           child: GetMaterialApp(
@@ -82,8 +84,8 @@ class MyApp extends StatelessWidget {
               colorScheme: ColorScheme.fromSeed(seedColor: themeColor,primary: themeColor),
               useMaterial3: true,
             ),
-            home:  SplashScreen(),
-            // home: DashBoardScreen(),
+            // home:  SplashScreen(),
+            home: DashBoardScreen(),
           ),
         );
     },);

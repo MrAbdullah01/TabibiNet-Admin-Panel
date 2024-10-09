@@ -48,5 +48,6 @@ class AppIcons{
   static const String personIcon = "assets/icons/person_icon.svg";
   static const String visible2Icon = "assets/icons/visible_2_icon.svg";
   static const String logout2Icon = "assets/icons/logout_2_icon.svg";
+  static const String adsReq = "assets/images/Ads.svg";
 
 }

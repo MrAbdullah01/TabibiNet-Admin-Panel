@@ -72,7 +72,31 @@ class MessageBubble extends StatelessWidget {
           ],
         ),
       );
-    } else {
+    }else if (type == 'document' && url != null) {
+      // Display voice message with a clickable play button
+      messageContent = InkWell(
+        onTap: () {
+          // Open or play voice message
+          launchAudio(url!);
+        },
+        child: Row(
+          children: [
+            Image.asset(AppAssets.documentImage,height: 30,width: 30,),
+            const SizedBox(height: 8),
+            Flexible(
+              child: Text(
+                "Document: $type",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                // url.toString(),
+                style: TextStyle(color: isSender ? Colors.white : Colors.black),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+    else {
       // Fallback for unknown message types
       messageContent = Text(
         'Unknown message type',
