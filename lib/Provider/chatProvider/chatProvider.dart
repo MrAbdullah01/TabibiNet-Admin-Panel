@@ -181,7 +181,7 @@ class ChatProvider with ChangeNotifier {
 
 
   Future<void> sendMessage({required String chatRoomId,required String message,
-    required String otherEmail,required String type}) async {
+    required String otherEmail,required String type,required url}) async {
     final currentUserEmail = currentUserId;
     log("currentUseremaill is  ::: $currentUserId");
 
@@ -189,7 +189,7 @@ class ChatProvider with ChangeNotifier {
     try {
       final newMessage = {
         'text': message,
-        'sender': currentUserEmail,
+        'sender': currentUserEmail.toString(),
         'timestamp': FieldValue.serverTimestamp(),
         'read': false,
         'delivered': false,
@@ -210,27 +210,27 @@ class ChatProvider with ChangeNotifier {
 
   Future<void> sendFileMessage({required String chatRoomId, required String filePath, required String type, required String otherEmail}) async {
     final currentUserEmail = currentUserId;
-    final file = File(filePath);
-    final fileName = file.uri.pathSegments.last;
 
-    // Upload file to Firebase Storage
-    final ref = _storage.ref().child('chatFiles/$chatRoomId/$fileName');
-    await ref.putFile(file);
-
-    final fileUrl = await ref.getDownloadURL();
+    // final fileName = file.uri.pathSegments.last;
+    //
+    // // Upload file to Firebase Storage
+    // final ref = _storage.ref().child('chatFiles/$chatRoomId/$fileName');
+    // await ref.putFile(file);
+    //
+    // final fileUrl = await ref.getDownloadURL();
 
     final newMessage = {
-      'text': fileName,
+      'text': type,
       'sender': currentUserEmail,
       'timestamp': FieldValue.serverTimestamp(),
       'read': false,
       'delivered': false,
       'type': type,
-      'url': fileUrl,
+      'url': filePath,
     };
     await _firestore.collection('chatRooms').doc(chatRoomId).collection('messages').add(newMessage);
     await _firestore.collection('chatRooms').doc(chatRoomId).update({
-      'lastMessage': fileName,
+      'lastMessage': type,
       'isMessage': otherEmail,
       'lastTimestamp': FieldValue.serverTimestamp(),
     });

@@ -60,6 +60,7 @@ dependencies:
   universal_html: ^2.0.9
   google_fonts: ^6.2.1
   audioplayers: ^6.1.0
+  anchor_scroll_controller: ^0.4.4
 
 
 dev_dependencies:

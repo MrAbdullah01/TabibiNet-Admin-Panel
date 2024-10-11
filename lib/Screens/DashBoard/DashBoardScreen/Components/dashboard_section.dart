@@ -15,9 +15,7 @@ import 'package:tabibinet_admin_panel/Screens/DashBoard/DashBoardScreen/Componen
 
 import 'monthly_charts.dart';
 
-
 class DashboardSection extends StatefulWidget {
-
   DashboardSection({super.key});
 
   @override
@@ -34,13 +32,14 @@ class _DashboardSectionState extends State<DashboardSection> {
     // Fetch user count by month only once in initState
     userCountFuture = getUserCountByMonth();
   }
+
   // final List<Map<String, String>> items = [
   @override
   Widget build(BuildContext context) {
-
-    return Consumer<DashBoardProvider>(
-      builder: (context, value, child) {
-      final dashboardProvider = Provider.of<DashBoardProvider>(context,);
+    return Consumer<DashBoardProvider>(builder: (context, value, child) {
+      final dashboardProvider = Provider.of<DashBoardProvider>(
+        context,
+      );
 
       // Initialize listeners when the widget is first built
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -86,105 +85,155 @@ class _DashboardSectionState extends State<DashboardSection> {
               "icon": AppIcons.doctorRequestIcon,
             },
             {
-              "title": "0",
+              "title": "${value.totalSubscriptions}",
               "subTitle": "Subscriptions",
               "icon": AppIcons.crownIcon,
             },
           ];
-        return ListView(
-          shrinkWrap: true,
-          scrollDirection: Axis.vertical,
-          padding: EdgeInsets.symmetric(horizontal: 15.sp),
-          children: [
-            SizedBox(
-              width: 80.w,
-              child: GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4,
-                    mainAxisSpacing: 10,
-                    mainAxisExtent: 19.h,
-                    crossAxisSpacing: 20
-                ),
-                itemCount: items.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    padding: EdgeInsets.all(15.sp),
-                    decoration: BoxDecoration(
-                      color: bgColor,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            AppText(
-                              text: items[index]["title"]!,
-                              fontSize: 16.sp, fontWeight: FontWeight.w500,
-                              isTextCenter: false, textColor: textColor,
-                              fontFamily: AppFonts.semiBold,),
-                            AppText(
-                              text: items[index]["subTitle"]!,
-                              fontSize: 12.sp, fontWeight: FontWeight.w400,
-                              isTextCenter: false, textColor: textColor,
-                              fontFamily: AppFonts.semiBold,maxLines: 2,),
-                          ],
+          return ListView(
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
+            padding: EdgeInsets.symmetric(horizontal: 15.sp),
+            children: [
+              SizedBox(
+                width: 80.w,
+                child: GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4,
+                      mainAxisSpacing: 10,
+                      mainAxisExtent: 19.h,
+                      crossAxisSpacing: 20),
+                  itemCount: items.length,
+                  itemBuilder: (context, index) {
+                    return Tooltip(
+                      decoration: BoxDecoration(
+                        color: themeColor
+                      ),
+                      message: '${items[index]["subTitle"]} Screen',
+                      child: InkWell(
+                        onTap: () {
+                          switch (index) {
+                            case 0:
+
+                              break;
+                              case 1:
+                                // Go to revenue screen
+                                break;
+                            case 2:
+                              value.setSelectedIndex(2);
+                              // Go to patient screen
+                              break;
+                            case 3:
+                              value.setSelectedIndex(1);
+                              // Go to doctor screen
+                              break;
+                            case 4:
+                              value.setSelectedIndex(4);
+                              // Go to appointment screen
+                              break;
+                            case 5:
+                              value.setSelectedIndex(4);
+                              // Go to appointment cancel screen
+                              break;
+                            case 6:
+                              value.setSelectedIndex(3);
+                              // Go to doctor request screen
+                              break;
+                            case 7:
+                              value.setSelectedIndex(9);
+                              // Go to subscription screen
+                              break;
+                              default: DashboardSection();
+                          }
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(15.sp),
+                          decoration: BoxDecoration(
+                            color: bgColor,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  AppText(
+                                    text: items[index]["title"]!,
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500,
+                                    isTextCenter: false,
+                                    textColor: textColor,
+                                    fontFamily: AppFonts.semiBold,
+                                  ),
+                                  AppText(
+                                    text: items[index]["subTitle"]!,
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w400,
+                                    isTextCenter: false,
+                                    textColor: textColor,
+                                    fontFamily: AppFonts.semiBold,
+                                    maxLines: 2,
+                                  ),
+                                ],
+                              ),
+                              const Spacer(),
+                              Container(
+                                padding: EdgeInsets.all(10.sp),
+                                decoration: const BoxDecoration(
+                                    color: themeColor, shape: BoxShape.circle),
+                                child: SvgPicture.asset(
+                                  items[index]["icon"]!,
+                                  height: 20,
+                                  colorFilter: const ColorFilter.mode(
+                                      bgColor, BlendMode.srcIn),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                        const Spacer(),
-                        Container(
-                          padding: EdgeInsets.all(10.sp),
-                          decoration: const BoxDecoration(
-                              color: themeColor,
-                              shape: BoxShape.circle
-                          ),
-                          child: SvgPicture.asset(
-                            items[index]["icon"]!,
-                            height: 20,
-                            colorFilter: const ColorFilter.mode(bgColor, BlendMode.srcIn),
-                          ),
-                        )
-                      ],
-                    ),
-                  );
-                },
+                      ),
+                    );
+                  },
+                ),
               ),
-            ),
-            SizedBox(height: 15.sp,),
-            // PatientCountLineChart()
-            // FutureBuilder<Map<String, int>>(
-            //   future: userCountFuture, // The future that resolves to user counts
-            //   builder: (context, snapshot) {
-            //     if (snapshot.connectionState == ConnectionState.waiting) {
-            //       return const Center(child: Text("Waiting for Data"));
-            //     } else if (snapshot.hasError) {
-            //       return const Center(child: Text('Error loading data'));
-            //     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            //       return const Center(child: Text('No data available'));
-            //     } else {
-            //       // Pass the user count data to the BarChartSample1 widget
-            //       return BarChartSample1(userCounts: snapshot.data!);
-            //     }
-            //   },
-            // ),
-            BarChartSample1(),
-          ],
-        );
-      },
+              SizedBox(
+                height: 15.sp,
+              ),
+              // PatientCountLineChart()
+              // FutureBuilder<Map<String, int>>(
+              //   future: userCountFuture, // The future that resolves to user counts
+              //   builder: (context, snapshot) {
+              //     if (snapshot.connectionState == ConnectionState.waiting) {
+              //       return const Center(child: Text("Waiting for Data"));
+              //     } else if (snapshot.hasError) {
+              //       return const Center(child: Text('Error loading data'));
+              //     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              //       return const Center(child: Text('No data available'));
+              //     } else {
+              //       // Pass the user count data to the BarChartSample1 widget
+              //       return BarChartSample1(userCounts: snapshot.data!);
+              //     }
+              //   },
+              // ),
+              BarChartSample1(),
+            ],
+          );
+        },
       );
-  });
-}
+    });
+  }
 
   Future<Map<String, int>> getUserCountByMonth() async {
     Map<String, int> userCountByMonth = {};
 
     try {
       QuerySnapshot snapshot =
-      await FirebaseFirestore.instance.collection('users').get();
+          await FirebaseFirestore.instance.collection('users').get();
 
       for (var doc in snapshot.docs) {
         if (doc['creationDate'] != null && doc['creationDate'] is Timestamp) {
@@ -194,7 +243,8 @@ class _DashboardSectionState extends State<DashboardSection> {
 
           // Increment the count for the specific month
           if (userCountByMonth.containsKey(formattedDate)) {
-            userCountByMonth[formattedDate] = userCountByMonth[formattedDate]! + 1;
+            userCountByMonth[formattedDate] =
+                userCountByMonth[formattedDate]! + 1;
             log("number iss::${userCountByMonth[formattedDate]}");
           } else {
             userCountByMonth[formattedDate] = 1;
@@ -204,7 +254,7 @@ class _DashboardSectionState extends State<DashboardSection> {
         }
       }
     } catch (e) {
-      print("Error fetching user data: $e");
+      log("Error fetching user data: $e");
     }
 
     return userCountByMonth;

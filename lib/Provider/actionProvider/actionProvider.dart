@@ -49,7 +49,7 @@ class ActionProvider extends ChangeNotifier{
   }
 ///to update the value of button on updating speciality
   String _buttonText = 'Add';
-  String _buttonFaqText = 'Delete';
+  String _buttonFaqText = 'Submit';
   String _buttonLoginText = 'Login';
   String? _editingId;
   bool _isUpdate = false;
@@ -198,6 +198,9 @@ class ActionProvider extends ChangeNotifier{
     _isForgetPasswordVisible = !_isForgetPasswordVisible;
     notifyListeners();
   }
-
+  String capitalizeFirstLetter(String text) {
+    if (text.isEmpty) return text;
+    return text[0].toUpperCase() + text.substring(1);
+  }
 
 }

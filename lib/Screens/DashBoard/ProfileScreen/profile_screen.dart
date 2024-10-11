@@ -68,7 +68,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   SizedBox(width: 1.w),
                   AppText(
-                    text: profileData['firstName'] ?? 'N/A',
+                    text: profileData['firstName'] + " "+ profileData['lastName'] ?? 'N/A',
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
                     isTextCenter: false,

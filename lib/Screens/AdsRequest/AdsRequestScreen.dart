@@ -158,6 +158,7 @@ class AdsRequest extends StatelessWidget {
         });
         ActionProvider.stopLoading();
 
+        cloudinaryProvider.clearImage();
 
         ToastMsg().toastMsg( 'Data uploaded successfully');
       } else {

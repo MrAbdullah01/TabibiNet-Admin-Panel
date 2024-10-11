@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tabibinet_admin_panel/Model/Res/Constants/app_colors.dart';
 import 'package:tabibinet_admin_panel/Model/Res/Constants/firebase.dart';
+import 'package:tabibinet_admin_panel/Provider/actionProvider/actionProvider.dart';
 
 import '../../../../Model/Res/Constants/app_assets.dart';
 import '../../../../Model/Res/Constants/app_fonts.dart';
@@ -16,6 +18,7 @@ class DoctorProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+   final  provider = Provider.of<ActionProvider>(context);
     return Stack(
       clipBehavior: Clip.none,
       alignment: Alignment.topCenter,
@@ -40,7 +43,7 @@ class DoctorProfileCard extends StatelessWidget {
                     child: Column(
                       children: [
                         AppText(
-                          text: users['name'],
+                          text: provider.capitalizeFirstLetter(users['name']),
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w600,
                           isTextCenter: false,

@@ -159,7 +159,8 @@ class ChatTypeWidget extends StatelessWidget {
                 log("Other User Email:: ${otherEmails}");
                 provider.sendMessage(
                     chatRoomId: provider.chatRoomId, message: text,otherEmail: otherEmail,
-                     type: 'text'
+                     type: 'text',
+                    url: ""
                 );
                 _controller.clear();
               }

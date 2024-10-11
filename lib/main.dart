@@ -75,6 +75,7 @@ class MyApp extends StatelessWidget {
               ChangeNotifierProvider(create: (context) => UserCountProvider(),),
               ChangeNotifierProvider(create: (context) => PaymentProvider(),),
               ChangeNotifierProvider(create: (context) => PatientDataProvider(),),
+              ChangeNotifierProvider(create: (context) => PatientDataProvider(),),
             ],
 
           child: GetMaterialApp(
@@ -84,8 +85,8 @@ class MyApp extends StatelessWidget {
               colorScheme: ColorScheme.fromSeed(seedColor: themeColor,primary: themeColor),
               useMaterial3: true,
             ),
-            // home:  SplashScreen(),
-            home: DashBoardScreen(),
+            home:  SplashScreen(),
+            // home: DashBoardScreen(),
           ),
         );
     },);

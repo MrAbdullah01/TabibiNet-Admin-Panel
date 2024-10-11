@@ -332,6 +332,7 @@ class ColumnText {
         pw.SizedBox(height: 10),
         pw.Text(
           text1,
+          overflow: pw.TextOverflow.clip,
           style: pw.TextStyle(
             fontSize: 10,
             color: PdfColors.grey,
@@ -339,6 +340,7 @@ class ColumnText {
         ),
         pw.Text(
           text2,
+          overflow: pw.TextOverflow.clip,
           style: pw.TextStyle(
             fontSize: 10,
             color: PdfColors.grey,
@@ -346,6 +348,7 @@ class ColumnText {
         ),
         pw.Text(
           text3,
+          overflow: pw.TextOverflow.clip,
           style: pw.TextStyle(
             fontSize: 10,
             color: PdfColors.grey,

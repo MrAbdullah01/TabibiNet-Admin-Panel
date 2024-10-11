@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'dart:html' as html;
 import 'dart:typed_data';
 import '../../../../Model/Res/Constants/app_colors.dart';
@@ -37,6 +38,18 @@ class MessageInput extends StatelessWidget {
                 fontFamily: AppFonts.medium,
                 color: textColor,
               ),
+              textInputAction: TextInputAction.send,
+              onSubmitted: (value) async {
+                if (_controller.text.isNotEmpty) {
+                  await provider.sendMessage(
+                    chatRoomId: chatRoomId,
+                    message: _controller.text,
+                    otherEmail: otherUserEmail,
+                    type: 'text',
+                    url: ""
+                  );
+                  _controller.clear(); }
+              },
               decoration: InputDecoration(
                 hintText: 'Type a message....',
                 border: InputBorder.none,
@@ -61,6 +74,7 @@ class MessageInput extends StatelessWidget {
                 message: _controller.text,
                 otherEmail: otherUserEmail,
                 type: 'text',
+                url: ""
               );
               _controller.clear();
             },
@@ -92,17 +106,20 @@ class MessageInput extends StatelessWidget {
         // Set image data using Provider to display in the container
         final cloudinaryProvider = Provider.of<CloudinaryProvider>(context, listen: false);
         cloudinaryProvider.setImageData(bytes);
+        await cloudinaryProvider.uploadImage(cloudinaryProvider.imageData!);
         if(cloudinaryProvider.imageUrl.isNotEmpty){
-          await provider.sendMessage(
+          await provider.sendFileMessage(
             chatRoomId: chatRoomId,
-            message: cloudinaryProvider.imageUrl,
             otherEmail: otherUserEmail,
             type: 'image',
+            filePath: cloudinaryProvider.imageUrl.toString(),
           );
           log("image url of image  is:::${ cloudinaryProvider.imageUrl}");
           log("chatroom of image  is:::${ chatRoomId}");
           log("other user email   is:::${ otherUserEmail}");
           cloudinaryProvider.clearImage(); // Reset the image data to avoid duplication in the chat list
+        }else{
+          log("No image selected");
         }
 
 
@@ -112,5 +129,14 @@ class MessageInput extends StatelessWidget {
     });
 
     uploadInput.click(); // Trigger the file picker dialog
+  }
+
+  void _launchURLInNewTab(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, webOnlyWindowName: '_blank');  // Opens URL in a new tab
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }

@@ -136,8 +136,8 @@ class AppointmentScreen extends StatelessWidget {
                                           country: appointment.doctorLocation,
                                           patientPhone: appointment.patientPhone,
                                           userType: "N/A",
-                                          patientProblem: "N/A",
-                                          patientAge: "N/A",
+                                          patientProblem: appointment.patientProblem.isNotEmpty ? appointment.patientProblem :"N/A",
+                                          patientAge: appointment.patientAge.isNotEmpty ? appointment.patientAge :"N/A",
                                           patientEmail: appointment.patientEmail);
                                       pro.setSelectedIndex(20);
                                     },

@@ -86,6 +86,36 @@ class AuthenticationProvider extends ChangeNotifier{
 
 
 
+  List<Map<String, dynamic>> _specialties = [];
+
+  // Getter for accessing the list of specialties
+    List<Map<String, dynamic>> get specialties => _specialties;
+
+  // Function to fetch specialties from Firestore
+  Future<void> fetchSpecialties() async {
+    try {
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('doctorsSpecialty')
+          .orderBy('timestamp', descending: false)
+          .get();
+
+      _specialties = querySnapshot.docs
+          .map((doc) => {
+        'id': doc.id,
+        ...doc.data() as Map<String, dynamic>, // Merge ID and doc data
+      })
+          .toList();
+
+      // Notify listeners to update the UI
+      notifyListeners();
+    } catch (e) {
+      print("Error fetching specialties: $e");
+    }
+  }
+
+
+
+
 
 
 

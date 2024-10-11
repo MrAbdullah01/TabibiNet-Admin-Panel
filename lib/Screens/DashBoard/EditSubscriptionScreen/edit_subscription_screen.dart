@@ -120,7 +120,7 @@ class EditSubscriptionScreen extends StatelessWidget {
     String userId = provider.id;
 
     FirebaseFirestore.instance.collection("users").doc(userId).update({
-      "membership": provider.selectSub,
+      "memberShip": provider.selectSub,
     }).then((_) {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Subscription updated successfully!'))

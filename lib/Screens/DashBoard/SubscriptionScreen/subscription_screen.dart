@@ -77,7 +77,7 @@ class SubscriptionScreen extends StatelessWidget {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 }
                 if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Text("No Users Found");
+                  return Center(child: const Text("No Users Found"));
                 }
 
                 final users = snapshot.data!;

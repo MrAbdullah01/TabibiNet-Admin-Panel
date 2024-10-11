@@ -53,9 +53,14 @@ class MessageBubble extends StatelessWidget {
     } else if (type == 'voice' && url != null) {
       // Display voice message with a clickable play button
       messageContent = GestureDetector(
-        onTap: () {
-          // Open or play voice message
-          launchAudio(url!);
+        onTap: () async{
+          final Uri uri = Uri.parse(url!);
+          if (await canLaunchUrl(uri)) {
+          await launchUrl(uri, webOnlyWindowName: '_blank');  // Opens URL in a new tab
+          } else {
+          throw 'Could not launch $url';
+          }
+          // launchAudio(url!);
         },
         child: Row(
           children: [

@@ -1,6 +1,8 @@
 class AppointmentDetails {
   final String id;
   final String patientName;
+  final String patientAge;
+  final String patientProblem;
   final String patientEmail;
   final String patientPhone;
   final String doctorFee;
@@ -10,8 +12,10 @@ class AppointmentDetails {
   final String checkUpType;
   final String image;
 
-  AppointmentDetails( {required this.checkUpType,required this.image,
-    required this.doctorName,required this.doctorLocation,required this.id, required this.patientName, required this.patientEmail, required this.patientPhone, required this.doctorFee, required this.appointmentTime,
+  AppointmentDetails( {required this.checkUpType,required this.image,required this.patientProblem,required this.patientAge,
+    required this.doctorName,required this.doctorLocation,required this.id
+    , required this.patientName, required this.patientEmail, required this.patientPhone,
+    required this.doctorFee, required this.appointmentTime,
   });
 
 
@@ -27,6 +31,8 @@ class AppointmentDetails {
       doctorLocation: data['doctorLocation'] ?? '',
       checkUpType: data['feesType'] ?? '',
       image: data['image'] ?? '',
+      patientProblem: data['patientProblem'] ?? '',
+      patientAge: data['patientAge'] ?? '',
     );
   }
 }

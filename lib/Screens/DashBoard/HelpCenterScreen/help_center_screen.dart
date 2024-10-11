@@ -30,6 +30,7 @@ class HelpCenterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log("Message:: Main Rebuild");
     final controller = Get.put(ChatSearchController());
     final chatProvider = Provider.of<ChatProvider>(context,listen: false);
 

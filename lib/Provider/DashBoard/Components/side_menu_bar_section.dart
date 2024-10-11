@@ -43,6 +43,10 @@ class SideMenuBarSection extends StatelessWidget {
       "icon" : AppIcons.appointmentFeeIcon
     },
     {
+      "title" : "Doctor Speciality ",
+      "icon" : AppIcons.doctorIcon
+    },
+    {
       "title" : "Doctor Payment",
       "icon" : AppIcons.doctorPaymentIcon
     },
@@ -55,19 +59,19 @@ class SideMenuBarSection extends StatelessWidget {
       "icon" : AppIcons.subscriptionIcon
     },
     {
+      "title" : "Banner Ads ",
+      "icon" : AppIcons.adsReq
+    },
+    {
       "title" : "Help Centre",
       "icon" : AppIcons.helpIcon
     },
     {
-      "title" : "FAQS",
+      "title" : "FAQs",
       "icon" : AppIcons.faqIcon
-    },{
-      "title" : "Doctor Speciality ",
-      "icon" : AppIcons.doctorIcon
-    },{
-      "title" : "Banner Ads ",
-      "icon" : AppIcons.adsReq
     },
+
+
   ];
 
   @override
