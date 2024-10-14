@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:tabibinet_admin_panel/Model/data/user_model.dart';
 
 class PatientDataProvider with ChangeNotifier {
   // Doctor Data
@@ -27,6 +28,9 @@ class PatientDataProvider with ChangeNotifier {
   String _userType = '';
   String _doctorLocation = '';  // Could be removed if unnecessary for your logic
   String _docPhoneNumber = '';  // Could be removed if unnecessary for your logic
+  String _doctorDescription = '';  // Could be removed if unnecessary for your logic
+  String _doctorPhoto = '';  // Could be removed if unnecessary for your logic
+  Map? _docModel;  // Could be removed if unnecessary for your logic
 
   // Getters for Doctor Data
   String get doctorName => _doctorName;
@@ -40,6 +44,7 @@ class PatientDataProvider with ChangeNotifier {
   String get rating => _rating;
   String get reviews => _reviews;
   String get docPhoneNumber => _docPhoneNumber;
+  String get doctorPhoto => _doctorPhoto;
 
   // Getters for Patient Data
   String get patientName => _patientName;
@@ -52,6 +57,8 @@ class PatientDataProvider with ChangeNotifier {
   String get feesId => _feesId;
   String get userType => _userType;
   String get doctorLocation => _doctorLocation;
+  String get doctorDescription => _doctorDescription;
+  Map? get docModel => _docModel;
 
   // Setters for Patient Data
   void setPatientDataDetails({
@@ -71,26 +78,59 @@ class PatientDataProvider with ChangeNotifier {
     _patientEmail = patientEmail;
     _patientProblem = patientProblem;
     _fees = fees;
-    _feesId = feesId; // Corrected assignment error
+    _feesId = feesId;
     _patientPhone = patientPhone;
-    // Debug prints
-    notifyListeners(); // Notify listeners when patient data is updated
+    notifyListeners();
   }
 
   // Setters for Doctor Data
   void setDoctorDataDetails({
-    required String doctorName,
-    required String fees,
-    required String feesId,
-    required String doctorLocation,
-    required String docPhoneNumber,
+     String? doctorName,
+     String? doctorDescription,
+     String? doctorPhoto,
+     Map? docModel,
+     String? fees,
+     String? feesId,
+     String? doctorLocation,
+     String? docPhoneNumber,
   }) {
-    _doctorName = doctorName;
-    _fees = fees;
-    _feesId = feesId;
-    _doctorLocation = doctorLocation;
-    _docPhoneNumber = docPhoneNumber;
+    _doctorName = doctorName!;
+    _doctorDescription = doctorDescription!;
+    _fees = fees!;
+    _feesId = feesId!;
+    _doctorLocation = doctorLocation!;
+    _docPhoneNumber = docPhoneNumber!;
+    _doctorPhoto = doctorPhoto!;
+    _docModel = docModel;
 
-    notifyListeners(); // Notify listeners when doctor data is updated
+    notifyListeners();
+  }
+
+  // clear all variables data
+  void clearAllData() {
+    _doctorName = '';
+    _doctorPhoto = '';
+    _speciality = '';
+    _experience = '';
+    _membership = '';
+    _availabilityFrom = '';
+    _availabilityTo = '';
+    _country = '';
+    _phoneNumber = '';
+    _rating = '';
+    _reviews = '';
+    _patientName = '';
+    _patientPhone = '';
+    _patientProblem = '';
+    _patientAge = '';
+    _patientEmail = '';
+    _appointmentDate = '';
+    _fees = '';
+    _feesId = '';
+    _userType = '';
+    _doctorLocation = '';
+    _docPhoneNumber = '';
+    _doctorDescription = '';
+    notifyListeners(); // Notify listeners when all data is cleared
   }
 }

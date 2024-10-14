@@ -11,6 +11,7 @@ import 'package:tabibinet_admin_panel/Model/Res/Widgets/app_text_widget.dart';
 import 'package:tabibinet_admin_panel/Model/Res/components/loadingButton.dart';
 import 'package:tabibinet_admin_panel/Provider/cloudinaryProvider/imageProvider.dart';
 import 'package:tabibinet_admin_panel/Provider/profileProvider/profileInfo.dart';
+import 'package:tabibinet_admin_panel/Screens/DashBoard/PatientPaymentScreen/patientDataProvider/patientDataProvider.dart';
 import 'dart:html' as html;
 import 'dart:typed_data';
 import '../../Model/Res/Constants/app_icons.dart';
@@ -26,6 +27,10 @@ class AdsRequest extends StatelessWidget {
   TextEditingController descController =  TextEditingController();
   @override
   Widget build(BuildContext context) {
+
+    final doc = Provider.of<PatientDataProvider>(context);
+    titleController = TextEditingController(text: doc.doctorName);
+    descController = TextEditingController(text: doc.doctorDescription);
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Consumer2<ProfileInfoProvider,CloudinaryProvider>(
@@ -49,7 +54,7 @@ class AdsRequest extends StatelessWidget {
                        backgroundImage: provider.imageData != null
                            ? MemoryImage(provider.imageData!)
                            : value.profileImageUrl != null
-                           ? NetworkImage(value.profileImageUrl!) // Use NetworkImage if imageUrl is available
+                           ? NetworkImage(doc.doctorPhoto)
                            : const AssetImage(AppAssets.profileImage) as ImageProvider,
                        child: ClipRRect(
                            borderRadius: BorderRadius.circular(10),
@@ -101,6 +106,7 @@ class AdsRequest extends StatelessWidget {
     );
   }
   Future<void> _pickAndUploadImage(BuildContext context) async {
+
     final html.FileUploadInputElement uploadInput = html.FileUploadInputElement();
     uploadInput.accept = 'image/*'; // Accept only images
 
@@ -124,53 +130,122 @@ class AdsRequest extends StatelessWidget {
 
     uploadInput.click(); // Trigger the file picker dialog
   }
+  // Future<void> _uploadData(BuildContext context) async {
+  //   final doc = Provider.of<PatientDataProvider>(context);
+  //
+  //   var timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
+  //
+  //   ActionProvider.startLoading();
+  //   final cloudinaryProvider = Provider.of<CloudinaryProvider>(context, listen: false);
+  //   // Email validation to check if it contains @gmail.com
+  //   // if (!emailC.text.contains('@gmail.com')) {
+  //   //   ActionProvider.stopLoading();
+  //   //   ToastMsg().toastMsg('Please enter a valid Gmail address');
+  //   //   return;
+  //   // }
+  //
+  //   if (titleController.text.isEmpty ||
+  //       descController.text.isEmpty ||
+  //       cloudinaryProvider.imageData == null) {
+  //     ActionProvider.stopLoading();
+  //     ToastMsg().toastMsg('Please fill all fields or upload an image',);
+  //     return;
+  //   }
+  //
+  //   try {
+  //     await cloudinaryProvider.uploadImage(cloudinaryProvider.imageData!);
+  //     log('Image URL: ${cloudinaryProvider.imageUrl}');
+  //     if (cloudinaryProvider.imageUrl.isNotEmpty) {
+  //       //  Save the data to Firebase
+  //       // Example Firebase code:
+  //       await FirebaseFirestore.instance.collection('bannerAds').doc(timeStamp).set({
+  //         'title': titleController.text,
+  //         'description': descController.text,
+  //         'imageUrl': cloudinaryProvider.imageUrl.toString(),
+  //         'createdAt': timeStamp.toString(),
+  //         'doctorName': doc.doctorName,
+  //         'doctorDescription': doc.doctorDescription,
+  //         'doctorPhoto': doc.doctorPhoto,
+  //         'doctorLocation': doc.doctorLocation,
+  //         'docPhoneNumber': doc.docPhoneNumber,
+  //         'fees': doc.fees,
+  //         'feesId': doc.feesId,
+  //         'userType': doc.userType,
+  //         'userdata': doc.docModel,         });
+  //       ActionProvider.stopLoading();
+  //
+  //       cloudinaryProvider.clearImage();
+  //
+  //       ToastMsg().toastMsg( 'Data uploaded successfully');
+  //     } else {
+  //       ActionProvider.stopLoading();
+  //       cloudinaryProvider.clearImage();
+  //       ToastMsg().toastMsg( 'Image upload failed',);
+  //     }
+  //   } catch (e) {
+  //     log('Error uploading Data: $e');
+  //     ActionProvider.stopLoading();
+  //     cloudinaryProvider.clearImage();
+  //     ToastMsg().toastMsg( 'Failed to upload Data', );
+  //   }
+  // }
   Future<void> _uploadData(BuildContext context) async {
+    final doc = Provider.of<PatientDataProvider>(context, listen: false);
+    final cloudinaryProvider = Provider.of<CloudinaryProvider>(context, listen: false);
+
     var timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
 
+    // Start loading indicator
     ActionProvider.startLoading();
-    final cloudinaryProvider = Provider.of<CloudinaryProvider>(context, listen: false);
-    // Email validation to check if it contains @gmail.com
-    // if (!emailC.text.contains('@gmail.com')) {
-    //   ActionProvider.stopLoading();
-    //   ToastMsg().toastMsg('Please enter a valid Gmail address');
-    //   return;
-    // }
 
+    // Debugging logs to check the current values
+    log('Title: ${titleController.text}');
+    log('Description: ${descController.text}');
+    log('Doctor Photo: ${doc.doctorPhoto}');
+    log('Image Data: ${cloudinaryProvider.imageData}');
+
+    // Check if fields are filled and image is uploaded or already available
     if (titleController.text.isEmpty ||
         descController.text.isEmpty ||
-        cloudinaryProvider.imageData == null) {
+        (cloudinaryProvider.imageData == null && doc.doctorPhoto.isEmpty)) {
       ActionProvider.stopLoading();
-      ToastMsg().toastMsg('Please fill all fields or upload an image',);
+      ToastMsg().toastMsg('Please fill all fields or upload an image');
       return;
     }
 
     try {
-      await cloudinaryProvider.uploadImage(cloudinaryProvider.imageData!);
-      log('Image URL: ${cloudinaryProvider.imageUrl}');
-      if (cloudinaryProvider.imageUrl.isNotEmpty) {
-        //  Save the data to Firebase
-        // Example Firebase code:
-        await FirebaseFirestore.instance.collection('bannerAds').doc(timeStamp).set({
-          'title': titleController.text,
-          'description': descController.text,
-          'imageUrl': cloudinaryProvider.imageUrl.toString(),
-          'createdAt': timeStamp.toString(),
-        });
-        ActionProvider.stopLoading();
+      String imageUrl = doc.doctorPhoto;
 
+      // If a new image is selected, upload it
+      if (cloudinaryProvider.imageData != null) {
+        await cloudinaryProvider.uploadImage(cloudinaryProvider.imageData!);
+        log('Uploaded Image URL: ${cloudinaryProvider.imageUrl}');
+        imageUrl = cloudinaryProvider.imageUrl;
+      }
+
+      // Ensure we have an image URL before saving the data
+      if (imageUrl.isNotEmpty) {
+        // Save all necessary data to Firestore
+        await FirebaseFirestore.instance.collection('bannerAds').doc(timeStamp).set(doc.docModel as Map<String, dynamic>);
+
+        // Stop loading indicator and clear image data
+        ActionProvider.stopLoading();
         cloudinaryProvider.clearImage();
 
-        ToastMsg().toastMsg( 'Data uploaded successfully');
+        // Success message
+        ToastMsg().toastMsg('Data uploaded successfully');
       } else {
+        // Image upload failed, stop loading
         ActionProvider.stopLoading();
         cloudinaryProvider.clearImage();
-        ToastMsg().toastMsg( 'Image upload failed',);
+        ToastMsg().toastMsg('Image upload failed');
       }
     } catch (e) {
-      log('Error uploading Data: $e');
+      // Log the error and display failure message
+      log('Error uploading data: $e');
       ActionProvider.stopLoading();
       cloudinaryProvider.clearImage();
-      ToastMsg().toastMsg( 'Failed to upload Data', );
+      ToastMsg().toastMsg('Failed to upload data');
     }
   }
 

@@ -112,6 +112,7 @@ class DoctorPaymentScreen extends StatelessWidget {
                                       feesId: appointment.feesType,
                                       docPhoneNumber: appointment.docPhoneNumber,
                                       doctorLocation: appointment.doctorLocation,
+
                                     );
                                     pro.setSelectedIndex(21);
                                   },

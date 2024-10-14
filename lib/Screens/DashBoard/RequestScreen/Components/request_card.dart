@@ -19,12 +19,16 @@ class RequestCard extends StatelessWidget {
     required this.doctorSpeciality,
     required this.doctorImage,
     required this.doctorId,
+    required this.withdrawId,
+    required this.withdrawAmount,
   });
 
   final String doctorName;
   final String doctorSpeciality;
   final String doctorImage;
   final String doctorId;
+  final String withdrawId;
+  final String withdrawAmount;
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +60,12 @@ class RequestCard extends StatelessWidget {
             fontSize: 10.sp, fontWeight: FontWeight.w500,
             isTextCenter: false, textColor: themeColor,
           ),
+          SizedBox(height: 1.h,),
+          AppText(
+            text: "Withdraw Amount: $withdrawAmount",
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+            isTextCenter: false, textColor: themeColor,),
           SizedBox(height: 3.h,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -68,7 +78,7 @@ class RequestCard extends StatelessWidget {
                 bgColor: bgColor,
                 textColor: themeColor,
                 press: () {
-                  updateDoctorStatus(doctorId, 'rejected');
+                  updateDoctorStatus(doctorId, withdrawId,'rejected',withdrawAmount);
                 },),
               SubmitButton(
                 title: "Accept",
@@ -76,7 +86,7 @@ class RequestCard extends StatelessWidget {
                 height: 25,
                 textSize: 10.sp,
                 press: () {
-                  updateDoctorStatus(doctorId, 'approved');
+                  updateDoctorStatus(doctorId, withdrawId,'approved',withdrawAmount);
                 },),
             ],
           ),
@@ -87,15 +97,63 @@ class RequestCard extends StatelessWidget {
     );
   }
   // Method to update the doctor status in Firebase
-  Future<void> updateDoctorStatus(String doctorId, String newStatus) async {
+  // Future<void> updateDoctorStatus(String doctorId, String newStatus) async {
+  //   try {
+  //     await FirebaseFirestore.instance
+  //         .collection('withdrawRequests')  // Make sure this is the correct collection
+  //         .doc(doctorId)        // Reference the correct doctor by ID
+  //         .update({'status': newStatus});// Update accountStatus field
+  //     ToastMsg().toastMsg("You $newStatus this user");
+  //   } catch (e) {
+  //     log('Error updating doctor status: $e');
+  //   }
+  // }
+  Future<void> updateDoctorStatus(String doctorId,String withdrawId, String newStatus, String withdrawAmount) async {
     try {
+      // Update withdraw request status
       await FirebaseFirestore.instance
-          .collection('users')  // Make sure this is the correct collection
-          .doc(doctorId)        // Reference the correct doctor by ID
-          .update({'accountStatus': newStatus});// Update accountStatus field
+          .collection('withdrawRequests')
+          .doc(withdrawId)
+          .update({'status': newStatus});
+
+      if (newStatus == 'rejected') {
+        // Fetch the user document to confirm it exists
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(doctorId)
+            .get();
+
+        if (userDoc.exists) {
+          double amount = 0.0;
+          try {
+            amount = double.parse(userDoc.get("balance") ?? "0.0");
+            amount = amount + double.parse(withdrawAmount);
+          } catch (e) {
+            log('Invalid withdrawAmount: $withdrawAmount. Error: $e');
+            ToastMsg().toastMsg("Invalid withdraw amount.");
+            return; // Exit the method early
+          }
+
+          // Update the user's balance
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(doctorId)
+              .update({
+            'balance': amount.toString(),
+          });
+
+          ToastMsg().toastMsg("Balance updated successfully.");
+        } else {
+          log('User document does not exist for doctorId: $doctorId');
+          ToastMsg().toastMsg("User not found.");
+        }
+      }
+
       ToastMsg().toastMsg("You $newStatus this user");
     } catch (e) {
       log('Error updating doctor status: $e');
+      ToastMsg().toastMsg("Failed to update status. Please try again.");
     }
   }
+
 }

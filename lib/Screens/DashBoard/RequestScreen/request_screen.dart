@@ -54,15 +54,17 @@ class RequestScreen extends StatelessWidget {
                 mainAxisExtent: 35.h,
                 crossAxisSpacing: 20,
               ),
-              itemCount: doctors.length,  // Set the number of items
+              itemCount: doctors.length,
               itemBuilder: (context, index) {
-                final doctor = doctors[index];  // Access individual document
+                final doctor = doctors[index];
 
                 return RequestCard(
-                  doctorId: doctor.id,
-                  doctorName: doctor['name'],  // Access 'name' field
-                  doctorSpeciality: doctor["speciality"],  // Access 'speciality' field
-                  doctorImage: doctor["profileUrl"] ?? Image.asset(AppAssets.doctorImage),  // Handle image field
+                  withdrawId: doctor['withdrawID'],
+                  doctorId: doctor['userUID'],
+                  doctorName: doctor['name'],
+                  withdrawAmount: doctor['amount'],
+                  doctorSpeciality: doctor["speciality"],
+                  doctorImage: doctor["profile"] ?? Image.asset(AppAssets.doctorImage),
                 );
               },
             );
@@ -74,9 +76,8 @@ class RequestScreen extends StatelessWidget {
 
   getDoctorsStatus() {
     return FirebaseFirestore.instance
-        .collection('users')  // assuming doctors are stored in the 'users' collection
-        .where('userType', isEqualTo: 'Health Professional')  // filter for users who are doctors
-        .where('accountStatus', isEqualTo: 'pending')  // filter for pending accounts
+        .collection('withdrawRequests')
+        .where('status', isEqualTo: 'pending')  // filter for pending accounts
         .snapshots();
   }
 }

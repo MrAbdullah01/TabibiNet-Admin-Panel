@@ -17,9 +17,9 @@ class SubscriptionScreen extends StatelessWidget {
   SubscriptionScreen({super.key});
 
   final List<String> subscription = [
-    "Basic",
-    "Premium",
-    "Advanced",
+    "basic",
+    "premium",
+    "advanced",
   ];
 
   @override

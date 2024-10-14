@@ -230,9 +230,10 @@ class _HealthCareScreenState extends State<HealthCareScreen> {
                         mainAxisExtent: 305),
                     itemCount: filteredDocs.length,
                     itemBuilder: (context, index) {
-                      final users = filteredDocs[index];
+                      final DocumentSnapshot userSnapshot = snapshot.data!.docs[index];
                       return DoctorProfileCard(
-                        users: users,
+                        users:  userSnapshot,
+
                       );
                     },
                   );

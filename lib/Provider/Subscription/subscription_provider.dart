@@ -10,7 +10,7 @@ class SubscriptionProvider extends ChangeNotifier{
 
   int _selectPlan = 0;
   String? _selectSub;
-  String _subscription = "Basic";
+  String _subscription = "basic";
   bool _isEditSub = false;
 
   int get selectPlan => _selectPlan;
@@ -21,13 +21,13 @@ class SubscriptionProvider extends ChangeNotifier{
   setPlan(index){
     _selectPlan = index;
     if(index == 0){
-      _subscription = "Basic";
+      _subscription = "basic";
     }
     else if(index == 1){
-      _subscription = "Premium";
+      _subscription = "premium";
     }
     else{
-      _subscription = "Advanced";
+      _subscription = "advanced";
     }
     log('Selected Plan: $_subscription');  // Log the selected plan
 
