@@ -92,17 +92,14 @@ class DoctorProfileCard extends StatelessWidget {
             ),
           ],
         ),
-        Container(
-          height: 100,
-          width: 100,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            image: DecorationImage(
-              image: users["profileUrl"] != null
-                  ? NetworkImage(users["profileUrl"])
-                  : AssetImage(AppAssets.doctorImage) as ImageProvider,
-            ),
-          ),
+        CircleAvatar(
+          radius: 40,
+          backgroundImage:
+
+          users["profileUrl"] != null
+              ? NetworkImage(users["profileUrl"])
+              :
+          AssetImage(AppAssets.doctorImage) as ImageProvider,
         ),
         Positioned(
           right: 12.sp,
@@ -137,13 +134,13 @@ class DoctorProfileCard extends StatelessWidget {
                       doctorName: userData['name'] ?? '',
                       doctorDescription: userData['specialityDetail'] ?? '',
                       doctorPhoto: userData['profileUrl'] ?? '',
-                      fees: userData['fees']?.toString() ?? '0',
-                      feesId: userData['feesId'] ?? '',
+                      docFees: userData['fees']?.toString() ?? '0',
+                      docFeesId: userData['feesId'] ?? '',
                       doctorLocation: userData['country'] ?? '',
                       docPhoneNumber: userData['phoneNumber'] ?? '',
                       docModel: userData,
                     );
-                    pro.setSelectedIndex(10);
+                    pro.setSelectedIndex(23);
                   },
                   child: SizedBox(
                     width: 30.sp,

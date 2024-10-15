@@ -1,4 +1,8 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:printing/printing.dart'; // For PDF preview and download
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -137,6 +141,11 @@ class _InvoiceDialogueCardState extends State<InvoiceDialogueCard> {
 
     final image = pw.MemoryImage(imageData);
     final customColor = const PdfColor(0.0, 0.5, 0.8); // Custom PDF color
+    // Get the current date
+    DateTime currentDate = DateTime.now();
+
+    // Format the current date as 'yyyy-MM-dd'
+    String currentDateFormatted = DateFormat('yyyy-MM-dd').format(currentDate);
 
     // Add content to the PDF
     pdf.addPage(
@@ -188,8 +197,8 @@ class _InvoiceDialogueCardState extends State<InvoiceDialogueCard> {
                       children: [
                          RowText(text1: "Invoice No: ", text2: model.feesId)
                             .build(),
-                         RowText(text1: "Issued Date: ", text2: model.appointmentDate)
-                            .build(),
+                         RowText(text1: "Issued Date: ",
+                             text2: currentDateFormatted.toString()).build(),
                       ],
                     ),
                   ],
@@ -212,12 +221,12 @@ class _InvoiceDialogueCardState extends State<InvoiceDialogueCard> {
                       text3: "",
                     ).build(),
 
-                     ColumnText(
-                      headingText: "Payment Method",
-                      text1: "Debit Card",
-                      text2: "xxxxxxxxxx-251",
-                      text3: "HDFC Bank",
-                    ).build(),
+                    //  ColumnText(
+                    //   headingText: "Payment Method",
+                    //   text1: "Debit Card",
+                    //   text2: "xxxxxxxxxx-251",
+                    //   text3: "HDFC Bank",
+                    // ).build(),
                   ],
                 ),
                 pw.SizedBox(height: 20),
@@ -294,7 +303,7 @@ class RowText {
         ),
         pw.SizedBox(width: 10),
         pw.Text(
-          text2,
+          text2.isNotEmpty ? text2 : 'N/A',  // Fallback if text2 is empty
           style: pw.TextStyle(
             fontSize: 10,
             color: PdfColors.grey,
@@ -331,7 +340,7 @@ class ColumnText {
         ),
         pw.SizedBox(height: 10),
         pw.Text(
-          text1,
+          text1.isNotEmpty ? text1 : 'N/A',  // Fallback if text1 is empty
           overflow: pw.TextOverflow.clip,
           style: pw.TextStyle(
             fontSize: 10,
@@ -339,7 +348,7 @@ class ColumnText {
           ),
         ),
         pw.Text(
-          text2,
+          text2.isNotEmpty ? text2 : 'N/A',  // Fallback if text2 is empty
           overflow: pw.TextOverflow.clip,
           style: pw.TextStyle(
             fontSize: 10,
@@ -347,7 +356,7 @@ class ColumnText {
           ),
         ),
         pw.Text(
-          text3,
+          text3.isNotEmpty ? text3 : 'N/A',  // Fallback if text3 is empty
           overflow: pw.TextOverflow.clip,
           style: pw.TextStyle(
             fontSize: 10,
@@ -370,7 +379,7 @@ class TableChart {
       ),
       headers: ["Description", "Patient Quantity", "Total Payment"],
       data: [
-        [model.patientProblem, "1",  model.fees],
+        [model.patientProblem.isNotEmpty ? model.patientProblem: "N/A", "1",  model.fees.isNotEmpty ? model.fees : "N/A"],
       ],
     );
   }

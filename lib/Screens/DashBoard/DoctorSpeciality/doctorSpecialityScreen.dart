@@ -90,7 +90,7 @@ class DoctorSpecialityScreen extends StatelessWidget {
             StreamBuilder(
               stream: FirebaseFirestore.instance
                   .collection('doctorsSpecialty')
-                  .orderBy('timestamp', descending: true)
+                  .orderBy('timestamp', descending: false)
                   .snapshots(),
               builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {

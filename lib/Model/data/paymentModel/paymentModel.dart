@@ -10,6 +10,7 @@ class PaymentModel {
   final String image;
   final String status;
   final String fees;
+  final String docFees;
   final String userUid;
   final String appointmentDate;
   final String feesId;
@@ -40,6 +41,7 @@ class PaymentModel {
     required this.speciality,
     required this.userType,
     required this.feesId,
+    required this.docFees,
     required this.appointmentDate,
     required this.id,
     required this.doctorName,
@@ -66,6 +68,7 @@ class PaymentModel {
       patientEmail: map['patientEmail'] ?? "",
       status: map['status'] ?? "",
       fees: map['fees'] ?? "",
+      docFees: map['fees'] ?? "",
       image: map['image'] ?? "",
       userUid: map['userUID'] ?? "",
       appointmentDate: map['appointmentDate'] ?? "",

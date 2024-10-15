@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -108,12 +109,18 @@ class DoctorPaymentScreen extends StatelessWidget {
                                   onTap: () {
                                     Provider.of<PatientDataProvider>(context, listen: false).setDoctorDataDetails(
                                       doctorName: appointment.doctorName,
-                                      fees: appointment.fees,
-                                      feesId: appointment.feesType,
+                                      docFees: appointment.fees,
+                                      docFeesId: appointment.feesType,
                                       docPhoneNumber: appointment.docPhoneNumber,
+                                      docModel: {},
+                                      doctorPhoto: appointment.image,
+                                      doctorDescription: appointment.patientProblem,
                                       doctorLocation: appointment.doctorLocation,
 
                                     );
+                                    //add log here to check if data is available
+                                    log('Doctor Data : $appointment');
+
                                     pro.setSelectedIndex(21);
                                   },
 
@@ -145,7 +152,7 @@ class DoctorPaymentScreen extends StatelessWidget {
                                   fontFamily: AppFonts.semiBold,),
                                 const Spacer(),
                                 AppText(
-                                  text: "MAD ${appointment.fees}",
+                                  text: "MAD ${appointment.docFees}",
                                   fontSize: 14.sp, fontWeight: FontWeight.w600,
                                   isTextCenter: false, textColor: textColor,
                                   fontFamily: AppFonts.semiBold,),
@@ -192,13 +199,30 @@ class DoctorPaymentScreen extends StatelessWidget {
                                     textSize: 10.sp,
                                     width: 8.w,
                                     press: () {
+                                      var patientProb = appointment.patientProblem;
                                       Provider.of<PatientDataProvider>(context, listen: false).setDoctorDataDetails(
                                         doctorName: appointment.doctorName,
-                                        fees: appointment.fees,
-                                        feesId: appointment.feesType,
+                                        docFees: appointment.docFees,
+                                        docFeesId: appointment.feesType,
                                         docPhoneNumber: appointment.docPhoneNumber,
                                         doctorLocation: appointment.doctorLocation,
+                                        doctorDescription: patientProb,
+                                        docModel: {},
+                                        doctorPhoto: appointment.image,
                                       );
+                                      Provider.of<PatientDataProvider>(context, listen: false).setPatientDataDetails(
+                                        patientName: appointment.patientName,
+                                        patientAge: appointment.patientAge,
+                                        patientProblem: patientProb,
+                                        patientEmail: appointment.patientEmail,
+                                        userType: appointment.userType,
+                                        country: appointment.doctorLocation,
+                                        appointmentDate: appointment.appointmentDate,
+                                        fees: appointment.fees,
+                                        feesId: appointment.feesId,
+                                        patientPhone: appointment.patientPhone,
+                                      );
+
                                       pro.setSelectedIndex(19);
                                       // showDialog(
                                       //   context: context,

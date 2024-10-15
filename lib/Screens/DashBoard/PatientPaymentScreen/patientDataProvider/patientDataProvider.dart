@@ -1,7 +1,4 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:tabibinet_admin_panel/Model/data/user_model.dart';
 
 class PatientDataProvider with ChangeNotifier {
   // Doctor Data
@@ -15,6 +12,13 @@ class PatientDataProvider with ChangeNotifier {
   String _phoneNumber = '';
   String _rating = '';
   String _reviews = '';
+  String _doctorLocation = '';
+  String _docPhoneNumber = '';
+  String _doctorDescription = '';
+  String _doctorPhoto = '';
+  Map? _docModel;
+  String _docFees = '';
+  String _docFeesId = '';
 
   // Patient Data
   String _patientName = '';
@@ -26,11 +30,7 @@ class PatientDataProvider with ChangeNotifier {
   String _fees = '';
   String _feesId = '';
   String _userType = '';
-  String _doctorLocation = '';  // Could be removed if unnecessary for your logic
-  String _docPhoneNumber = '';  // Could be removed if unnecessary for your logic
-  String _doctorDescription = '';  // Could be removed if unnecessary for your logic
-  String _doctorPhoto = '';  // Could be removed if unnecessary for your logic
-  Map? _docModel;  // Could be removed if unnecessary for your logic
+ // Could be removed if unnecessary for your logic
 
   // Getters for Doctor Data
   String get doctorName => _doctorName;
@@ -45,6 +45,8 @@ class PatientDataProvider with ChangeNotifier {
   String get reviews => _reviews;
   String get docPhoneNumber => _docPhoneNumber;
   String get doctorPhoto => _doctorPhoto;
+  String get doctorFee => _docFees;
+  String get doctorFeeId => _docFeesId;
 
   // Getters for Patient Data
   String get patientName => _patientName;
@@ -89,15 +91,15 @@ class PatientDataProvider with ChangeNotifier {
      String? doctorDescription,
      String? doctorPhoto,
      Map? docModel,
-     String? fees,
-     String? feesId,
+     String? docFees,
+     String? docFeesId,
      String? doctorLocation,
      String? docPhoneNumber,
   }) {
     _doctorName = doctorName!;
     _doctorDescription = doctorDescription!;
-    _fees = fees!;
-    _feesId = feesId!;
+    _docFees = docFees!;
+    _docFeesId = docFeesId!;
     _doctorLocation = doctorLocation!;
     _docPhoneNumber = docPhoneNumber!;
     _doctorPhoto = doctorPhoto!;

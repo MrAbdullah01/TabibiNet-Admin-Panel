@@ -39,11 +39,9 @@ class AdsRequest extends StatelessWidget {
          return Column(
            crossAxisAlignment: CrossAxisAlignment.start,
            children: [
-             InkWell(
-               highlightColor: Colors.transparent,
-               hoverColor: Colors.transparent,
+             GestureDetector(
                onTap: () {
-                 _pickAndUploadImage(context);
+               //  _pickAndUploadImage(context);
 
                },
                child: Row(
@@ -56,9 +54,11 @@ class AdsRequest extends StatelessWidget {
                            : value.profileImageUrl != null
                            ? NetworkImage(doc.doctorPhoto)
                            : const AssetImage(AppAssets.profileImage) as ImageProvider,
-                       child: ClipRRect(
-                           borderRadius: BorderRadius.circular(10),
-                           child: SvgPicture.asset(AppIcons.cameraIcon,height: 70,width: 70,))),
+                       // child: ClipRRect(
+                       //     borderRadius: BorderRadius.circular(10),
+                       //     child: SvgPicture.asset(AppIcons.cameraIcon,height: 70,width: 70,),
+                       // ),
+                   ),
                    SizedBox(width: 2.w,),
                    AppText(text: "Banner Photo",fontSize: 18,)
                  ],
@@ -74,6 +74,7 @@ class AdsRequest extends StatelessWidget {
              SizedBox(
                  width: 45.w,
                  child: AppTextField(
+                   readOnly: true,
                    maxLines: 2,
                    inputController: titleController,
                    hintText: '',
@@ -88,6 +89,7 @@ class AdsRequest extends StatelessWidget {
              SizedBox(
                  width: 45.w,
                  child: AppTextField(
+                   readOnly: true,
                    maxLines: 10,
                    inputController: descController,
                    hintText: '',
@@ -105,31 +107,31 @@ class AdsRequest extends StatelessWidget {
       ),
     );
   }
-  Future<void> _pickAndUploadImage(BuildContext context) async {
-
-    final html.FileUploadInputElement uploadInput = html.FileUploadInputElement();
-    uploadInput.accept = 'image/*'; // Accept only images
-
-    uploadInput.onChange.listen((e) async {
-      final files = uploadInput.files;
-      if (files!.isEmpty) return;
-
-      final reader = html.FileReader();
-      reader.readAsArrayBuffer(files[0]);
-
-      reader.onLoadEnd.listen((e) async {
-        final bytes = reader.result as Uint8List;
-
-        // Set image data using Provider to display in the container
-        final cloudinaryProvider = Provider.of<CloudinaryProvider>(context, listen: false);
-        cloudinaryProvider.setImageData(bytes);
-
-        ToastMsg().toastMsg('Image uploaded successfully');
-      });
-    });
-
-    uploadInput.click(); // Trigger the file picker dialog
-  }
+  // Future<void> _pickAndUploadImage(BuildContext context) async {
+  //
+  //   final html.FileUploadInputElement uploadInput = html.FileUploadInputElement();
+  //   uploadInput.accept = 'image/*'; // Accept only images
+  //
+  //   uploadInput.onChange.listen((e) async {
+  //     final files = uploadInput.files;
+  //     if (files!.isEmpty) return;
+  //
+  //     final reader = html.FileReader();
+  //     reader.readAsArrayBuffer(files[0]);
+  //
+  //     reader.onLoadEnd.listen((e) async {
+  //       final bytes = reader.result as Uint8List;
+  //
+  //       // Set image data using Provider to display in the container
+  //       final cloudinaryProvider = Provider.of<CloudinaryProvider>(context, listen: false);
+  //       cloudinaryProvider.setImageData(bytes);
+  //
+  //       ToastMsg().toastMsg('Image uploaded successfully');
+  //     });
+  //   });
+  //
+  //   uploadInput.click(); // Trigger the file picker dialog
+  // }
   // Future<void> _uploadData(BuildContext context) async {
   //   final doc = Provider.of<PatientDataProvider>(context);
   //
@@ -193,18 +195,16 @@ class AdsRequest extends StatelessWidget {
     final doc = Provider.of<PatientDataProvider>(context, listen: false);
     final cloudinaryProvider = Provider.of<CloudinaryProvider>(context, listen: false);
 
-    var timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
+    String userUid = doc.docModel?['userUid'] ?? '';
 
-    // Start loading indicator
     ActionProvider.startLoading();
 
-    // Debugging logs to check the current values
     log('Title: ${titleController.text}');
     log('Description: ${descController.text}');
     log('Doctor Photo: ${doc.doctorPhoto}');
     log('Image Data: ${cloudinaryProvider.imageData}');
+    log('User UID: $userUid');
 
-    // Check if fields are filled and image is uploaded or already available
     if (titleController.text.isEmpty ||
         descController.text.isEmpty ||
         (cloudinaryProvider.imageData == null && doc.doctorPhoto.isEmpty)) {
@@ -216,32 +216,24 @@ class AdsRequest extends StatelessWidget {
     try {
       String imageUrl = doc.doctorPhoto;
 
-      // If a new image is selected, upload it
       if (cloudinaryProvider.imageData != null) {
         await cloudinaryProvider.uploadImage(cloudinaryProvider.imageData!);
         log('Uploaded Image URL: ${cloudinaryProvider.imageUrl}');
         imageUrl = cloudinaryProvider.imageUrl;
       }
 
-      // Ensure we have an image URL before saving the data
       if (imageUrl.isNotEmpty) {
-        // Save all necessary data to Firestore
-        await FirebaseFirestore.instance.collection('bannerAds').doc(timeStamp).set(doc.docModel as Map<String, dynamic>);
+        await FirebaseFirestore.instance.collection('bannerAds').doc(userUid).set(doc.docModel as Map<String, dynamic>);
 
-        // Stop loading indicator and clear image data
         ActionProvider.stopLoading();
         cloudinaryProvider.clearImage();
-
-        // Success message
         ToastMsg().toastMsg('Data uploaded successfully');
       } else {
-        // Image upload failed, stop loading
         ActionProvider.stopLoading();
         cloudinaryProvider.clearImage();
         ToastMsg().toastMsg('Image upload failed');
       }
     } catch (e) {
-      // Log the error and display failure message
       log('Error uploading data: $e');
       ActionProvider.stopLoading();
       cloudinaryProvider.clearImage();

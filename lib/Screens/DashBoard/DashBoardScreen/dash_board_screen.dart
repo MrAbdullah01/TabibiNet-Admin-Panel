@@ -24,6 +24,7 @@ import '../../../Model/Res/Widgets/submit_button.dart';
 import '../../../Provider/DashBoard/Components/side_menu_bar_section.dart';
 import '../../../Provider/DashBoard/dash_board_provider.dart';
 import '../../../Provider/profileProvider/profileInfo.dart';
+import '../../AdsRequest/AdsListScreen.dart';
 import '../../AdsRequest/AdsRequestScreen.dart';
 import '../../Start/LogInScreen/loginF.dart';
 import '../AppointmentFeeScreen/appointment_fee_screen.dart';
@@ -118,7 +119,7 @@ class DashBoardScreen extends StatelessWidget {
                           :value.selectIndex == 7 ? const DoctorPaymentScreen()
                           :value.selectIndex == 8 ? const PatientPaymentScreen()
                           :value.selectIndex == 9 ? SubscriptionScreen()
-                          :value.selectIndex == 10 ? AdsRequest()
+                          :value.selectIndex == 10 ? AdsListScreen()
                           :value.selectIndex == 11 ?  HelpCenterScreen()
                           :value.selectIndex == 12 ?  AddFaqScreen()
                           :value.selectIndex == 13 ? const ProfileScreen()
@@ -131,6 +132,7 @@ class DashBoardScreen extends StatelessWidget {
                           :value.selectIndex == 20 ?  PatientPaymentDetails()
                           :value.selectIndex == 21 ?  DoctorPaymentDetails()
                           :value.selectIndex == 22 ?  EditSubscriptionScreen()
+                          :value.selectIndex == 23 ?  AdsRequest()
                           : const SizedBox()
                   );
                 },),
